@@ -4,27 +4,8 @@
 
 <br>
 
+<h2 align='center'>
+    🚧 Em construção ... 
+</h2>
 
-
-## Status
-
-- 🚧 Em construção ... 
-
-<br>
-
-## ⚒️ Linguagens e Ferramentas
-
-- Java;
-- Spring Web, Data JPA, Boot DevTools e Security; 
-- PostgreSQL;
-- Thymeleaf (Template engine);
-
-## 📈 Diagramas
-
-- 🚧 Em construção ... 
-
-
-## 🔗 Links
-
-- 🚧 Em construção ... 
 
