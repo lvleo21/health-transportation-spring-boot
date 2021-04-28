@@ -1,3 +1,3 @@
-INSERT into roles (role) SELECT 'OPERADOR' WHERE 'OPERADOR' NOT IN (SELECT role FROM role);
-INSERT into roles (role) SELECT 'GESTOR' WHERE 'GESTOR' NOT IN (SELECT role FROM role);
-INSERT into roles (role) SELECT 'ADMIN' WHERE 'ADMIN' NOT IN (SELECT role FROM role);
+INSERT into role (role) SELECT 'OPERADOR' WHERE 'OPERADOR' NOT IN (SELECT role FROM role);
+INSERT into role (role) SELECT 'GESTOR' WHERE 'GESTOR' NOT IN (SELECT role FROM role);
+INSERT into role (role) SELECT 'ADMIN' WHERE 'ADMIN' NOT IN (SELECT role FROM role);
