@@ -21,8 +21,8 @@ public class User extends AbstractEntity<Long> {
     private String password;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "{Email.user.error}")
-    @NotEmpty(message = "{NotEmpty.user.email}")
+    @Email(message = "{Email.error}")
+    @NotEmpty(message = "{NotEmpty.email}")
     private String email;
 
     private Boolean active;
