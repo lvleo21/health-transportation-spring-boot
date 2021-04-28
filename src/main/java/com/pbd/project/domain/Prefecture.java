@@ -7,11 +7,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name="PREFECTURES")
-public class Prefecture extends AbstractEntity<Long>{
+@Table(name = "PREFECTURES")
+public class Prefecture extends AbstractEntity<Long> {
 
     @Valid
-    @OneToOne(cascade =  CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -20,16 +20,21 @@ public class Prefecture extends AbstractEntity<Long>{
     @NotEmpty(message = "{NotEmpty.email}")
     private String email;
 
-    @NotEmpty(message="{NotEmpty.prefecture.site}")
+    @NotEmpty(message = "{NotEmpty.prefecture.site}")
     @Column(nullable = false, unique = true)
     private String site;
 
-    @NotEmpty(message="{NotEmpty.prefecture.cnpj}")
+    @NotEmpty(message = "{NotEmpty.cnpj}")
     @Column(nullable = false, unique = true, length = 18)
     private String cnpj;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean isActive;
+
+    @OneToOne(mappedBy = "prefecture", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private HealthCenter healthCenter;
+
 
     public Address getAddress() {
         return address;
