@@ -8,25 +8,26 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
-@Table(name="USER")
+@Table(name="USERS")
 public class User extends AbstractEntity<Long> {
 
     @Column(nullable = false, unique = true)
-    @Length(min = 5, message = "*Seu nome de usuário deve ter pelo menos 5 caracteres.")
-    @NotEmpty(message = "*Por favor, forneça um nome de usuário.")
+    @Length(min = 5, message = "{Length.users.username}")
+    @NotEmpty(message = "{NotEmpty.user.username}")
     private String username;
 
     @Column(nullable = false)
+    @NotEmpty(message = "{NotEmpty.user.password}")
     private String password;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "*Por favor, forneça um email válido.")
-    @NotEmpty(message = "*Por favor, forneça um email.")
+    @Email(message = "{Email.user.error}")
+    @NotEmpty(message = "{NotEmpty.user.email}")
     private String email;
 
     private Boolean active;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 

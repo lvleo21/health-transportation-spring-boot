@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name="ROLE")
+@Table(name="ROLES")
 public class Role extends AbstractEntity<Long> {
 
     private String role;
