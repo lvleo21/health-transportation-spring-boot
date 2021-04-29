@@ -7,6 +7,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "ADRESSES")
@@ -49,59 +50,7 @@ public class Address extends AbstractEntity<Long> {
             fetch = FetchType.LAZY, optional = false)
     private HealthCenter healthCenter;
 
-    public String getPublicPlace() {
-        return publicPlace;
-    }
+    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    private List<Employee> employees;
 
-    public void setPublicPlace(String publicPlace) {
-        this.publicPlace = publicPlace;
-    }
-
-    public String getNeighborhood() {
-        return neighborhood;
-    }
-
-    public void setNeighborhood(String neighborhood) {
-        this.neighborhood = neighborhood;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getComplement() {
-        return complement;
-    }
-
-    public void setComplement(String complement) {
-        this.complement = complement;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public UF getState() {
-        return State;
-    }
-
-    public void setState(UF state) {
-        State = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 }

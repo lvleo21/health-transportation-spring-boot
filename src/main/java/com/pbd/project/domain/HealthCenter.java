@@ -3,6 +3,7 @@ package com.pbd.project.domain;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name="HEALTH_CENTERS")
@@ -25,35 +26,9 @@ public class HealthCenter extends AbstractEntity<Long>{
     @Column(name="is_active")
     private boolean isActive;
 
-    public Address getAddress() {
-        return address;
-    }
+    @OneToMany(mappedBy = "healthCenter", fetch = FetchType.LAZY)
+    private List<Employee> peoples;
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
-    public Prefecture getPrefecture() {
-        return prefecture;
-    }
 
-    public void setPrefecture(Prefecture prefecture) {
-        this.prefecture = prefecture;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

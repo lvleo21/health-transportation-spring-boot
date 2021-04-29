@@ -31,6 +31,10 @@ public class User extends AbstractEntity<Long> {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private Employee employee;
+
     public String getUsername() {
         return username;
     }

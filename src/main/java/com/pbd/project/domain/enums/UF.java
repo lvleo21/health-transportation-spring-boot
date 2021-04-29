@@ -29,27 +29,27 @@ public enum UF {
     SE("SE", "Sergipe"),
     TO("TO", "Tocantins");
 
-    private String sigla;
-    private String descricao;
+    private String initials;
+    private String description;
 
-    UF(String sigla, String descricao){
-        this.sigla = sigla;
-        this.descricao = descricao;
+    UF(String initials, String description){
+        this.initials = initials;
+        this.description = description;
     }
 
-    public String getSigla() {
-        return sigla;
+    public String getInitials() {
+        return initials;
     }
 
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
+    public void setInitials(String initials) {
+        this.initials = initials;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
