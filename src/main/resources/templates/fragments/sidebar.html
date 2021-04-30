@@ -7,7 +7,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:fragment="sidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
         <div class="sidebar-brand-icon">
             <i class="fas fa-ambulance"></i>
         </div>
@@ -21,7 +21,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" th:href="@{/}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -48,7 +48,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Ações</h6>
                 <a class="collapse-item" th:href="@{/prefecture/list}">Visualizar</a>
-                <a class="collapse-item" href="register.html">Cadastrar</a>
+                <a class="collapse-item" th:href="@{/prefecture/register}">Cadastrar</a>
 
             </div>
         </div>

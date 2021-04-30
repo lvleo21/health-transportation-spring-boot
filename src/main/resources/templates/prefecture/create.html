@@ -1,10 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{base}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Adicionar Prefeituras - Health Transportation</title>
 </head>
 <body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
+        <h1 class="h3 mb-0 text-gray-800">Adicionar Prefeitura</h1>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <div class="card shadow rounded mt-4">
+            <div class="card-body">
+
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <div class="h4 mb-0 text-gray-800">
+                        <i class="fas fa-caret-right"></i> <b>Endereço</b>
+                    </div>
+                </div>
+
+
+                <form class="user" method="POST" action=".">
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Logradouro <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="email" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Bairro <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Número <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="number" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="">Complemento</label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Cidade <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Estado <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <select class="custom-select">
+                                    <option selected>- - - -</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">País <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Informações da prefeitura</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Email <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="email" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Site <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">CNPJ <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="exampleInputEmail">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-4">
+                                <div class="custom-control custom-checkbox small">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                    <label class="custom-control-label font-weight-bold" for="customCheck">Ativo</label>
+                                    <br>
+                                    <small>Indica que esta prefeitura está ativo no sistema.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br>
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <b>CADASTRAR</b>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

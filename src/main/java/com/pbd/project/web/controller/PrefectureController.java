@@ -14,4 +14,9 @@ public class PrefectureController {
         return "prefecture/list";
     }
 
+    @GetMapping("/register")
+    public String registerPrefecture(){
+        return "prefecture/create";
+    }
+
 }
