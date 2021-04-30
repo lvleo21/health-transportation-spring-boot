@@ -1,6 +1,9 @@
 package com.pbd.project.domain;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -11,7 +14,7 @@ public class Role extends AbstractEntity<Long> {
 
     private String role;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class InitialAdmin implements ApplicationRunner {
@@ -24,17 +25,25 @@ public class InitialAdmin implements ApplicationRunner {
     private RoleDao roleDao;
 
     public void run(ApplicationArguments args) throws Exception {
-        User user = new User();
-        user.setUsername("lvleo21");
-        user.setPassword("Leo10272109");
-        user.setActive(true);
-        user.setEmail("verasleonardo210@gmail.com");
-        user.setCreatedAt(LocalDate.now());
-        user.setName("Leonardo Veras Mascena Oliveira Lopes");
         Role roleAdmin = roleDao.findByRole("ADMIN");
-        Role roleGestor = roleDao.findByRole("GESTOR");
-        Role roleOperador = roleDao.findByRole("OPERADOR");
-        user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
-        userService.save(user);
+
+
+
+
+
+        if (roleAdmin.getUsers().isEmpty()){
+            Role roleGestor = roleDao.findByRole("GESTOR");
+            Role roleOperador = roleDao.findByRole("OPERADOR");
+            User user = new User();
+            user.setUsername("lvleo21");
+            user.setPassword("Leo10272109");
+            user.setActive(true);
+            user.setEmail("verasleonardo210@gmail.com");
+            user.setCreatedAt(LocalDate.now());
+            user.setName("Leonardo Veras Mascena Oliveira Lopes");
+            user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
+            userService.save(user);
+        }
+
     }
 }

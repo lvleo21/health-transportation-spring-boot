@@ -25,10 +25,7 @@ public class LoginController {
         return "forgout-password";
     }
 
-    @GetMapping("/home")
-    public String home(){
-        return "home";
-    }
+
 
 
 }
