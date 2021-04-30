@@ -31,13 +31,21 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Bem-vindo! <br> Faça login para continuar.</h1>
                     </div>
+
+
+
                     <form class="user" th:action="@{/login}" method="POST" >
                         <div class="form-group">
-                            <input class="form-control form-control-user" type="text" id="username" name="username" placeholder="Nome de usuário">
+                            <input class="form-control form-control-user" type="text" id="username" name="username"
+                                   placeholder="Nome de usuário" required>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control form-control-user"
-                                   id="password" name="password" placeholder="Senha">
+                                   id="password" name="password" placeholder="Senha" required>
+                        </div>
+
+                        <div th:if="${param.error}" class="mb-3">
+                            <small class="text-danger">*Usuário ou Senha inválido, tente novamente.</small>
                         </div>
 
                         <button class="btn btn-primary btn-user btn-block" name="Submit" value="Login" type="Submit">
@@ -47,7 +55,7 @@
                     </form>
                     <hr>
                     <div class="text-center">
-                        <a class="small" href="forgot-password.html">Esqueceu sua senha ?</a>
+                        <a class="small" th:href="@{/forgout-password}">Esqueceu sua senha ?</a>
                     </div>
                 </div>
             </div>

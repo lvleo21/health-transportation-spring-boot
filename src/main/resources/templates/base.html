@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title layout:fragment="title"></title>
+    <meta charset="UTF-8"/>
+
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/icon/ambulance.ico}">
+
+</head>
+<body id="page-top">
+
+<div id="wrapper">
+
+    <!-- SIDEBAR FRAGMENT -->
+    <div th:replace="fragments/sidebar :: sidebar">
+    </div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+
+            <!-- NAVBAR FRAGMENT -->
+            <div th:replace="fragments/navbar :: navbar">
+            </div>
+
+            <!-- BLOCK CONTENT -->
+            <div class="container-fluid">
+            </div>
+
+        </div>
+
+        <!-- FOOTER FRAGMENT -->
+        <footer th:replace="fragments/footer :: footer">
+        </footer>
+    </div>
+
+
+</div>
+
+<!-- BOTÃO PRA SUBIR PARA O TOPO-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Deseja continuar com esta ação ?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Selecione "Sair" abaixo se você estiver pronto para encerrar sua sessão atual.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary font-weight-bold" type="button"
+                        data-dismiss="modal">Voltar</button>
+                <a class="btn btn-primary font-weight-bold" href="login.html">Sair</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+
+
+</body>
+
+</html>

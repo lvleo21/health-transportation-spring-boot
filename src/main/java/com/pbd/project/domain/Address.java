@@ -42,15 +42,14 @@ public class Address extends AbstractEntity<Long> {
     @NotNull(message = "{NotNull.address.country}")
     private String country;
 
-    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    private Prefecture prefecture;
-
-    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    private HealthCenter healthCenter;
-
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
-    private List<Employee> employees;
+//    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY, optional = false)
+//    private Prefecture prefecture;
+//
+//    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY, optional = false)
+//    private HealthCenter healthCenter;
+//
+//
 
 }

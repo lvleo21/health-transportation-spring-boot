@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -38,9 +39,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode((user.getPassword())));
-        user.setActive(true);
-        Role role = roleDao.findByRole("ADMIN");
-        user.setRoles(new HashSet<>(Arrays.asList(role)));
+//        user.setActive(true);
+//        user.setEmail("verasleonardo210@gmail.com");
+//        LocalDate date = LocalDate.now();
+//        user.setCreatedAt(date);
+//        user.setName("Leonardo Veras Mascena Oliveira Lopes");
+//
+//        Role roleAdmin = roleDao.findByRole("ADMIN");
+//        Role roleGestor = roleDao.findByRole("GESTOR");
+//        Role roleOperador = roleDao.findByRole("OPERADOR");
+//
+//        user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
         return userDao.save(user);
     }
 }

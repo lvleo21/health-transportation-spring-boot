@@ -27,7 +27,7 @@ public class HealthCenter extends AbstractEntity<Long>{
     private boolean isActive;
 
     @OneToMany(mappedBy = "healthCenter", fetch = FetchType.LAZY)
-    private List<Employee> peoples;
+    private List<User> users;
 
 
 

@@ -20,4 +20,15 @@ public class LoginController {
         return modelAndView;
     }
 
+    @GetMapping("/forgout-password")
+    public String forgoutPassword(){
+        return "forgout-password";
+    }
+
+    @GetMapping("/home")
+    public String home(){
+        return "home";
+    }
+
+
 }
