@@ -28,9 +28,6 @@ public class InitialAdmin implements ApplicationRunner {
         Role roleAdmin = roleDao.findByRole("ADMIN");
 
 
-
-
-
         if (roleAdmin.getUsers().isEmpty()){
             Role roleGestor = roleDao.findByRole("GESTOR");
             Role roleOperador = roleDao.findByRole("OPERADOR");
