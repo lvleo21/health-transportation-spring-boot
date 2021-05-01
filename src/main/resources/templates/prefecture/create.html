@@ -25,7 +25,7 @@
                 </div>
 
 
-                <form class="user" th:object="${prefecture}" th:action="@{/prefecture/register/save}"
+                <form class="user" th:object="${prefecture}" th:action="@{/prefecture/register/save}" autocomplete="off"
                       method="POST">
 
                     <div class="row">
@@ -35,10 +35,7 @@
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="publicPlace"
                                        th:field="*{address.publicPlace}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.publicPlace}"></span>
-                                </div>
-
+                                <small class="text-danger" th:errors="*{address.publicPlace}"></small>
                             </div>
                         </div>
 
@@ -48,9 +45,8 @@
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="neighborhood"
                                        th:field="*{address.neighborhood}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.neighborhood}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.neighborhood}"></small>
+
                             </div>
                         </div>
 
@@ -59,9 +55,8 @@
                                 <label class="font-weight-bold">Número <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="number" class="form-control" id="number" th:field="*{address.number}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.number}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.number}"></small>
+
                             </div>
                         </div>
 
@@ -73,9 +68,7 @@
                                 <label>Complemento</label>
                                 <input type="text" class="form-control" id="complement"
                                        th:field="*{address.complement}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.complement}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.complement}"></small>
                             </div>
                         </div>
 
@@ -84,9 +77,7 @@
                                 <label class="font-weight-bold">Cidade <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="city" th:field="*{address.city}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.city}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.city}"></small>
                             </div>
                         </div>
 
@@ -98,9 +89,7 @@
                                     <option value="">- - - -</option>
                                     <option th:each="uf : ${ufs}" th:value="${uf}" th:text="${uf.initials}"></option>
                                 </select>
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.state}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.state}"></small>
 
                             </div>
                         </div>
@@ -110,9 +99,7 @@
                                 <label class="font-weight-bold">País <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="country" th:field="*{address.country}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{address.country}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{address.country}"></small>
                             </div>
                         </div>
                     </div>
@@ -129,9 +116,7 @@
                                 <label class="font-weight-bold">Email <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="email" class="form-control" id="email" th:field="*{email}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{email}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{email}"></small>
                             </div>
                         </div>
 
@@ -140,9 +125,7 @@
                                 <label class="font-weight-bold">Site <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="site" th:field="*{site}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{site}"></span>
-                                </div>
+                                <small class="text-danger" th:errors="*{site}"></small>
                             </div>
                         </div>
 
@@ -150,10 +133,9 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">CNPJ <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="cnpj" th:field="*{cnpj}">
-                                <div class="invalid-feedback">
-                                    <span th:errors="*{cnpj}"></span>
-                                </div>
+                                <input type="text" class="form-control" id="cnpj" th:field="*{cnpj}"
+                                       onpaste="return false;">
+                                <small class="text-danger" th:errors="*{cnpj}"></small>
                             </div>
                         </div>
 

@@ -37,6 +37,7 @@ public class PrefectureController {
     public String savePrefecture(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr){
 
         if(result.hasErrors()){
+            System.out.println("Entrou no hasErrors");
             return "prefecture/create";
         }
 
