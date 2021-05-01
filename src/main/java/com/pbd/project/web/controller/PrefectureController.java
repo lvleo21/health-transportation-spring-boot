@@ -35,16 +35,14 @@ public class PrefectureController {
 
     @PostMapping("/register/save")
     public String savePrefecture(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr){
+
         if(result.hasErrors()){
             return "prefecture/create";
         }
 
-        System.out.println(prefecture.isActive());
-
-
         prefectureService.save(prefecture);
 
-        attr.addFlashAttribute("success", "Prefeitura inserida com sucesso.");
+        attr.addFlashAttribute("success", "Prefeitura adicionada com sucesso.");
         return "redirect:/prefecture/list";
 
     }
