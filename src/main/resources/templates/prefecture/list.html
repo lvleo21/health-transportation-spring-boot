@@ -80,9 +80,12 @@
                         </td>
 
                         <td class='text-center align-middle'>
-                            <a class="btn btn-primary btn-sm" href="#">
+
+                            <button th:id="${#strings.concat('btn_prefecture/delete/', prefecture.id)}" type="button"
+                                    class="btn btn-primary btn-sm"
+                                    data-toggle="modal" data-target="#myModal">
                                 <i class="fas fa-trash text-light"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
 
@@ -91,7 +94,9 @@
             </div>
         </div>
     </div>
+    <div th:replace="fragments/modal :: modal"></div>
 </div>
+
 
 </body>
 </html>
