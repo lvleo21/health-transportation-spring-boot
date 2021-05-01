@@ -47,6 +47,17 @@ public class PrefectureController {
 
     }
 
+    @GetMapping("/delete/{id}")
+    public String deletePrefecture(@PathVariable("id") Long id, RedirectAttributes attr){
+
+        prefectureService.delete(id);
+        attr.addFlashAttribute("success", "Prefeitura removida com sucesso.");
+
+
+        return "redirect:/prefecture/list";
+
+    }
+
     @ModelAttribute("ufs")
     public UF[] getUFs(){
         return UF.values();

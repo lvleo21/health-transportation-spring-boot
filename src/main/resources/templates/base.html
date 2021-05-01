@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -72,7 +70,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary font-weight-bold" type="button"
-                        data-dismiss="modal">Voltar</button>
+                        data-dismiss="modal">Voltar
+                </button>
                 <a class="btn btn-primary font-weight-bold" th:href="@{/logout}">Sair</a>
             </div>
         </div>
@@ -93,7 +92,17 @@
 <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
 
 <script>
-    $(function() {
+    let url;
+
+    $('button[id*="btn_"]').click(function () {
+        url = "http://localhost:8080/" + $(this).attr('id').split("_")[1];
+    })
+
+    $('#ok_confirm').click(function () {
+        document.location.href = url;
+    });
+
+    $(function () {
         $('[data-toggle="popover"]').popover();
     });
 </script>
