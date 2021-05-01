@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{base}">
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <title layout:fragment="title">Adicionar Prefeituras - Health Transportation</title>
@@ -25,14 +25,20 @@
                 </div>
 
 
-                <form class="user" method="POST" action=".">
+                <form class="user" th:object="${prefecture}" th:action="@{/prefecture/register/save}"
+                      method="POST">
 
                     <div class="row">
                         <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Logradouro <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="email" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="publicPlace"
+                                       th:field="*{address.publicPlace}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.publicPlace}"></span>
+                                </div>
+
                             </div>
                         </div>
 
@@ -40,15 +46,22 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Bairro <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="neighborhood"
+                                       th:field="*{address.neighborhood}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.neighborhood}"></span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-2 col-sm-12">
+                        <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Número <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="number" class="form-control" id="exampleInputEmail">
+                                <input type="number" class="form-control" id="number" th:field="*{address.number}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.number}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -57,8 +70,12 @@
                     <div class="row">
                         <div class="col-md col-sm-12">
                             <div class="form-group">
-                                <label class="">Complemento</label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <label>Complemento</label>
+                                <input type="text" class="form-control" id="complement"
+                                       th:field="*{address.complement}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.complement}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -66,7 +83,10 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Cidade <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="city" th:field="*{address.city}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.city}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -74,9 +94,13 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Estado <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <select class="custom-select">
-                                    <option selected>- - - -</option>
+                                <select class="custom-select" id="state" th:field="*{address.state}">
+                                    <option value="">- - - -</option>
+                                    <option th:each="uf : ${ufs}" th:value="${uf}" th:text="${uf.initials}"></option>
                                 </select>
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.state}"></span>
+                                </div>
 
                             </div>
                         </div>
@@ -85,7 +109,10 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">País <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="country" th:field="*{address.country}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{address.country}"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,7 +128,10 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Email <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="email" class="form-control" id="exampleInputEmail">
+                                <input type="email" class="form-control" id="email" th:field="*{email}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{email}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -109,7 +139,10 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Site <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="site" th:field="*{site}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{site}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -117,7 +150,10 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">CNPJ <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="exampleInputEmail">
+                                <input type="text" class="form-control" id="cnpj" th:field="*{cnpj}">
+                                <div class="invalid-feedback">
+                                    <span th:errors="*{cnpj}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -125,18 +161,20 @@
 
                     <div class="row">
 
+
                         <div class="col-md col-sm-12 d-flex align-items-center">
                             <div class="form-group mt-4">
-                                <div class="custom-control custom-checkbox small">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck">
-                                    <label class="custom-control-label font-weight-bold" for="customCheck">Ativo</label>
-                                    <br>
-                                    <small>Indica que esta prefeitura está ativo no sistema.</small>
-                                </div>
+
+                                <label th:for="${#ids.next('active')}">Ativo</label>
+                                <input type="checkbox" id="active" th:field="*{active}">
+                                <br>
+                                <small>Indica que esta prefeitura está ativa ou não no sistema.</small>
+
                             </div>
                         </div>
                     </div>
 
+                    <input type="hidden" id="id" th:field="*{id}"/>
 
                     <br>
 

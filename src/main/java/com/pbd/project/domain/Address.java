@@ -36,20 +36,65 @@ public class Address extends AbstractEntity<Long> {
     @NotNull(message = "{NotNull.address.state}")
     @Column(length = 2)
     @Enumerated(EnumType.STRING)
-    private UF State;
+    private UF state;
 
     @NotBlank
     @NotNull(message = "{NotNull.address.country}")
     private String country;
 
-//    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY, optional = false)
-//    private Prefecture prefecture;
-//
-//    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY, optional = false)
-//    private HealthCenter healthCenter;
-//
-//
+    public String getPublicPlace() {
+        return publicPlace;
+    }
 
+    public void setPublicPlace(String publicPlace) {
+        this.publicPlace = publicPlace;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public UF getState() {
+        return state;
+    }
+
+    public void setState(UF state) {
+        this.state = state;
+    }
 }

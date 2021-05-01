@@ -2,7 +2,10 @@ package com.pbd.project.web.controller;
 
 import com.pbd.project.domain.Prefecture;
 import com.pbd.project.domain.enums.UF;
+import com.pbd.project.service.prefecture.PrefectureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,11 +16,15 @@ import javax.validation.Valid;
 @RequestMapping("/prefecture")
 public class PrefectureController {
 
-
+    @Autowired
+    private PrefectureService prefectureService;
 
 
     @GetMapping("/list")
-    public String getAllPrefectures(){
+    public String getAllPrefectures(ModelMap modelMap){
+
+        modelMap.addAttribute("prefectures", prefectureService.findAll());
+
         return "prefecture/list";
     }
 
@@ -29,9 +36,13 @@ public class PrefectureController {
     @PostMapping("/register/save")
     public String savePrefecture(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr){
         if(result.hasErrors()){
-            return "/register";
+            return "prefecture/create";
         }
 
+        System.out.println(prefecture.isActive());
+
+
+        prefectureService.save(prefecture);
 
         attr.addFlashAttribute("success", "Prefeitura inserida com sucesso.");
         return "redirect:/prefecture/list";
