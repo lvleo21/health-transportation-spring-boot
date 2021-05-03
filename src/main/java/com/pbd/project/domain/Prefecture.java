@@ -83,4 +83,8 @@ public class Prefecture extends AbstractEntity<Long> {
     public void setHealthCenter(HealthCenter healthCenter) {
         this.healthCenter = healthCenter;
     }
+
+    public String getCityAndState(){
+        return this.address.getCity() + " - " + this.address.getState();
+    }
 }

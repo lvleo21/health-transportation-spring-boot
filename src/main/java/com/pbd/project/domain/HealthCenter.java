@@ -69,4 +69,14 @@ public class HealthCenter extends AbstractEntity<Long>{
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public String getAdressInformation(){
+        String str = "Rua: " + this.address.getPublicPlace()  + "; ";
+        str +=  "Bairro: " + this.address.getNeighborhood()  + "; ";
+        str +=  "Nª: " + this.address.getNumber()  + "; ";
+        str +=  "Complemento: " + this.address.getComplement() + "; ";
+
+        return str;
+
+    }
 }

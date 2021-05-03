@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -53,6 +50,37 @@ public class HealthCenterController {
         return "redirect:/health-center/list";
 
     }
+
+    @GetMapping("/update/{id}")
+    public String preUpdate(@PathVariable("id") Long id, ModelMap model){
+        HealthCenter healthCenter = healthCenterService.findById(id);
+        model.addAttribute("healthCenter", healthCenter);
+
+        return "healthCenter/create";
+    }
+
+    @PostMapping("/update/save")
+    public String update(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
+            return "healthCenter/create";
+        }
+
+        healthCenterService.update(healthCenter);
+        attr.addFlashAttribute("success", "Centro de saúde editado com sucesso.");
+        return "redirect:/health-center/list";
+
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteHealthCenter(@PathVariable("id") Long id, RedirectAttributes attr) {
+
+        healthCenterService.delete(id);
+        attr.addFlashAttribute("success", "Centro de saúde removido com sucesso.");
+        return "redirect:/health-center/list";
+    }
+
+
 
     @ModelAttribute("ufs")
     public UF[] getUFs() {

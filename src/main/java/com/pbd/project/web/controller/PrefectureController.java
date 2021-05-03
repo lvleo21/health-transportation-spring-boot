@@ -70,14 +70,6 @@ public class PrefectureController {
 
     @PostMapping("/update/save")
     public String update(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr) {
-
-
-
-        Prefecture prefecture2 = prefectureService.findById(prefecture.getId());
-
-        System.out.println(prefecture2);
-
-        System.out.println(prefecture.equals(prefecture2));
         if (result.hasErrors()) {
             return "prefecture/create";
         }
