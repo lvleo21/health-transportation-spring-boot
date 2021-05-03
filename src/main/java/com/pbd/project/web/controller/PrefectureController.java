@@ -21,7 +21,7 @@ public class PrefectureController {
 
 
     @GetMapping("/list")
-    public String getAllPrefectures(ModelMap modelMap){
+    public String getPrefectures(ModelMap modelMap) {
 
         modelMap.addAttribute("prefectures", prefectureService.findAll());
 
@@ -29,15 +29,15 @@ public class PrefectureController {
     }
 
     @GetMapping("/register")
-    public String viewRegisterPrefecture(Prefecture prefecture){
+    public String viewRegisterPrefecture(Prefecture prefecture) {
         return "prefecture/create";
     }
 
     @PostMapping("/register/save")
-    public String savePrefecture(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr){
+    public String savePrefecture(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr) {
 
-        if(result.hasErrors()){
-            System.out.println("Entrou no hasErrors");
+        if (result.hasErrors()) {
+
             return "prefecture/create";
         }
 
@@ -49,18 +49,48 @@ public class PrefectureController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePrefecture(@PathVariable("id") Long id, RedirectAttributes attr){
+    public String deletePrefecture(@PathVariable("id") Long id, RedirectAttributes attr) {
 
         prefectureService.delete(id);
         attr.addFlashAttribute("success", "Prefeitura removida com sucesso.");
+        return "redirect:/prefecture/list";
 
+    }
+
+
+    @GetMapping("/update/{id}")
+    public String preUpdate(@PathVariable("id") Long id, ModelMap model) {
+
+        Prefecture prefecture = prefectureService.findById(id);
+
+        model.addAttribute("prefecture", prefecture);
+
+        return "prefecture/create";
+    }
+
+    @PostMapping("/update/save")
+    public String update(@Valid Prefecture prefecture, BindingResult result, RedirectAttributes attr) {
+
+
+
+        Prefecture prefecture2 = prefectureService.findById(prefecture.getId());
+
+        System.out.println(prefecture2);
+
+        System.out.println(prefecture.equals(prefecture2));
+        if (result.hasErrors()) {
+            return "prefecture/create";
+        }
+
+        prefectureService.update(prefecture);
+        attr.addFlashAttribute("success", "Prefeitura editada com sucesso.");
 
         return "redirect:/prefecture/list";
 
     }
 
     @ModelAttribute("ufs")
-    public UF[] getUFs(){
+    public UF[] getUFs() {
         return UF.values();
     }
 

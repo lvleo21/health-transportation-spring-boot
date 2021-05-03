@@ -50,43 +50,36 @@
                         <th class='text-center text-dark' scope="col">Site</th>
                         <th class='text-center text-dark' scope="col">CNPJ</th>
                         <th class='text-center text-dark' scope="col">Ativa</th>
-                        <th class='text-center text-dark' scope="col">Visualizar</th>
-                        <th class='text-center text-dark' scope="col">Editar</th>
-                        <th class='text-center text-dark' scope="col">Remover</th>
+                        <th class='text-center text-dark' scope="col">Ações</th>
+
 
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                     <tr th:each="prefecture : ${prefectures}">
-                        <td class='text-center align-middle' th:text="*{prefecture.address.city}"></td>
-                        <td class='text-center align-middle' th:text="*{prefecture.address.state}"></td>
-                        <td class='text-center align-middle' th:text="*{prefecture.email}"></td>
-                        <td class='text-center align-middle' th:text="*{prefecture.site}"></td>
-                        <td class='text-center align-middle' th:text="*{prefecture.cnpj}"></td>
-                        <td class='text-center align-middle' th:switch="*{prefecture.active}">
+                        <td class="text-center align-middle" th:text="*{prefecture.address.city}"></td>
+                        <td class="text-center align-middle" th:text="*{prefecture.address.state}"></td>
+                        <td class="text-center align-middle" th:text="*{prefecture.email}"></td>
+                        <td class="text-center align-middle" th:text="*{prefecture.site}"></td>
+                        <td class="text-center align-middle" th:text="*{prefecture.cnpj}"></td>
+
+                        <td  class="text-center align-middle" th:switch="*{prefecture.active}">
                             <i class="fas fa-check text-success" th:case="true"></i>
                             <i class="fas fa-times text-danger" th:case="false"></i>
                         </td>
-                        <td class='text-center align-middle'>
-                            <a class="btn btn-primary btn-sm" href="#">
-                                <i class="fas fa-eye text-light"></i>
-                            </a>
-                        </td>
 
-                        <td class='text-center align-middle'>
-                            <a class="btn btn-primary btn-sm" href="#">
+                        <td class="text-center align-middle nowrap">
+                            <a class="btn btn-primary btn-sm" th:href="@{/prefecture/update/{id} (id=${prefecture.id}) }" >
                                 <i class="fas fa-pen text-light"></i>
                             </a>
-                        </td>
-
-                        <td class='text-center align-middle'>
 
                             <button th:id="${#strings.concat('btn_prefecture/delete/', prefecture.id)}" type="button"
-                                    class="btn btn-primary btn-sm"
+                                    class="btn btn-danger btn-sm"
                                     data-toggle="modal" data-target="#myModal">
                                 <i class="fas fa-trash text-light"></i>
                             </button>
                         </td>
+
                     </tr>
 
                     </tbody>

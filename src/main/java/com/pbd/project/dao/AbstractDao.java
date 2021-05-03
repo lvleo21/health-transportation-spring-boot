@@ -1,5 +1,7 @@
 package com.pbd.project.dao;
 
+import com.pbd.project.domain.Prefecture;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;

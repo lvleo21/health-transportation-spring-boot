@@ -10,7 +10,7 @@ import java.util.List;
 public class HealthCenter extends AbstractEntity<Long>{
 
     @Valid
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -24,11 +24,49 @@ public class HealthCenter extends AbstractEntity<Long>{
     private String cnpj;
 
     @Column(name="is_active")
-    private boolean isActive;
+    private boolean active;
 
     @OneToMany(mappedBy = "healthCenter", fetch = FetchType.LAZY)
     private List<User> users;
 
 
+    public Address getAddress() {
+        return address;
+    }
 
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Prefecture getPrefecture() {
+        return prefecture;
+    }
+
+    public void setPrefecture(Prefecture prefecture) {
+        this.prefecture = prefecture;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }
