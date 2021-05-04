@@ -8,4 +8,5 @@ $(document).ready(function(){
     $("#date_time").mask("99/99/99 99:99:99");
     $("#landline").mask("(99) 9999-9999");
     $("#mobile_phone").mask("(99) 99999-9999");
+    $("#enrollment").mask("999.999");
 });

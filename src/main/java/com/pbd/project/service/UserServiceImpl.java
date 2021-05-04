@@ -1,8 +1,7 @@
 package com.pbd.project.service;
 
-import com.pbd.project.dao.RoleDao;
-import com.pbd.project.dao.UserDao;
-import com.pbd.project.domain.Role;
+import com.pbd.project.dao.role.RoleDao;
+import com.pbd.project.dao.user.UserDao;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Transactional
@@ -39,19 +36,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User save(User user) {
-
         user.setPassword(bCryptPasswordEncoder.encode((user.getPassword())));
-//        user.setActive(true);
-//        user.setEmail("verasleonardo210@gmail.com");
-//        LocalDate date = LocalDate.now();
-//        user.setCreatedAt(date);
-//        user.setName("Leonardo Veras Mascena Oliveira Lopes");
-//
-//        Role roleAdmin = roleDao.findByRole("ADMIN");
-//        Role roleGestor = roleDao.findByRole("GESTOR");
-//        Role roleOperador = roleDao.findByRole("OPERADOR");
-//
-//        user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
+        user.setCreatedAt(LocalDate.now());
+        user.setStaff(false);
         return userDao.save(user);
     }
 

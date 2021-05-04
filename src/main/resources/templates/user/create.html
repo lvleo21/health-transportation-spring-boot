@@ -1,10 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Adicionar Usuário - Health Transportation</title>
 </head>
 <body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
+        <h1 class="h3 mb-0 text-gray-800">Adicionar Usuário</h1>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <div class="card shadow rounded mt-4">
+            <div class="card-body">
+
+                <form class="user" autocomplete="off"
+                      th:action="${user.id == null} ?  @{/users/register/save} : @{/users/update/save}"
+                      th:object="${user}" method="post">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Dados do Funcionário</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nome <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}">
+                                <small class="text-danger" th:errors="*{name}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Matrícula <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="enrollment" th:field="*{enrollment}"
+                                       onpaste="return false;">
+                                <small class="text-danger" th:errors="*{enrollment}"></small>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-1">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Informações do Usuário</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Usuário <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="username" th:field="*{username}">
+                                <small class="text-danger" th:errors="*{username}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Senha <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="password" th:field="*{password}">
+                                <small class="text-danger" th:errors="*{password}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Email <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="email" class="form-control" id="email" th:field="*{email}">
+                                <small class="text-danger" th:errors="*{email}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Função <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="roles" th:field="*{roles}">
+                                    <option value="">- - -</option>
+                                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"
+                                            th:if="${role.role} != 'ADMIN'"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{roles}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Centro de Saúde <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}">
+                                    <option value="">- - -</option>
+                                    <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}" th:text="${healthCenter.address.formatedAddress}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{roles}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rpw">
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-2">
+
+                                <input type="checkbox" id="active" th:field="*{active}">
+                                <label th:for="${#ids.next('active')}">Ativo</label> <br>
+                                <small>Indica que este usuário está ativo ou não no sistema.</small>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <input type="hidden" id="id" th:field="*{id}"/>
+
+                    <br>
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <b>CADASTRAR</b>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

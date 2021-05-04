@@ -1,4 +1,4 @@
-package com.pbd.project.dao;
+package com.pbd.project.dao.user;
 
 import com.pbd.project.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

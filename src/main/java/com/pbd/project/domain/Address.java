@@ -93,4 +93,10 @@ public class Address extends AbstractEntity<Long> {
     public void setState(UF state) {
         this.state = state;
     }
+
+
+    public String formatedAddress(){
+        return this.city + " - " + this.state;
+    }
+
 }

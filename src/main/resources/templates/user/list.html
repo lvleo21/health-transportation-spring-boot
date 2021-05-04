@@ -51,7 +51,7 @@
                         <th class='text-center align-middle text-dark' scope="col">Centro de saúde</th>
                         <th class='text-center align-middle text-dark' scope="col">Criado em</th>
                         <th class='text-center align-middle text-dark' scope="col">Ativo</th>
-                        <th class='text-center align-middle text-dark' scope="col">Papel(is)</th>
+                        <th class='text-center align-middle text-dark' scope="col">Função</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,7 @@
                         <td class="text-center align-middle" th:text="*{user.username}"></td>
                         <td class="text-center align-middle" th:text="*{user.email}"></td>
                         <td class="text-center align-middle" th:text="*{user.enrollment}"></td>
-                        <td class="text-center align-middle" th:text="*{user.healthCenter}"></td>
+                        <td class="text-center align-middle" th:text="*{user.healthCenter.address.formatedAddress}"></td>
                         <td class="text-center align-middle" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
                         <td class="text-center align-middle" th:switch="*{user.active}">
                             <i class="fas fa-check text-success" th:case="true"></i>
