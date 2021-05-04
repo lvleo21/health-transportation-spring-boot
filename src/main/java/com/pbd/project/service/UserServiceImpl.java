@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Transactional
 @Service
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User save(User user) {
+
         user.setPassword(bCryptPasswordEncoder.encode((user.getPassword())));
 //        user.setActive(true);
 //        user.setEmail("verasleonardo210@gmail.com");
@@ -51,5 +53,16 @@ public class UserServiceImpl implements UserService{
 //
 //        user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
         return userDao.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
+        return userDao.findAll();
+    }
+
+    @Override
+    public List<User> findByStaff(boolean isStaff) {
+        return userDao.findByStaff(isStaff);
     }
 }

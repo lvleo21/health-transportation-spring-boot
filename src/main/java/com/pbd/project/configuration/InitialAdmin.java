@@ -35,6 +35,7 @@ public class InitialAdmin implements ApplicationRunner {
             user.setUsername("lvleo21");
             user.setPassword("Leo10272109");
             user.setActive(true);
+            user.setStaff(true);
             user.setEmail("verasleonardo210@gmail.com");
             user.setCreatedAt(LocalDate.now());
             user.setName("Leonardo Veras Mascena Oliveira Lopes");

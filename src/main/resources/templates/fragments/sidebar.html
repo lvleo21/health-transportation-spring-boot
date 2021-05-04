@@ -72,90 +72,90 @@
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesPassenger"
-           aria-expanded="true" aria-controls="collapsePagesPassenger">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Passageiros</span>
-        </a>
-        <div id="collapsePagesPassenger" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" href="login.html">Visualizar</a>
-                <a class="collapse-item" href="register.html">Cadastrar</a>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesPassenger"-->
+<!--           aria-expanded="true" aria-controls="collapsePagesPassenger">-->
+<!--            <i class="fas fa-fw fa-users"></i>-->
+<!--            <span>Passageiros</span>-->
+<!--        </a>-->
+<!--        <div id="collapsePagesPassenger" class="collapse" aria-labelledby="headingPages"-->
+<!--             data-parent="#accordionSidebar">-->
+<!--            <div class="bg-white py-2 collapse-inner rounded">-->
+<!--                <h6 class="collapse-header">Ações</h6>-->
+<!--                <a class="collapse-item" href="login.html">Visualizar</a>-->
+<!--                <a class="collapse-item" href="register.html">Cadastrar</a>-->
 
-            </div>
-        </div>
-    </li>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesTravel"
-           aria-expanded="true" aria-controls="collapsePagesTravel">
-            <i class="fas fa-fw fa-route"></i>
-            <span>Viagens</span>
-        </a>
-        <div id="collapsePagesTravel" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" href="login.html">Visualizar</a>
-                <a class="collapse-item" href="register.html">Cadastrar</a>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesTravel"-->
+<!--           aria-expanded="true" aria-controls="collapsePagesTravel">-->
+<!--            <i class="fas fa-fw fa-route"></i>-->
+<!--            <span>Viagens</span>-->
+<!--        </a>-->
+<!--        <div id="collapsePagesTravel" class="collapse" aria-labelledby="headingPages"-->
+<!--             data-parent="#accordionSidebar">-->
+<!--            <div class="bg-white py-2 collapse-inner rounded">-->
+<!--                <h6 class="collapse-header">Ações</h6>-->
+<!--                <a class="collapse-item" href="login.html">Visualizar</a>-->
+<!--                <a class="collapse-item" href="register.html">Cadastrar</a>-->
 
-            </div>
-        </div>
-    </li>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
 
-    <li class="nav-item">
+    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/users/')} ? 'active'">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesEmployees"
            aria-expanded="true" aria-controls="collapsePagesEmployees">
             <i class="fas fa-fw fa-user-tie"></i>
-            <span>Funcionários</span>
+            <span>Usuários</span>
         </a>
         <div id="collapsePagesEmployees" class="collapse" aria-labelledby="headingPages"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" href="login.html">Visualizar</a>
+                <a class="collapse-item" th:href="@{/users/list}">Visualizar</a>
                 <a class="collapse-item" href="register.html">Cadastrar</a>
-
+                <a class="collapse-item" href="register.html">Notificações</a>
             </div>
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesVehicles"
-           aria-expanded="true" aria-controls="collapsePagesVehicles">
-            <i class="fas fa-fw fa-bus-alt"></i>
-            <span>Veículos</span>
-        </a>
-        <div id="collapsePagesVehicles" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" href="login.html">Visualizar</a>
-                <a class="collapse-item" href="register.html">Cadastrar</a>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesVehicles"-->
+<!--           aria-expanded="true" aria-controls="collapsePagesVehicles">-->
+<!--            <i class="fas fa-fw fa-bus-alt"></i>-->
+<!--            <span>Veículos</span>-->
+<!--        </a>-->
+<!--        <div id="collapsePagesVehicles" class="collapse" aria-labelledby="headingPages"-->
+<!--             data-parent="#accordionSidebar">-->
+<!--            <div class="bg-white py-2 collapse-inner rounded">-->
+<!--                <h6 class="collapse-header">Ações</h6>-->
+<!--                <a class="collapse-item" href="login.html">Visualizar</a>-->
+<!--                <a class="collapse-item" href="register.html">Cadastrar</a>-->
 
-            </div>
-        </div>
-    </li>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesDrivers"
-           aria-expanded="true" aria-controls="collapsePagesDrivers">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Motoristas</span>
-        </a>
-        <div id="collapsePagesDrivers" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" href="login.html">Visualizar</a>
-                <a class="collapse-item" href="register.html">Cadastrar</a>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesDrivers"-->
+<!--           aria-expanded="true" aria-controls="collapsePagesDrivers">-->
+<!--            <i class="fas fa-fw fa-user"></i>-->
+<!--            <span>Motoristas</span>-->
+<!--        </a>-->
+<!--        <div id="collapsePagesDrivers" class="collapse" aria-labelledby="headingPages"-->
+<!--             data-parent="#accordionSidebar">-->
+<!--            <div class="bg-white py-2 collapse-inner rounded">-->
+<!--                <h6 class="collapse-header">Ações</h6>-->
+<!--                <a class="collapse-item" href="login.html">Visualizar</a>-->
+<!--                <a class="collapse-item" href="register.html">Cadastrar</a>-->
 
-            </div>
-        </div>
-    </li>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
 
 
     <!-- Divider -->

@@ -28,6 +28,7 @@ public class User extends AbstractEntity<Long> {
     @NotEmpty(message = "{NotEmpty.email}")
     private String email;
 
+    @Column(name="is_active")
     private Boolean active;
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -48,6 +49,9 @@ public class User extends AbstractEntity<Long> {
     @ManyToOne // um centro de saúde poderá ter muitos users
     @JoinColumn(name = "health_center_id", nullable = true) // nome da chave estrangeira na tabela
     private HealthCenter healthCenter;
+
+    @Column(name="is_staff")
+    private Boolean staff; //
 
 
     public String getUsername() {
@@ -120,5 +124,23 @@ public class User extends AbstractEntity<Long> {
 
     public void setHealthCenter(HealthCenter healthCenter) {
         this.healthCenter = healthCenter;
+    }
+
+    public String ShowRoles(){
+        String text = "";
+
+        for (Role role: this.roles) {
+            text+= role.getRole() + "<br>";
+        }
+
+        return text;
+    }
+
+    public Boolean getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Boolean staff) {
+        this.staff = staff;
     }
 }
