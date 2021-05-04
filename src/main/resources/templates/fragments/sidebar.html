@@ -20,7 +20,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
+    <li class="nav-item" th:classappend=" ${#httpServletRequest.requestURI} == '/' ? 'active'" >
         <a class="nav-link" th:href="@{/}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
@@ -37,7 +37,7 @@
 
 
 
-    <li class="nav-item">
+    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/prefecture/')} ? 'active'">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesPrefectures"
            aria-expanded="true" aria-controls="collapsePagesPrefectures">
             <i class="fas fa-fw fa-hotel"></i>
@@ -54,7 +54,7 @@
         </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/health-center/')} ? 'active'">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesHealthCenters"
            aria-expanded="true" aria-controls="collapsePagesHealthCenters">
             <i class="fas fa-hospital"></i>

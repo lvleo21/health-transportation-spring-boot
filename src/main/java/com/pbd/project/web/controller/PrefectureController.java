@@ -51,6 +51,12 @@ public class PrefectureController {
     @GetMapping("/delete/{id}")
     public String deletePrefecture(@PathVariable("id") Long id, RedirectAttributes attr) {
 
+        if(prefectureService.findById(id).getHealthCenter() != null){
+            attr.addFlashAttribute("error",
+                    "Erro ao remover a prefeitura. O mesmo, possuí um centro de saúde vinculado.");
+            return "redirect:/prefecture/list";
+        }
+
         prefectureService.delete(id);
         attr.addFlashAttribute("success", "Prefeitura removida com sucesso.");
         return "redirect:/prefecture/list";
