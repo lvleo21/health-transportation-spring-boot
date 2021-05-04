@@ -15,7 +15,7 @@ public class HealthCenter extends AbstractEntity<Long>{
     private Address address;
 
     @Valid
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "prefecture_id")
     private Prefecture prefecture;
 
@@ -26,8 +26,11 @@ public class HealthCenter extends AbstractEntity<Long>{
     @Column(name="is_active")
     private boolean active;
 
-    @OneToMany(mappedBy = "healthCenter", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "healthCenter")
     private List<User> users;
+
+    @OneToMany(mappedBy = "healthCenter")
+    private List<Passenger> passengers;
 
 
     public Address getAddress() {

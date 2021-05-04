@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -65,7 +66,7 @@ public class HealthCenterController {
             return "healthCenter/create";
         }
 
-        healthCenterService.update(healthCenter);
+        healthCenterService.save(healthCenter);
         attr.addFlashAttribute("success", "Centro de saúde editado com sucesso.");
         return "redirect:/health-center/list";
 
@@ -74,8 +75,7 @@ public class HealthCenterController {
 
     @GetMapping("/delete/{id}")
     public String deleteHealthCenter(@PathVariable("id") Long id, RedirectAttributes attr) {
-
-        healthCenterService.delete(id);
+        healthCenterService.deleteById(id);
         attr.addFlashAttribute("success", "Centro de saúde removido com sucesso.");
         return "redirect:/health-center/list";
     }

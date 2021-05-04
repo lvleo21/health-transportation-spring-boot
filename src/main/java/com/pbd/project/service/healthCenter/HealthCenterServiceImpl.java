@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,25 +17,21 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     @Autowired
     private HealthCenterDao dao;
 
+
     @Override
     public void save(HealthCenter healthCenter) {
         dao.save(healthCenter);
     }
 
-    @Override
-    public void update(HealthCenter healthCenter) {
-        dao.update(healthCenter);
-    }
-
-    @Override
-    public void delete(Long id) {
-        dao.delete(id);
+    public void deleteById(Long id) {
+        dao.deleteById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public HealthCenter findById(Long id) {
-        return dao.findById(id);
+        HealthCenter healthCenter = dao.getOne(id);
+        return healthCenter;
     }
 
     @Override

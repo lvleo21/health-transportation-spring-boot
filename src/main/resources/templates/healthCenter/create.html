@@ -119,7 +119,7 @@
 
                                 <select class="custom-select" id="prefecture" th:field="*{prefecture}">
                                     <option value="">- - - -</option>
-                                    <option th:each="prefecture : ${prefectures}" th:value="${prefecture.id}" th:text="${prefecture.getCityAndState}"></option>
+                                    <option th:each="prefecture : ${prefectures}" th:value="${prefecture.id}" th:text="${prefecture.getCityAndState}" th:if="${prefecture.healthCenter} == null"></option>
                                 </select>
 
 

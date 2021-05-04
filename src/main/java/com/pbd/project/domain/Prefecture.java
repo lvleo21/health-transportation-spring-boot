@@ -28,13 +28,10 @@ public class Prefecture extends AbstractEntity<Long> {
     @Column(nullable = false, unique = true, length = 18)
     private String cnpj;
 
-    @Column(name = "active")
     private boolean active;
 
-    @OneToOne(mappedBy = "prefecture", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "prefecture")
     private HealthCenter healthCenter;
-
 
     public Address getAddress() {
         return address;

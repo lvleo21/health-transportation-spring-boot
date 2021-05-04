@@ -41,4 +41,5 @@ public class PrefectureServiceImpl implements PrefectureService {
     public List<Prefecture> findAll() {
         return dao.findAll();
     }
+
 }
