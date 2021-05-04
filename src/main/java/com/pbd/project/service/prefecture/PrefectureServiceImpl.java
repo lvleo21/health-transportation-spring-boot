@@ -15,31 +15,24 @@ public class PrefectureServiceImpl implements PrefectureService {
     @Autowired
     private PrefectureDao dao;
 
+
     @Override
     public void save(Prefecture prefecture) {
         dao.save(prefecture);
     }
 
     @Override
-    public void update(Prefecture prefecture) {
-        dao.update(prefecture);
-    }
-
-    @Override
     public void delete(Long id) {
-        dao.delete(id);
+        dao.deleteById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Prefecture findById(Long id) {
-        return dao.findById(id);
+        return dao.findById(id).get();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Prefecture> findAll() {
         return dao.findAll();
     }
-
 }

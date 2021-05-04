@@ -1,13 +1,12 @@
 package com.pbd.project.dao.prefecture;
 
 import com.pbd.project.domain.Prefecture;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PrefectureDao {
-    void save(Prefecture prefecture);
-    void update(Prefecture prefecture);
-    void delete(Long id);
-    Prefecture findById(Long id);
-    List<Prefecture> findAll();
+@Repository
+public interface PrefectureDao extends JpaRepository<Prefecture, Long> {
 }

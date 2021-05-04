@@ -30,8 +30,7 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     @Override
     @Transactional(readOnly = true)
     public HealthCenter findById(Long id) {
-        HealthCenter healthCenter = dao.getOne(id);
-        return healthCenter;
+        return dao.getOne(id);
     }
 
     @Override

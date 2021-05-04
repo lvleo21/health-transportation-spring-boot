@@ -80,7 +80,7 @@ public class PrefectureController {
             return "prefecture/create";
         }
 
-        prefectureService.update(prefecture);
+        prefectureService.save(prefecture);
         attr.addFlashAttribute("success", "Prefeitura editada com sucesso.");
 
         return "redirect:/prefecture/list";
