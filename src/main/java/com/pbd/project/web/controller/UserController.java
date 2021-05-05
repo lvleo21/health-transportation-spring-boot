@@ -1,5 +1,6 @@
 package com.pbd.project.web.controller;
 
+import com.pbd.project.domain.ChangePassword;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Role;
 import com.pbd.project.domain.User;
@@ -7,13 +8,12 @@ import com.pbd.project.service.UserService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -55,6 +55,59 @@ public class UserController {
         return "redirect:/users/list";
 
     }
+
+
+    @GetMapping("/update/{id}")
+    public String updateUserView(@PathVariable("id") Long id, ModelMap model){
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+
+        return "user/create";
+    }
+
+    @GetMapping("/update/self")
+    public String updateUserView(ModelMap model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        model.addAttribute("user", user);
+
+        return "user/create";
+    }
+
+    @PostMapping("/update/save")
+    public String updateUserSave(@Valid User user, BindingResult result, RedirectAttributes attr){
+        if (result.hasErrors()){
+            return "user/create";
+        }
+
+        userService.update(user);
+
+        attr.addFlashAttribute("success", "Centro de saúde editado com sucesso.");
+        return "redirect:/users/list";
+    }
+
+
+    @GetMapping("/change-password")
+    public String chagePassword(ChangePassword changePassword){
+        return "user/change-password";
+    }
+
+    @PostMapping("/change-password/save")
+    public String chagePasswordSave(ChangePassword changePassword, RedirectAttributes attr){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+
+        if (userService.changePassword(changePassword, user)){
+            attr.addAttribute("success", "Senha alterada com sucesso.");
+            return "redirect:/";
+        } else{
+            attr.addAttribute("error", "Erro ao tentar alterar a senha, tente novamente.");
+            return "user/change-password";
+        }
+
+    }
+
+
 
     @ModelAttribute("roles")
     public List<Role> getRoles(){

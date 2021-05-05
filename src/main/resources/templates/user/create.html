@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12">
+                        <div class="col-md col-sm-12" th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/update/') == false}">
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>

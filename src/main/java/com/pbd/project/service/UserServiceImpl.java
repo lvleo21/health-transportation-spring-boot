@@ -2,6 +2,7 @@ package com.pbd.project.service;
 
 import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.dao.user.UserDao;
+import com.pbd.project.domain.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,6 +42,10 @@ public class UserServiceImpl implements UserService{
         user.setStaff(false);
         return userDao.save(user);
     }
+    public User update(User user) {
+        return userDao.save(user);
+    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -49,7 +54,29 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findByStaff(boolean isStaff) {
         return userDao.findByStaff(isStaff);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        User user = userDao.findById(id).get();
+        return user;
+    }
+
+    @Override
+    public boolean changePassword(ChangePassword changePassword, User user) {
+        boolean samePassword = bCryptPasswordEncoder.matches(changePassword.getOldPassword(), user.getPassword());
+
+        if (samePassword){
+            user.setPassword(bCryptPasswordEncoder.encode((changePassword.getNewPassword())));
+            userDao.save(user);
+
+            return true;
+        }else{
+            return false;
+        }
     }
 }

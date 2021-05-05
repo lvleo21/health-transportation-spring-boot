@@ -90,9 +90,13 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                  aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Perfil
+                <a class="dropdown-item" th:href="@{/users/update/self}">
+                    <i class="fas fa-user-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Editar perfil
+                </a>
+                <a class="dropdown-item" th:href="@{/users/change-password}">
+                    <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Alterar senha
                 </a>
                 <!-- <a class="dropdown-item" href="#">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
