@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:with="action=${user.id == null} ? 'Adicionar' : 'Editar'">
 <head>
     <meta charset="UTF-8"/>
-    <title layout:fragment="title">Adicionar Usuário - Health Transportation</title>
+    <title layout:fragment="title"
+           th:text="${#strings.concat(action,' Usuário - Health Transportation')}"></title>
 </head>
 <body>
 
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
-        <h1 class="h3 mb-0 text-gray-800">Adicionar Usuário</h1>
+        <h1 class="h3 mb-0 text-gray-800"
+            th:text="${#strings.concat(action,' Usuário')}"></h1>
     </div>
 
     <hr>
@@ -19,7 +22,7 @@
             <div class="card-body">
 
                 <form class="user" autocomplete="off"
-                      th:action="${user.id == null} ?  @{/users/register/save} : @{/users/update/save}"
+                      th:action="${action == 'Adicionar'} ?  @{/users/register/save} : @{/users/update/save}"
                       th:object="${user}" method="post">
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
