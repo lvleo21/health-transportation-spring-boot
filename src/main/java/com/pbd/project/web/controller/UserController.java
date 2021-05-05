@@ -33,20 +33,20 @@ public class UserController {
     private HealthCenterService healthCenterService;
 
     @GetMapping("/list")
-    public String getAllUsers(ModelMap model){
+    public String getAllUsers(ModelMap model) {
         model.addAttribute("users", userService.findByStaff(false));
         return "user/list";
     }
 
     @GetMapping("/register")
-    public String createUserView(User user){
+    public String createUserView(User user) {
         return "user/create";
     }
 
     @PostMapping("/register/save")
-    public String saveUser(@Valid User user, BindingResult result, RedirectAttributes attr){
+    public String saveUser(@Valid User user, BindingResult result, RedirectAttributes attr) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "user/create";
         }
 
@@ -58,7 +58,7 @@ public class UserController {
 
 
     @GetMapping("/update/{id}")
-    public String updateUserView(@PathVariable("id") Long id, ModelMap model){
+    public String updateUserView(@PathVariable("id") Long id, ModelMap model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
 
@@ -66,17 +66,17 @@ public class UserController {
     }
 
     @GetMapping("/update/self")
-    public String updateUserView(ModelMap model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
+    public String updateUserView(ModelMap model) {
+        User user = this.getUser();
+
         model.addAttribute("user", user);
 
         return "user/create";
     }
 
     @PostMapping("/update/save")
-    public String updateUserSave(@Valid User user, BindingResult result, RedirectAttributes attr){
-        if (result.hasErrors()){
+    public String updateUserSave(@Valid User user, BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
             return "user/create";
         }
 
@@ -88,19 +88,19 @@ public class UserController {
 
 
     @GetMapping("/change-password")
-    public String chagePassword(ChangePassword changePassword){
+    public String chagePassword(ChangePassword changePassword) {
         return "user/change-password";
     }
 
     @PostMapping("/change-password/save")
-    public String chagePasswordSave(ChangePassword changePassword, RedirectAttributes attr){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
+    public String chagePasswordSave(ChangePassword changePassword, RedirectAttributes attr) {
 
-        if (userService.changePassword(changePassword, user)){
+        User user = this.getUser();
+
+        if (userService.changePassword(changePassword, user)) {
             attr.addAttribute("success", "Senha alterada com sucesso.");
             return "redirect:/";
-        } else{
+        } else {
             attr.addAttribute("error", "Erro ao tentar alterar a senha, tente novamente.");
             return "user/change-password";
         }
@@ -108,15 +108,22 @@ public class UserController {
     }
 
 
-
     @ModelAttribute("roles")
-    public List<Role> getRoles(){
+    public List<Role> getRoles() {
         return roleService.findAll();
     }
 
     @ModelAttribute("healthCenters")
-    public List<HealthCenter> healthCenters(){
+    public List<HealthCenter> healthCenters() {
         return healthCenterService.findAll();
     }
+
+
+    public User getUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        return user;
+    }
+
 
 }
