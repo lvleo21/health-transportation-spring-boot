@@ -6,5 +6,30 @@
 </head>
 <body>
 
+<div layout:fragment="content">
+
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        This content is only shown to authenticated users.-->
+<!--    </div>-->
+
+
+
+    <div sec:authorize="hasRole('ADMIN') or hasRole('GESTOR')">
+        É ADMIN ou GESTOR!
+    </div>
+
+    <h1 sec:authentication="name"></h1>
+
+<!--    <div sec:authorize="hasRole('ROLE_USER')">-->
+<!--        This content is only shown to users.-->
+<!--    </div>-->
+
+
+<!--    <h1 class="text-black-50" th:text="${#strings.contains(#httpServletRequest.getUserPrincipal().authorities, 'GESTOR')}"></h1>-->
+<!--    <h1 th:text="${#httpServletRequest.getUserPrincipal().authorities}"></h1>-->
+<!--    <h1 class="text-black-50" th:text="${#httpServletRequest.getUserPrincipal().authorities}"></h1>-->
+<!--    <h1 class="text-black-50" th:text="${#httpServletRequest.getUserPrincipal().getName()}"></h1>-->
+</div>
+
 </body>
 </html>
