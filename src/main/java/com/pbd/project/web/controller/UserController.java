@@ -71,9 +71,9 @@ public class UserController {
         return "user/create";
     }
 
-    @GetMapping("/update/self")
+    @GetMapping("/update/myself")
     public String updateUserView(ModelMap model) {
-        User user = this.getUser();
+        User user = userService.getUserAuthenticated();
 
         model.addAttribute("user", user);
 
@@ -93,7 +93,6 @@ public class UserController {
     }
 
 
-
     @ModelAttribute("roles")
     public List<Role> getRoles() {
         return roleService.findAll();
@@ -103,13 +102,5 @@ public class UserController {
     public List<HealthCenter> healthCenters() {
         return healthCenterService.findAll();
     }
-
-
-    public User getUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        return user;
-    }
-
 
 }

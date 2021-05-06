@@ -47,16 +47,10 @@ public class ChangePasswordController {
             return "user/change-password";
         }
 
-        userService.changePassword(changePassword, this.getUser());
+        userService.changePassword(changePassword, userService.getUserAuthenticated());
 
         attr.addFlashAttribute("success", "Senha alterada com sucesso.");
         return "redirect:/";
-    }
-
-    public User getUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        return user;
     }
 
 }

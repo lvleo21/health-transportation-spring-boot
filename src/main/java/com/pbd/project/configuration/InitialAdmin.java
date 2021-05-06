@@ -27,16 +27,22 @@ public class InitialAdmin implements ApplicationRunner {
         Role roleAdmin = roleService.findByRole("ADMIN");
 
 
+
         if (roleAdmin.getUsers().isEmpty()){
+
+            System.out.println("ENTROU NO INITIAL ADMIN");
+
             Role roleGestor = roleService.findByRole("GESTOR");
             Role roleOperador = roleService.findByRole("OPERADOR");
             User user = new User();
+
+            System.out.println("USER STAFF: " + user.getStaff());
+
             user.setUsername("lvleo21");
             user.setPassword("Leo10272109");
             user.setActive(true);
             user.setStaff(true);
             user.setEmail("verasleonardo210@gmail.com");
-            user.setCreatedAt(LocalDate.now());
             user.setName("Leonardo Veras Mascena Oliveira Lopes");
             user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
             userService.save(user);

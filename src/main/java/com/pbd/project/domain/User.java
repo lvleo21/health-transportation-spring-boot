@@ -50,7 +50,7 @@ public class User extends AbstractEntity<Long> {
     @JoinColumn(name = "health_center_id", nullable = true) // nome da chave estrangeira na tabela
     private HealthCenter healthCenter;
 
-    @Column(name="is_staff")
+    @Column(name = "is_staff")
     private Boolean staff; //
 
 

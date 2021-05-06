@@ -5,6 +5,8 @@ import com.pbd.project.dao.user.UserDao;
 import com.pbd.project.domain.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,15 +39,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode((user.getPassword())));
+        user.setPassword(this.encodePassword(user.getPassword()));
         user.setCreatedAt(LocalDate.now());
-        user.setStaff(false);
-        return userDao.save(user);
-    }
-    public User update(User user) {
+
+        if(user.getStaff() == null){
+            user.setStaff(false);
+        }
+
         return userDao.save(user);
     }
 
+    public User update(User user) {
+        return userDao.save(user);
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -62,13 +68,27 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        User user = userDao.findById(id).get();
-        return user;
+        return userDao.findById(id).get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserAuthenticated() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return this.findByUsername(auth.getName());
     }
 
     @Override
     public void changePassword(ChangePassword changePassword, User user) {
-        user.setPassword(bCryptPasswordEncoder.encode((changePassword.getNewPassword())));
-        userDao.save(user);
+        user.setPassword(this.encodePassword(changePassword.getNewPassword()));
+        this.update(user);
     }
+
+
+    public String encodePassword(String password){
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+
+
 }

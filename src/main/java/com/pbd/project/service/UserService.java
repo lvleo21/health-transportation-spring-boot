@@ -10,9 +10,11 @@ public interface UserService {
     User findByUsername(String username);
     User save(User user);
     User update(User user);
+    User findById(Long id);
+    User getUserAuthenticated();
     List<User> findAll();
     List<User> findByStaff(boolean isStaff);
-    User findById(Long id);
+
 
     void changePassword(ChangePassword changePassword, User user);
 }
