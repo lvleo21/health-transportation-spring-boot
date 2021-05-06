@@ -10,21 +10,24 @@
 
     <div th:replace="fragments/alert"></div>
 
-    <!--    <div sec:authorize="isAuthenticated()">-->
-    <!--        This content is only shown to authenticated users.-->
-    <!--    </div>-->
-
-
-    <div sec:authorize="hasRole('ADMIN') or hasRole('GESTOR')">
-        É ADMIN ou GESTOR!
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to authenticated users.
     </div>
 
-    <h1 sec:authentication="name"></h1>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        This will only be displayed if authenticated user has role ROLE_ADMIN.
+    </div>
+    <div sec:authorize="hasAuthority('OPERADOR')">
+        This will only be displayed if authenticated user has role OPERADOR.
+    </div>
+
+    Logged user: <span sec:authentication="name"></span> <br>
+    Roles: <span sec:authentication="principal.authorities"></span>
 
 
-    <!--    <div sec:authorize="hasRole('ROLE_USER')">-->
-    <!--        This content is only shown to users.-->
-    <!--    </div>-->
+    <div sec:authorize="hasRole('ADMIN')">
+        This content is only shown to users.
+    </div>
 
 
     <!--    <h1 class="text-black-50" th:text="${#strings.contains(#httpServletRequest.getUserPrincipal().authorities, 'GESTOR')}"></h1>-->

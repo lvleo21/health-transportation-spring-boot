@@ -7,12 +7,14 @@ import com.pbd.project.domain.User;
 import com.pbd.project.service.UserService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
+import com.pbd.project.web.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,6 +33,11 @@ public class UserController {
 
     @Autowired
     private HealthCenterService healthCenterService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.addValidators(new UserValidator());
+    }
 
     @GetMapping("/list")
     public String getAllUsers(ModelMap model) {
@@ -55,7 +62,6 @@ public class UserController {
         return "redirect:/users/list";
 
     }
-
 
     @GetMapping("/update/{id}")
     public String updateUserView(@PathVariable("id") Long id, ModelMap model) {
@@ -86,26 +92,6 @@ public class UserController {
         return "redirect:/users/list";
     }
 
-
-    @GetMapping("/change-password")
-    public String chagePassword(ChangePassword changePassword) {
-        return "user/change-password";
-    }
-
-    @PostMapping("/change-password/save")
-    public String chagePasswordSave(ChangePassword changePassword, RedirectAttributes attr) {
-
-        User user = this.getUser();
-
-        if (userService.changePassword(changePassword, user)) {
-            attr.addAttribute("success", "Senha alterada com sucesso.");
-            return "redirect:/";
-        } else {
-            attr.addAttribute("error", "Erro ao tentar alterar a senha, tente novamente.");
-            return "user/change-password";
-        }
-
-    }
 
 
     @ModelAttribute("roles")

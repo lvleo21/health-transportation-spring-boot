@@ -15,7 +15,7 @@ import java.util.Set;
 public class User extends AbstractEntity<Long> {
 
     @Column(nullable = false, unique = true)
-    @Length(min = 5, message = "{Length.users.username}")
+    @Length(min = 5, message = "{Length.user.username}")
     @NotEmpty(message = "{NotEmpty.user.username}")
     private String username;
 
@@ -43,7 +43,7 @@ public class User extends AbstractEntity<Long> {
     private String enrollment;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "{NotNull.name}")
     private String name;
 
     @ManyToOne // um centro de saúde poderá ter muitos users

@@ -67,16 +67,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean changePassword(ChangePassword changePassword, User user) {
-        boolean samePassword = bCryptPasswordEncoder.matches(changePassword.getOldPassword(), user.getPassword());
-
-        if (samePassword){
-            user.setPassword(bCryptPasswordEncoder.encode((changePassword.getNewPassword())));
-            userDao.save(user);
-
-            return true;
-        }else{
-            return false;
-        }
+    public void changePassword(ChangePassword changePassword, User user) {
+        user.setPassword(bCryptPasswordEncoder.encode((changePassword.getNewPassword())));
+        userDao.save(user);
     }
 }

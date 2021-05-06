@@ -14,5 +14,5 @@ public interface UserService {
     List<User> findByStaff(boolean isStaff);
     User findById(Long id);
 
-    boolean changePassword(ChangePassword changePassword, User user);
+    void changePassword(ChangePassword changePassword, User user);
 }

@@ -15,7 +15,9 @@
             th:text="${#strings.concat(action,' Usuário')}"></h1>
     </div>
 
-    <hr>
+
+
+    <hr class = "w-75">
 
     <div class="d-flex justify-content-center">
         <div class="card shadow rounded mt-4">
@@ -75,7 +77,7 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="password" th:field="*{password}">
+                                <input type="text" class="form-control" id="password" th:field="*{password}" maxlength="11">
                                 <small class="text-danger" th:errors="*{password}"></small>
                             </div>
                         </div>
@@ -116,7 +118,7 @@
                                     <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}" th:text="${healthCenter.address.formatedAddress}"></option>
                                 </select>
 
-                                <small class="text-danger" th:errors="*{roles}"></small>
+                                <small class="text-danger" th:errors="*{healthCenter}"></small>
                             </div>
                         </div>
                     </div>
