@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      th:with="action=${user.id == null} ? 'Adicionar' : 'Editar'">
+      th:with="text=${createView} ? 'Adicionar' : 'Editar'">
 <head>
     <meta charset="UTF-8"/>
     <title layout:fragment="title"
-           th:text="${#strings.concat(action,' Usuário - Health Transportation')}"></title>
+           th:text="${#strings.concat(text,' Usuário - Health Transportation')}"></title>
 </head>
 <body>
 
@@ -12,19 +12,18 @@
 
     <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
         <h1 class="h3 mb-0 text-gray-800"
-            th:text="${#strings.concat(action,' Usuário')}"></h1>
+            th:text="${#strings.concat(text,' Usuário')}"></h1>
     </div>
 
 
-
-    <hr class = "w-75">
+    <hr class="w-75">
 
     <div class="d-flex justify-content-center">
         <div class="card shadow rounded mt-4">
             <div class="card-body">
 
                 <form class="user" autocomplete="off"
-                      th:action="${action == 'Adicionar'} ?  @{/users/register/save} : @{/users/update/save}"
+                      th:action="${createView} ?  @{/users/create/save} : @{/users/update/save}"
                       th:object="${user}" method="post">
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -44,7 +43,8 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-12">
+
+                        <div class="col-md-5 col-sm-12" th:if="${!#strings.contains(#httpServletRequest.requestURI, '/users/update/authenticated-user')}">
                             <div class="form-group">
                                 <label class="font-weight-bold">Matrícula <small
                                         class="text-secondary">(Obrigatório)</small></label>
@@ -53,6 +53,7 @@
                                 <small class="text-danger" th:errors="*{enrollment}"></small>
                             </div>
                         </div>
+
 
                     </div>
 
@@ -63,7 +64,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Usuário <small
@@ -73,11 +74,13 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12" th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/update/') == false}">
+                        <div class="col-md col-sm-12"
+                             th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/update/') == false}">
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="password" th:field="*{password}" maxlength="11">
+                                <input type="text" class="form-control" id="password" th:field="*{password}"
+                                       maxlength="11">
                                 <small class="text-danger" th:errors="*{password}"></small>
                             </div>
                         </div>
@@ -92,16 +95,17 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md col-sm-12">
+                    <div class="row" th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/create') and #authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <div class="col-md col-sm-12" >
                             <div class="form-group">
                                 <label class="font-weight-bold">Função <small
                                         class="text-secondary">(Obrigatório)</small></label>
 
                                 <select class="custom-select" id="roles" th:field="*{roles}">
                                     <option value="">- - -</option>
-                                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"
-                                            th:if="${role.role} != 'ADMIN'"></option>
+                                    <option th:each="role : ${roles}" th:value="${role.id}"
+                                            th:text="${role.role}" th:if="${role.role} != 'ADMIN'"
+                                    ></option>
                                 </select>
 
                                 <small class="text-danger" th:errors="*{roles}"></small>
@@ -115,7 +119,8 @@
 
                                 <select class="custom-select" id="healthCenter" th:field="*{healthCenter}">
                                     <option value="">- - -</option>
-                                    <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}" th:text="${healthCenter.address.formatedAddress}"></option>
+                                    <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}"
+                                            th:text="${healthCenter.address.formatedAddress}"></option>
                                 </select>
 
                                 <small class="text-danger" th:errors="*{healthCenter}"></small>
@@ -135,15 +140,16 @@
                         </div>
                     </div>
 
-
-                    <input type="hidden" id="id" th:field="*{id}"/>
-
                     <br>
+
+                    <ul th:if="${#fields.hasErrors('*')}">
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+                    </ul>
 
                     <div class="row d-flex justify-content-end">
                         <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <b>CADASTRAR</b>
+                            <button type="submit" class="btn btn-primary w-100 font-weight-bold"
+                                    th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
                             </button>
                         </div>
                     </div>

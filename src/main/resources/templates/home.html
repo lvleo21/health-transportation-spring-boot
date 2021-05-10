@@ -14,11 +14,26 @@
         This content is only shown to authenticated users.
     </div>
 
+    <sec:authorize access="hasRole('ADMIN')" var="isAdmin"></sec:authorize>
+
+    <div class="form-group" th:if="${isAdmin}">
+        asdaosldkapsodkapsodkapsodk
+    </div>
+
+
+    <div sec:authentication="principal"></div>
+
+
+
     <div sec:authorize="hasAuthority('ADMIN')">
         This will only be displayed if authenticated user has role ROLE_ADMIN.
     </div>
     <div sec:authorize="hasAuthority('OPERADOR')">
         This will only be displayed if authenticated user has role OPERADOR.
+    </div>
+
+    <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+        asdasdasdasd
     </div>
 
     Logged user: <span sec:authentication="name"></span> <br>

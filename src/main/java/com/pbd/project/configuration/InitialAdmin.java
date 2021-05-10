@@ -26,18 +26,10 @@ public class InitialAdmin implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Role roleAdmin = roleService.findByRole("ADMIN");
 
-
-
         if (roleAdmin.getUsers().isEmpty()){
-
-            System.out.println("ENTROU NO INITIAL ADMIN");
-
             Role roleGestor = roleService.findByRole("GESTOR");
             Role roleOperador = roleService.findByRole("OPERADOR");
             User user = new User();
-
-            System.out.println("USER STAFF: " + user.getStaff());
-
             user.setUsername("lvleo21");
             user.setPassword("Leo10272109");
             user.setActive(true);

@@ -50,6 +50,13 @@ public class UserServiceImpl implements UserService{
     }
 
     public User update(User user) {
+        System.out.println("ENTROU NO UPDATE");
+        System.out.println("ID: " + user.getId());
+        System.out.println("STAFF: " + user.getRoles());
+        System.out.println("CREATED AT: " + user.getCreatedAt());
+
+
+
         return userDao.save(user);
     }
 

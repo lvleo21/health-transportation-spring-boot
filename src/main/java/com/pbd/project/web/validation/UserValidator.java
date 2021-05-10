@@ -1,10 +1,23 @@
 package com.pbd.project.web.validation;
 
 import com.pbd.project.domain.User;
+import com.pbd.project.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Component
 public class UserValidator implements Validator {
+
+
+    @Autowired
+    private  HttpServletRequest request;
+
+    @Autowired
+    private UserService userService;
     @Override
     public boolean supports(Class<?> c) {
         return User.class.equals(c);
@@ -12,42 +25,62 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
+        System.out.println("= = = ENTROU NO USR VALIDATOR = = =");
+
+        String path = request.getRequestURI();
+        String updatePath = "/users/update/save";
+
         User user = (User) obj;
+
+        if(path.equals(updatePath)){
+            User userDTO = userService.findByUsername(user.getUsername());
+            user.setId(userDTO.getId());
+            user.setPassword(userDTO.getPassword());
+            user.setCreatedAt(userDTO.getCreatedAt());
+            user.setStaff(userDTO.getStaff());
+            user.setRoles(userDTO.getRoles());
+            user.setHealthCenter(userDTO.getHealthCenter());
+        }
+
         String password = user.getPassword();
 
-        if (user.getHealthCenter() == null){
-            errors.rejectValue("healthCenter", "User.healthCenter.empty");
+        if(!user.getStaff()){
+            if (user.getHealthCenter() == null){
+                errors.rejectValue("healthCenter", "User.healthCenter.empty");
+            }
+
+            if (user.getEnrollment().isEmpty()){
+                errors.rejectValue("enrollment", "User.enrollment.empty");
+            }
+
+            if (user.getRoles().isEmpty()){
+                errors.rejectValue("roles", "User.role.empty");
+            }
         }
 
-        if (user.getEnrollment().isEmpty()){
-            errors.rejectValue("enrollment", "User.enrollment.empty");
-        }
+        if(!path.equals(updatePath)){
+            if (!(password.length() >= 6 && password.length() <= 11)) {
+                errors.rejectValue("password", "User.length.error");
+            }
 
-        if (user.getRoles().isEmpty()){
-            errors.rejectValue("roles", "User.role.empty");
-        }
+            // Ao menos um número
+            if(password.matches("^[^\\d]+$")){
+                errors.rejectValue("password", "User.regex.number.error");
+            }
 
-        if (!(password.length() >= 6 && password.length() <= 11)) {
-            errors.rejectValue("password", "User.length.error");
-        }
+            // Ao menos uma letra maiúsucla
+            if(password.matches("^[^A-Z]+$")){
+                errors.rejectValue("password", "User.regex.uppercase.error");
+            }
+            // Ao menos uma letra minúscula
+            if(password.matches("^[^a-z]+$")){
+                errors.rejectValue("password", "User.regex.lowercase.error");
+            }
 
-        // Ao menos um número
-        if(password.matches("^[^\\d]+$")){
-            errors.rejectValue("password", "User.regex.number.error");
-        }
-
-        // Ao menos uma letra maiúsucla
-        if(password.matches("^[^A-Z]+$")){
-            errors.rejectValue("password", "User.regex.uppercase.error");
-        }
-        // Ao menos uma letra minúscula
-        if(password.matches("^[^a-z]+$")){
-            errors.rejectValue("password", "User.regex.lowercase.error");
-        }
-
-        // não pode conter caracteres especiais
-        if(!password.matches("^[^\\W]*$")){
-            errors.rejectValue("password", "User.regex.special.error");
+            // não pode conter caracteres especiais
+            if(!password.matches("^[^\\W]*$")){
+                errors.rejectValue("password", "User.regex.special.error");
+            }
         }
 
 

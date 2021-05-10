@@ -126,6 +126,22 @@ public class User extends AbstractEntity<Long> {
         this.healthCenter = healthCenter;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                ", roles=" + roles +
+                ", createdAt=" + createdAt +
+                ", enrollment='" + enrollment + '\'' +
+                ", name='" + name + '\'' +
+                ", healthCenter=" + healthCenter +
+                ", staff=" + staff +
+                '}';
+    }
+
     public String ShowRoles(){
         String text = "";
 
@@ -143,4 +159,7 @@ public class User extends AbstractEntity<Long> {
     public void setStaff(Boolean staff) {
         this.staff = staff;
     }
+
+
+
 }

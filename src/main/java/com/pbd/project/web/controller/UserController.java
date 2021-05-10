@@ -16,8 +16,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -34,62 +36,67 @@ public class UserController {
     @Autowired
     private HealthCenterService healthCenterService;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @InitBinder
     public void initBinder(WebDataBinder binder){
-        binder.addValidators(new UserValidator());
+        binder.addValidators(userValidator);
     }
 
-    @GetMapping("/list")
-    public String getAllUsers(ModelMap model) {
+    @GetMapping("")
+    public String usersListView(ModelMap model) {
         model.addAttribute("users", userService.findByStaff(false));
         return "user/list";
     }
 
-    @GetMapping("/register")
-    public String createUserView(User user) {
+    @GetMapping("/create")
+    public String userCreateView(User user, ModelMap model) {
+        model.addAttribute("createView", true);
         return "user/create";
     }
 
-    @PostMapping("/register/save")
-    public String saveUser(@Valid User user, BindingResult result, RedirectAttributes attr) {
+    @PostMapping("/create/save")
+    public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
+            attr.addFlashAttribute("createView", true);
             return "user/create";
         }
 
         userService.save(user);
         attr.addFlashAttribute("success", "Usuário(a) cadastrado(a) com sucesso.");
-        return "redirect:/users/list";
+        return "redirect:/users";
 
     }
 
     @GetMapping("/update/{id}")
-    public String updateUserView(@PathVariable("id") Long id, ModelMap model) {
+    public String userUpdateView(@PathVariable("id") Long id, ModelMap model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
-
+        model.addAttribute("createView", false);
         return "user/create";
     }
 
-    @GetMapping("/update/myself")
+    @GetMapping("/update/authenticated-user")
     public String updateUserView(ModelMap model) {
         User user = userService.getUserAuthenticated();
-
         model.addAttribute("user", user);
-
+        model.addAttribute("createView", false);
         return "user/create";
     }
 
     @PostMapping("/update/save")
     public String updateUserSave(@Valid User user, BindingResult result, RedirectAttributes attr) {
+
         if (result.hasErrors()) {
+            attr.addFlashAttribute("createView", false);
             return "user/create";
         }
 
         userService.update(user);
-
-        attr.addFlashAttribute("success", "Centro de saúde editado com sucesso.");
-        return "redirect:/users/list";
+        attr.addFlashAttribute("success", "Usuário editado com sucesso.");
+        return "redirect:/users";
     }
 
 
