@@ -23,8 +23,8 @@
             <div class="card-body">
 
                 <form class="user" autocomplete="off"
-                      th:action="${createView} ?  @{/users/create/save} : @{/users/update/save}"
-                      th:object="${user}" method="post">
+                      th:action="${createView} ?  @{/users/create/save} : @{/users/update/{id}/save (id=${id})}"
+                      th:object="${employee}" method="post">
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <div class="h4 mb-0 text-gray-800">
@@ -44,8 +44,7 @@
                         </div>
 
 
-                        <div class="col-md-5 col-sm-12"
-                             th:if="${!#strings.contains(#httpServletRequest.requestURI, '/users/update/authenticated-user')}">
+                        <div class="col-md-5 col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Matrícula <small
                                         class="text-secondary">(Obrigatório)</small></label>
@@ -54,8 +53,6 @@
                                 <small class="text-danger" th:errors="*{enrollment}"></small>
                             </div>
                         </div>
-
-
                     </div>
 
 
@@ -75,17 +72,6 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12"
-                             th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/create/')}">
-                            <div class="form-group">
-                                <label class="font-weight-bold">Senha <small
-                                        class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="password" th:field="*{password}"
-                                       maxlength="11">
-                                <small class="text-danger" th:errors="*{password}"></small>
-                            </div>
-                        </div>
-
                         <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Email <small
@@ -96,41 +82,7 @@
                         </div>
                     </div>
 
-                    <div class="row"
-                         th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                        <div class="col-md col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold">Função <small
-                                        class="text-secondary">(Obrigatório)</small></label>
-
-                                <select class="custom-select" id="roles" th:field="*{roles}">
-                                    <option value="">- - -</option>
-                                    <option th:each="role : ${roles}" th:value="${role.id}"
-                                            th:text="${role.role}"
-                                    ></option>
-                                </select>
-
-                                <small class="text-danger" th:errors="*{roles}"></small>
-                            </div>
-                        </div>
-
-                        <div class="col-md col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold">Centro de Saúde <small
-                                        class="text-secondary">(Obrigatório)</small></label>
-
-                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}">
-                                    <option value="">- - -</option>
-                                    <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}"
-                                            th:text="${healthCenter.address.formatedAddress}"></option>
-                                </select>
-
-                                <small class="text-danger" th:errors="*{healthCenter}"></small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rpw">
+                    <div class="row">
                         <div class="col-md col-sm-12 d-flex align-items-center">
                             <div class="form-group mt-2">
 

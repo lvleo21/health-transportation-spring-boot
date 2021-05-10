@@ -14,13 +14,14 @@ import java.util.Set;
 @Table(name="USERS")
 public class User extends AbstractEntity<Long> {
 
+
+
     @Column(nullable = false, unique = true)
     @Length(min = 5, message = "{Length.user.username}")
     @NotEmpty(message = "{NotEmpty.user.username}")
     private String username;
 
     @Column(nullable = false)
-    @NotEmpty(message = "{NotEmpty.user.password}")
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -128,17 +129,18 @@ public class User extends AbstractEntity<Long> {
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", active=" + active +
-                ", roles=" + roles +
-                ", createdAt=" + createdAt +
-                ", enrollment='" + enrollment + '\'' +
-                ", name='" + name + '\'' +
-                ", healthCenter=" + healthCenter +
-                ", staff=" + staff +
+        return "User{\n" +
+                ", id='" + this.getId() + '\n' +
+                ", username='" + username + '\n' +
+                ", password='" + password + '\n' +
+                ", email='" + email + '\n' +
+                ", active=" + active + '\n' +
+                ", roles=" + roles + '\n' +
+                ", createdAt=" + createdAt + '\n' +
+                ", enrollment='" + enrollment + '\n' +
+                ", name='" + name + '\n' +
+                ", healthCenter=" + healthCenter + '\n' +
+                ", staff=" + staff + '\n' +
                 '}';
     }
 

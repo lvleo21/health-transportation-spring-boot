@@ -5,6 +5,7 @@ import com.pbd.project.dao.user.UserDao;
 import com.pbd.project.domain.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
@@ -42,21 +43,17 @@ public class UserServiceImpl implements UserService{
         user.setPassword(this.encodePassword(user.getPassword()));
         user.setCreatedAt(LocalDate.now());
 
-        if(user.getStaff() == null){
+        if (user.getStaff() == null) {
             user.setStaff(false);
         }
 
         return userDao.save(user);
     }
 
+
     public User update(User user) {
-        System.out.println("ENTROU NO UPDATE");
-        System.out.println("ID: " + user.getId());
-        System.out.println("STAFF: " + user.getRoles());
-        System.out.println("CREATED AT: " + user.getCreatedAt());
-
-
-
+        System.out.println("= = = ENTROU NO UPDATE = = =");
+        System.out.println(user.toString());
         return userDao.save(user);
     }
 
@@ -92,10 +89,9 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    public String encodePassword(String password){
+    public String encodePassword(String password) {
         return bCryptPasswordEncoder.encode(password);
     }
-
 
 
 }
