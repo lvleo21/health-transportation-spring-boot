@@ -63,7 +63,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        return userDao.findAll();
+        User user = this.getUserAuthenticated();
+
+        if(user.getStaff()){
+            return userDao.findUsers(user.getId());
+        }else{
+            return userDao.findUsers(user.getHealthCenter().getId(), user.getId());
+        }
+
     }
 
     @Override

@@ -45,8 +45,7 @@
                         </div>
 
 
-                        <div class="col-md-5 col-sm-12"
-                             th:if="${!#strings.contains(#httpServletRequest.requestURI, '/users/update/authenticated-user')}">
+                        <div class="col-md-5 col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Matrícula <small
                                         class="text-secondary">(Obrigatório)</small></label>
@@ -76,8 +75,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12"
-                             th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/create/')}">
+                        <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>
@@ -97,8 +95,7 @@
                         </div>
                     </div>
 
-                    <div class="row"
-                         th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <div class="row">
                         <div class="col-md col-sm-12">
                             <div class="form-group">
                                 <label class="font-weight-bold">Função <small
@@ -131,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="rpw">
+                    <div class="row">
                         <div class="col-md col-sm-12 d-flex align-items-center">
                             <div class="form-group mt-2">
 
@@ -141,6 +138,17 @@
 
                             </div>
                         </div>
+
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-2">
+
+                                <input type="checkbox" id="staff" th:field="*{staff}">
+                                <label th:for="${#ids.next('staff')}">Staff</label> <br>
+                                <small>Indica que este usuário é um administrador do sistema.</small>
+
+                            </div>
+                        </div>
+
                     </div>
 
                     <br>

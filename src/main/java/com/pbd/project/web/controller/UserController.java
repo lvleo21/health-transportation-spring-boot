@@ -51,16 +51,18 @@ public class UserController {
 
     @GetMapping("")
     public String usersListView(ModelMap model) {
-        model.addAttribute("users", userService.findByStaff(false));
+        model.addAttribute("users", userService.findAll());
         return "user/list";
     }
 
+    //! Método de CREATE: ADMIN
     @GetMapping("/create")
     public String userCreateView(User user, ModelMap model) {
         model.addAttribute("createView", true);
         return "user/create";
     }
 
+    //! Método de CREATE: ADMIN
     @PostMapping("/create/save")
     public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr) {
 
@@ -76,7 +78,7 @@ public class UserController {
     }
 
 
-    //! Método de update para o gestor e operador
+    //! Método de UPDATE: GESTOR E OPERADOR
     @GetMapping("employee/update/{id}")
     public String employeeUpdateView(@PathVariable("id") Long id, ModelMap model) {
         User user = userService.findById(id);
@@ -90,7 +92,7 @@ public class UserController {
         return "user/employee/createOrUpdate";
     }
     
-    //! Método de update para o gestor e operador
+    //! Método de UPDATE: GESTOR E OPERADOR
     @PostMapping("/update/{id}/save")
     public String employeeUpdateSave(@PathVariable("id") Long id,
                                      @Valid Employee employee,
