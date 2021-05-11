@@ -1,4 +1,4 @@
-package com.pbd.project.service;
+package com.pbd.project.service.user;
 
 import com.pbd.project.domain.Role;
 import com.pbd.project.domain.User;

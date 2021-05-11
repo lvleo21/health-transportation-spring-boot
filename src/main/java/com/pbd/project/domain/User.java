@@ -1,5 +1,6 @@
 package com.pbd.project.domain;
 
+import com.pbd.project.dto.Employee;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,9 +12,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name="USERS")
+@Table(name = "USERS")
 public class User extends AbstractEntity<Long> {
-
 
 
     @Column(nullable = false, unique = true)
@@ -29,7 +29,7 @@ public class User extends AbstractEntity<Long> {
     @NotEmpty(message = "{NotEmpty.email}")
     private String email;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private Boolean active;
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -37,10 +37,10 @@ public class User extends AbstractEntity<Long> {
     private Set<Role> roles;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name="created_at", columnDefinition = "DATE")
+    @Column(name = "created_at", columnDefinition = "DATE")
     private LocalDate createdAt;
 
-    @Column(length = 7)
+    @Column(length = 7, unique = true, nullable = true)
     private String enrollment;
 
     @NotNull
@@ -144,14 +144,22 @@ public class User extends AbstractEntity<Long> {
                 '}';
     }
 
-    public String ShowRoles(){
+    public String ShowRoles() {
         String text = "";
 
-        for (Role role: this.roles) {
-            text+= role.getRole() + "<br>";
+        for (Role role : this.roles) {
+            text += role.getRole() + "<br>";
         }
 
         return text;
+    }
+
+    public void toMe(Employee employee) {
+        this.name = employee.getName();
+        this.enrollment = employee.getEnrollment();
+        this.username = employee.getUsername();
+        this.email = employee.getEmail();
+        this.active = employee.isActive();
     }
 
     public Boolean getStaff() {
@@ -161,7 +169,6 @@ public class User extends AbstractEntity<Long> {
     public void setStaff(Boolean staff) {
         this.staff = staff;
     }
-
 
 
 }

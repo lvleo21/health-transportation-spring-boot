@@ -1,7 +1,7 @@
 package com.pbd.project.web.validation;
 
 import com.pbd.project.domain.User;
-import com.pbd.project.service.UserService;
+import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

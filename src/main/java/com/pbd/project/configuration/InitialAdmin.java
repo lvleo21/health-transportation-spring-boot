@@ -1,16 +1,14 @@
 package com.pbd.project.configuration;
 
-import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.domain.Role;
 import com.pbd.project.domain.User;
-import com.pbd.project.service.UserService;
+import com.pbd.project.service.user.UserService;
 import com.pbd.project.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 

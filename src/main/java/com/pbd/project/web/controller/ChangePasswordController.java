@@ -1,12 +1,9 @@
 package com.pbd.project.web.controller;
 
 import com.pbd.project.domain.ChangePassword;
-import com.pbd.project.domain.User;
-import com.pbd.project.service.UserService;
+import com.pbd.project.service.user.UserService;
 import com.pbd.project.web.validation.ChangePasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;

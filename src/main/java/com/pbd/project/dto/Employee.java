@@ -1,21 +1,24 @@
 package com.pbd.project.dto;
 
-public class UserEmployeeDto {
+import com.pbd.project.domain.User;
 
+import javax.persistence.Column;
+
+public class Employee {
+
+    private Long id;
     private String name;
     private String enrollment;
     private String username;
     private String email;
     private boolean active;
 
-    public UserEmployeeDto(String name, String enrollment,
-                           String username, String email,
-                           boolean active) {
-        this.name = name;
-        this.enrollment = enrollment;
-        this.username = username;
-        this.email = email;
-        this.active = active;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -56,5 +59,26 @@ public class UserEmployeeDto {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", enrollment='" + enrollment + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
+    public void toMe(User user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.enrollment = user.getEnrollment();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.active = user.getActive();
     }
 }

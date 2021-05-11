@@ -1,11 +1,10 @@
-package com.pbd.project.service;
+package com.pbd.project.service.user;
 
 import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.dao.user.UserDao;
 import com.pbd.project.domain.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public User findByEnrollment(String enrollment) {
+        return userDao.findByEnrollment(enrollment);
+    }
+
+    @Override
     public User save(User user) {
         user.setPassword(this.encodePassword(user.getPassword()));
         user.setCreatedAt(LocalDate.now());
@@ -52,8 +57,6 @@ public class UserServiceImpl implements UserService {
 
 
     public User update(User user) {
-        System.out.println("= = = ENTROU NO UPDATE = = =");
-        System.out.println(user.toString());
         return userDao.save(user);
     }
 

@@ -15,6 +15,7 @@
             th:text="${#strings.concat(text,' Usuário')}"></h1>
     </div>
 
+    <div th:replace="fragments/alert"></div>
 
     <hr class="w-75">
 
@@ -96,9 +97,7 @@
 
                     <br>
 
-                    <ul th:if="${#fields.hasErrors('*')}">
-                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
-                    </ul>
+                    <input type="hidden" th:field="*{id}">
 
                     <div class="row d-flex justify-content-end">
                         <div class="col-sm-3">

@@ -1,6 +1,6 @@
 package com.pbd.project.configuration;
 
-import com.pbd.project.service.UserDetailServiceImpl;
+import com.pbd.project.service.user.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,8 +38,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
 //                .antMatchers("/").permitAll()
                 .antMatchers(loginPage).permitAll()
-                .antMatchers("/forgout-password").permitAll()
-                .antMatchers("/**", "/prefecture/**").hasAuthority("ADMIN")
+                .antMatchers("/**").hasAuthority("ADMIN")
+                .antMatchers("/**", "/users/**").hasAuthority("GESTOR")
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable()
