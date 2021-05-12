@@ -52,7 +52,7 @@ public class User extends AbstractEntity<Long> {
     private HealthCenter healthCenter;
 
     @Column(name = "is_staff")
-    private Boolean staff; //
+    private Boolean staff = false; //
 
 
     public String getUsername() {

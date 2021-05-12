@@ -14,7 +14,9 @@ public interface UserService {
     User update(User user);
     User findById(Long id);
     User getUserAuthenticated();
+    void delete(Long id);
     List<User> findAll();
+
     List<User> findByStaff(boolean isStaff);
 
 

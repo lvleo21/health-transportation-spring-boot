@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -91,7 +92,7 @@ public class UserController {
         model.addAttribute("createView", false);
         return "user/employee/createOrUpdate";
     }
-    
+
     //! Método de UPDATE: GESTOR E OPERADOR
     @PostMapping("/update/{id}/save")
     public String employeeUpdateSave(@PathVariable("id") Long id,
@@ -135,15 +136,41 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteHealthCenter(@PathVariable("id") Long id, RedirectAttributes attr) {
+        userService.delete(id);
+        attr.addFlashAttribute("success", "Usuário removido com sucesso.");
+        return "redirect:/users";
+    }
+
 
     @ModelAttribute("roles")
     public List<Role> getRoles() {
-        return roleService.findAll();
+
+        if (userService.getUserAuthenticated().getStaff()) {
+            return roleService.findAll();
+        } else {
+            List<Role> roles = new ArrayList<>();
+            Role role = roleService.findByRole("OPERADOR");
+            roles.add(role);
+
+            return roles;
+        }
     }
 
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
-        return healthCenterService.findAll();
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
+            return healthCenterService.findAll();
+        }else{
+            List<HealthCenter> healthCenters = new ArrayList<>();
+            HealthCenter healthCenter = healthCenterService.findById(user.getHealthCenter().getId());
+            healthCenters.add(healthCenter);
+
+            return healthCenters;
+        }
     }
 
 }

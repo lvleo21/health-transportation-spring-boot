@@ -16,7 +16,6 @@
     </div>
 
 
-
     <hr class="w-75">
 
     <div class="d-flex justify-content-center">
@@ -119,7 +118,8 @@
 
                                 <select class="custom-select" id="healthCenter" th:field="*{healthCenter}">
                                     <option value="">- - -</option>
-                                    <option th:each="healthCenter : ${healthCenters}" th:value="${healthCenter.id}"
+                                    <option th:each="healthCenter : ${healthCenters}"
+                                            th:value="${healthCenter.id}"
                                             th:text="${healthCenter.address.formatedAddress}"></option>
                                 </select>
 
@@ -139,7 +139,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12 d-flex align-items-center">
+                        <div class="col-md col-sm-12 d-flex align-items-center" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                             <div class="form-group mt-2">
 
                                 <input type="checkbox" id="staff" th:field="*{staff}">

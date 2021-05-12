@@ -51,7 +51,8 @@
                         <th class='text-center align-middle text-dark' scope="col">Função</th>
                         <th class='text-center align-middle text-dark' scope="col">Matrícula</th>
                         <th class='text-center align-middle text-dark' scope="col">Ativo</th>
-                        <th class='text-center align-middle text-dark' scope="col">Ações</th>
+                        <th class='text-center align-middle text-dark' scope="col">Editar</th>
+                        <th class='text-center align-middle text-dark' scope="col" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">Remover</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -71,12 +72,21 @@
                         </td>
 
 
-                        <td class="text-center align-middle nowrap">
+                        <td class="text-center align-middle">
                             <a class="btn btn-primary btn-sm"
                                th:href="@{/users/employee/update/{id} (id=${user.id}) }">
                                 <i class="fas fa-pen text-light"></i>
 
                             </a>
+                        </td>
+
+                        <td  class="text-center align-middle" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <button th:id="${#strings.concat('btn_users/delete/', user.id)}"
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    data-toggle="modal" data-target="#myModal">
+                                <i class="fas fa-trash text-light"></i>
+                            </button>
                         </td>
 
                     </tr>

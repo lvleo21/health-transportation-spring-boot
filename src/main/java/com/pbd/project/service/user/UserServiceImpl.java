@@ -93,6 +93,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void delete(Long id) {
+        userDao.deleteById(id);
+    }
+
+    @Override
     public void changePassword(ChangePassword changePassword, User user) {
         user.setPassword(this.encodePassword(changePassword.getNewPassword()));
         this.update(user);
