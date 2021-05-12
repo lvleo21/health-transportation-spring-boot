@@ -1,7 +1,6 @@
 package com.pbd.project.service.user;
 
-import com.pbd.project.domain.ChangePassword;
-import com.pbd.project.domain.HealthCenter;
+import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 
 import java.util.List;

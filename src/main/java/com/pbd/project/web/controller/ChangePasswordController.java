@@ -1,6 +1,6 @@
 package com.pbd.project.web.controller;
 
-import com.pbd.project.domain.ChangePassword;
+import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.web.validation.ChangePasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;

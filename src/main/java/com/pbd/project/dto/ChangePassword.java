@@ -1,4 +1,4 @@
-package com.pbd.project.domain;
+package com.pbd.project.dto;
 
 public class ChangePassword {
 

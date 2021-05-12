@@ -1,6 +1,6 @@
 package com.pbd.project.web.validation;
 
-import com.pbd.project.domain.ChangePassword;
+import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 import com.pbd.project.service.user.UserService;
 

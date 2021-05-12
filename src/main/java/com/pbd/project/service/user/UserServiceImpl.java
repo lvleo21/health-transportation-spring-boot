@@ -2,7 +2,7 @@ package com.pbd.project.service.user;
 
 import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.dao.user.UserDao;
-import com.pbd.project.domain.ChangePassword;
+import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
