@@ -9,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -52,7 +53,15 @@ public class User extends AbstractEntity<Long> {
     private HealthCenter healthCenter;
 
     @Column(name = "is_staff")
-    private Boolean staff = false; //
+    private Boolean staff = false;
+
+    @OneToMany(mappedBy="userWhoRequested")
+    private List<OrderResetPassword> listOfUserWhoRequested;
+
+    @OneToMany(mappedBy="userWhoSolvedOrder")
+    private List<OrderResetPassword> listfOfOrderResetPasswords;
+
+
 
 
     public String getUsername() {
