@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Pedidos de Reset de Senha- Health Transportation</title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Pedidos de Reset de Senha</h1>
+
+
+    </div>
+
+    <div th:replace="fragments/alert"></div>
+
+    <div class="card shadow rounded mt-3">
+        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+
+
+            <div>
+                <!-- Topbar Search -->
+                <form class="form-inline navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-1 small"
+                               placeholder="Buscar por usuário ..." aria-label="Search"
+                               aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <caption class="ml-4">
+                        <i class="fas fa-caret-right"></i> Qnt. de pedidos encontrados:
+                        <span class="font-weight-bold" th:text="${#lists.size(orps)}"></span>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th class='text-center align-middle text-dark' scope="col">Pedido em</th>
+                        <th class='text-center align-middle text-dark' scope="col">Completado em</th>
+                        <th class='text-center align-middle text-dark' scope="col">Foi rejeitado ?</th>
+                        <th class='text-center align-middle text-dark' scope="col">Usuário que solicitou</th>
+                        <th class='text-center align-middle text-dark' scope="col">Usuário que resetou</th>
+                        <th class='text-center align-middle text-dark' scope="col">Resetar</th>
+                        <th class='text-center align-middle text-dark' scope="col">Rejeitar</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orp : ${orps}">
+
+                        <td class="text-center align-middle"
+                            th:text="${#temporals.format(orp.requestOn, 'dd/MM/yyyy')}"></td>
+                        <td class="text-center align-middle"
+                            th:text="${orp.completedIn != null ? #temporals.format(orp.completedIn, 'dd/MM/yyyy') : '- - -'}"></td>
+                        <td class="text-center align-middle" th:switch="*{orp.wasRejected}">
+                            <i class="fas fa-check text-success" th:case="true"></i>
+                            <i class="fas fa-times text-danger" th:case="false"></i>
+                        </td>
+                        <td class="text-center align-middle" th:utext="*{orp.userWhoRequested.username}"></td>
+                        <td class="text-center align-middle"
+                            th:utext="*{orp.userWhoSolvedOrder != null ? orp.userWhoSolvedOrder.username : '- - -'}"></td>
+
+
+                        <td class="text-center align-middle">
+
+                            <a class="btn btn-success btn-sm"
+                               th:classappend="${orp.completedIn != null ? 'disabled': ''}"
+                               th:id="${#strings.concat('btnResetPassword_', orp.id)}"
+                               th:onclick="'setSpinner('+ ${orp.id} +')'"
+                               th:href="@{/users/reset-requests/{id}/reset (id=${orp.id}) }">
+                                <i class="fas fa-check text-ligh"></i>
+                            </a>
+
+                            <button class="d-none" type="button" disabled
+                                    th:id="${#strings.concat('spinner_', orp.id)}">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="sr-only">Loading...</span>
+                            </button>
+
+                        </td>
+
+                        <td class="text-center align-middle" >
+                            <a class="btn btn-danger btn-sm"
+                               th:classappend="${orp.completedIn != null ? 'disabled': ''}"
+                               th:id="${#strings.concat('btnResetRejected_', orp.id)}">
+                                <i class="fas fa-times text-light"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/modal :: modal"></div>
+</div>
+
+
+</body>
+</html>

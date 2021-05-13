@@ -2,6 +2,7 @@ package com.pbd.project.service.user;
 
 import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.dao.user.UserDao;
+import com.pbd.project.domain.OrderResetPassword;
 import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Transactional
 @Service
@@ -65,9 +67,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         User user = this.getUserAuthenticated();
 
-        if(user.getStaff()){
+        if (user.getStaff()) {
             return userDao.findUsers(user.getId());
-        }else{
+        } else {
             return userDao.findUsers(user.getHealthCenter().getId(), user.getId());
         }
 
@@ -101,6 +103,52 @@ public class UserServiceImpl implements UserService {
     public void changePassword(ChangePassword changePassword, User user) {
         user.setPassword(this.encodePassword(changePassword.getNewPassword()));
         this.update(user);
+    }
+
+    @Override
+    public String resetPassword(User user) {
+        try {
+
+            String newPassword = generatePassword();
+
+            user.setPassword(this.encodePassword(newPassword));
+            this.update(user);
+            return newPassword;
+        } catch (Exception e){
+            return "";
+        }
+    }
+
+    public String generatePassword() {
+        int len = 11;
+        char[] chart = {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+                'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                'Y', 'Z'};
+
+        String password;
+
+        while (true) {
+            char[] senha = new char[len];
+
+            int chartLenght = chart.length;
+            Random rdm = new Random();
+
+            for (int x = 0; x < len; x++)
+                senha[x] = chart[rdm.nextInt(chartLenght)];
+
+            password = new String(senha);
+
+            if (!password.matches("^[^\\d]+$") && !password.matches("^[^A-Z]+$") && !password.matches("^[^a-z]+$")) {
+                break;
+            }
+        }
+
+        return password;
     }
 
 

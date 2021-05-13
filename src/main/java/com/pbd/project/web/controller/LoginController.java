@@ -40,7 +40,7 @@ public class LoginController {
     }
 
     @PostMapping("/forgout-password/save")
-    public String save(@Valid ResetPassword resetPassword, BindingResult result, ModelMap model){
+    public String save(@Valid ResetPassword resetPassword, BindingResult result, ModelMap model, RedirectAttributes attr){
         if(result.hasErrors()){
             return "forgout-password";
         }
@@ -49,7 +49,13 @@ public class LoginController {
 
         if(user == null){
             model.addAttribute("error",
-                    "Email inválido ou não existe, tente novamente.");
+                    "* Email inválido ou inexistente, tente novamente.");
+            return "forgout-password";
+        }
+
+        if(!orderResetPasswordService.findActivesByUser(user.getId()).isEmpty()){
+            model.addAttribute("error",
+                    "* Você já solicitou este procedimento, aguarde a verificação.");
             return "forgout-password";
         }
 
@@ -57,9 +63,9 @@ public class LoginController {
         orderResetPasswordService.create(user);
 
 
-        model.addAttribute("success",
+        attr.addFlashAttribute("success",
                 "Aguarde a analise da sua solicitação e verifique seu email.");
-        return "redirect:/login";
+        return "redirect:/forgout-password";
 
     }
 

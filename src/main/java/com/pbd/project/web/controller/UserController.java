@@ -158,6 +158,8 @@ public class UserController {
         }
     }
 
+
+
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
         User user = userService.getUserAuthenticated();

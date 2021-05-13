@@ -1,5 +1,6 @@
 package com.pbd.project.service.user;
 
+import com.pbd.project.domain.OrderResetPassword;
 import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 
@@ -20,4 +21,7 @@ public interface UserService {
 
 
     void changePassword(ChangePassword changePassword, User user);
+    String resetPassword(User user);
+
+
 }

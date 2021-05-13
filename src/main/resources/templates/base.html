@@ -129,6 +129,30 @@
     $(function () {
         $('[data-toggle="popover"]').popover();
     });
+
+
+    function setSpinner(id){
+
+        let btnId = "btnResetPassword_" + id;
+        let spinnerId = "spinner_" + id;
+        let rejectedId = "btnResetRejected_" + id;
+
+        let btnReset = document.getElementById(btnId);
+        let spinner = document.getElementById(spinnerId);
+        let btnRejected = document.getElementById(rejectedId);
+
+        btnRejected.className = btnRejected.className + " disabled";
+
+        btnReset.className = "d-none";
+        btnReset.disabled = true;
+
+        spinner.className = "btn btn-success btn-sm";
+        spinner.disabled = true;
+
+
+
+    }
+
 </script>
 
 </body>
