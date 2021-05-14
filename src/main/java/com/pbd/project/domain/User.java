@@ -41,7 +41,7 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "created_at", columnDefinition = "DATE")
     private LocalDate createdAt;
 
-    @Column(length = 7, unique = true, nullable = true)
+    @Column(length = 7, nullable = true)
     private String enrollment;
 
     @NotNull

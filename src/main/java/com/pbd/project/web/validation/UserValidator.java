@@ -27,32 +27,28 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         String path = request.getRequestURI();
-        String updatePath = "/users/update/save";
-        String createPath = "/users/create/save";
+        String updatePath = "/users/update/";
+        String createPath = "/users/create/";
 
         User user = (User) obj;
 
 
-        if (path.equals(updatePath)) {
-            User userDTO = userService.findByUsername(user.getUsername());
 
-            user.setId(userDTO.getId());
-            user.setPassword(userDTO.getPassword());
-            user.setCreatedAt(userDTO.getCreatedAt());
-            user.setStaff(userDTO.getStaff());
+        if (path.contains(updatePath)) {
+            System.out.println("USER =>" + user.toString());
 
-            if (!user.getStaff()) {
-                user.setRoles(userDTO.getRoles());
-                user.setHealthCenter(userDTO.getHealthCenter());
-            }
+            User tempUser = userService.findById(user.getId());
+            user.setPassword(tempUser.getPassword());
+            user.setCreatedAt(tempUser.getCreatedAt());
 
+            System.out.println("USER => " + user.toString());
         }
 
 
         System.out.println(user.toString());
 
 
-        if (path.equals(createPath)) {
+        if (path.contains(createPath)) {
 
             String password = user.getPassword();
 
@@ -89,11 +85,6 @@ public class UserValidator implements Validator {
             errors.rejectValue("enrollment", "User.enrollment.empty");
         }
 
-
-        if (userService.findByEnrollment(user.getEnrollment(), user.getHealthCenter()) != null) {
-            errors.rejectValue("enrollment", "Unique.enrollment");
-        }
-
         if (user.getRoles().isEmpty()) {
             errors.rejectValue("roles", "User.role.empty");
         }
@@ -108,6 +99,23 @@ public class UserValidator implements Validator {
 
         if (user.getName().isEmpty()) {
             errors.rejectValue("name", "NotEmpty.name");
+        }
+
+
+        User enrollmentIsExist = userService.findByEnrollment(user.getEnrollment(), user.getHealthCenter());
+        User emailIsExist = userService.findByEmail(user.getEmail());
+        User usernameIsExist = userService.findByUsername(user.getUsername());
+
+        if (enrollmentIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+            errors.rejectValue("enrollment", "Unique.enrollment");
+        }
+
+        if (emailIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+            errors.rejectValue("email", "Unique.email");
+        }
+
+        if (usernameIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+            errors.rejectValue("username", "Unique.username");
         }
     }
 }

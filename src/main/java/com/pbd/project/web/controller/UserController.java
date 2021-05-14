@@ -17,6 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     private UserService userService;
@@ -56,14 +60,13 @@ public class UserController {
         return "user/list";
     }
 
-    //! Método de CREATE: ADMIN
+
     @GetMapping("/create")
     public String userCreateView(User user, ModelMap model) {
         model.addAttribute("createView", true);
         return "user/create";
     }
 
-    //! Método de CREATE: ADMIN
     @PostMapping("/create/save")
     public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr, ModelMap model) {
 
@@ -80,18 +83,14 @@ public class UserController {
     }
 
 
-    //! Método de UPDATE: GESTOR E OPERADOR
-    @GetMapping("employee/update/{id}")
-    public String employeeUpdateView(@PathVariable("id") Long id, ModelMap model) {
-        User user = userService.findById(id);
+    @GetMapping("/update/{username}")
+    public String userUpdateView(@PathVariable("username") String username, ModelMap model) {
+        User user = userService.findByUsername(username);
 
-        Employee employee = new Employee();
-        employee.toMe(user);
 
-        model.addAttribute("employee", employee);
-        model.addAttribute("id", id);
+        model.addAttribute("user", user);
         model.addAttribute("createView", false);
-        return "user/employee/createOrUpdate";
+        return "user/create";
     }
 
     //! Método de UPDATE: GESTOR E OPERADOR
@@ -133,7 +132,7 @@ public class UserController {
         }
 
         userService.update(user);
-        attr.addFlashAttribute("success", "Usuário editado com sucesso.");
+        attr.addFlashAttribute("success", "Usuário <b>" + user.getUsername() + "</b> editado com sucesso.");
         return "redirect:/users";
     }
 
@@ -148,17 +147,22 @@ public class UserController {
     @ModelAttribute("roles")
     public List<Role> getRoles() {
 
-        if (userService.getUserAuthenticated().getStaff()) {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
             return roleService.findAll();
         } else {
             List<Role> roles = new ArrayList<>();
-            Role role = roleService.findByRole("OPERADOR");
-            roles.add(role);
+            String path = request.getRequestURI();
 
+            if (path.contains("/update/authenticated-user")) {
+                roles.addAll(user.getRoles());
+            } else {
+                roles.add(roleService.findByRole("OPERADOR"));
+            }
             return roles;
         }
     }
-
 
 
     @ModelAttribute("healthCenters")
@@ -167,7 +171,7 @@ public class UserController {
 
         if (user.getStaff()) {
             return healthCenterService.findAll();
-        }else{
+        } else {
             List<HealthCenter> healthCenters = new ArrayList<>();
             HealthCenter healthCenter = healthCenterService.findById(user.getHealthCenter().getId());
             healthCenters.add(healthCenter);
