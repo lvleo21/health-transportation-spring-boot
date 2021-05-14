@@ -38,7 +38,7 @@ public class OrderResetPasswordServiceImpl implements OrderResetPasswordService{
     @Override
     @Transactional(readOnly = true)
     public List<OrderResetPassword> findByHealthCenters(Long id) {
-        return dao.findByHealthCenters(id);
+        return dao.findByHealthCenters(id, userService.getUserAuthenticated().getId());
     }
 
     @Override

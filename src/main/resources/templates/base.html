@@ -155,6 +155,23 @@
 
 </script>
 
+
+<script th:if = "${#strings.contains(#httpServletRequest.requestURI, '/user/change-password/')}" >
+    let oldPasswordField = document.getElementById("oldPassword");
+    let newPasswordField = document.getElementById("newPassword");
+    let checkbox = document.getElementById("showPasswordsCheckbox");
+
+    checkbox.onclick = () => {
+        if(oldPasswordField.type == "password" && newPasswordField.type == "password"){
+            oldPasswordField.type="text";
+            newPasswordField.type="text";
+        } else {
+            oldPasswordField.type="password";
+            newPasswordField.type="password";
+        }
+    }
+</script>
+
 </body>
 
 </html>

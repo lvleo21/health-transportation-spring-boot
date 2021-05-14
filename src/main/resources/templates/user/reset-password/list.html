@@ -92,6 +92,7 @@
 
                         <td class="text-center align-middle" >
                             <a class="btn btn-danger btn-sm"
+                               th:href="@{/users/reset-requests/{id}/rejected (id=${orp.id}) }"
                                th:classappend="${orp.completedIn != null ? 'disabled': ''}"
                                th:id="${#strings.concat('btnResetRejected_', orp.id)}">
                                 <i class="fas fa-times text-light"></i>

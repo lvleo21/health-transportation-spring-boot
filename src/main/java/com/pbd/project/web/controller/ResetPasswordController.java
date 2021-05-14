@@ -48,6 +48,18 @@ public class ResetPasswordController {
 
     }
 
+    @GetMapping("users/reset-requests/{id}/rejected")
+    public String rejectedPassword(@PathVariable("id") Long id, RedirectAttributes attr){
+
+        OrderResetPassword orderResetPassword = orderResetPasswordService.findById(id);
+        orderResetPassword.setWasRejected(true);
+
+        orderResetPasswordService.update(orderResetPassword);
+
+        attr.addFlashAttribute("success", "Pedido rejeitado com sucesso !");
+        return "redirect:/users/reset-requests";
+    }
+
     @GetMapping("users/reset-requests/{id}/reset")
     public String resetPassword(@PathVariable("id") Long id, RedirectAttributes attr) {
         try {
