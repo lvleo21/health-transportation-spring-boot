@@ -107,15 +107,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String resetPassword(User user) {
-        try {
-            String newPassword = generatePassword();
-
-            user.setPassword(this.encodePassword(newPassword));
-            this.update(user);
-            return newPassword;
-        } catch (Exception e){
-            return "";
-        }
+        String newPassword = generatePassword();
+        user.setPassword(this.encodePassword(newPassword));
+        this.update(user);
+        return newPassword;
     }
 
     public String generatePassword() {

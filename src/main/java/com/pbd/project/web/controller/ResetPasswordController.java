@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
 
@@ -49,11 +50,9 @@ public class ResetPasswordController {
     }
 
     @GetMapping("users/reset-requests/{id}/rejected")
-    public String rejectedPassword(@PathVariable("id") Long id, RedirectAttributes attr){
-
+    public String rejectedPassword(@PathVariable("id") Long id, RedirectAttributes attr) {
         OrderResetPassword orderResetPassword = orderResetPasswordService.findById(id);
         orderResetPassword.setWasRejected(true);
-
         orderResetPasswordService.update(orderResetPassword);
 
         attr.addFlashAttribute("success", "Pedido rejeitado com sucesso !");
@@ -65,18 +64,18 @@ public class ResetPasswordController {
         try {
             OrderResetPassword orderResetPassword = orderResetPasswordService.findById(id);
 
+            //! Gero uma nova senha e já atualizo o usuário com a nova senha;
             String newPassword = userService.resetPassword(orderResetPassword.getUserWhoRequested());
 
-            if(!newPassword.isEmpty()){
-                if (this.sendMail(orderResetPassword.getUserWhoRequested(), newPassword)){
-                    orderResetPasswordService.update(orderResetPassword);
-                }
-            } else{
-                System.out.println("Senha está vazia");
-            }
+            //! chamo o sendmail enviando o usuário e a nova senha;
+            this.sendMail(orderResetPassword.getUserWhoRequested(), newPassword);
 
-        }catch (Exception e){
-            System.out.println("ERROR => " + e.getMessage());
+            //! Atualizo o pedido como concluído e digo quem concluíu;
+            orderResetPasswordService.update(orderResetPassword);
+
+        } catch (Exception e) {
+            attr.addFlashAttribute("error", e.getMessage());
+            return "redirect:/users/reset-requests";
         }
 
         attr.addFlashAttribute("success", "Senha resetada com sucesso !");
@@ -84,30 +83,22 @@ public class ResetPasswordController {
     }
 
 
-    public boolean sendMail(User user, String newPassword){
-
+    public void sendMail(User user, String newPassword) throws MessagingException {
+        //! Preparando o texto a ser enviado
         StringBuilder builder = new StringBuilder();
-
-
-        builder.append("<p>Caro <b>"+user.getName()+"</b>,</p>");
+        builder.append("<p>Caro <b>" + user.getName() + "</b>,</p>");
         builder.append("<h2>A senha da sua conta do Health Transportation foi alterada.</h2>");
-        builder.append("<h4>Sua nova senha é: "+ newPassword +"</h4>");
+        builder.append("<h4>Sua nova senha é: " + newPassword + "</h4>");
         builder.append("<p>Se você não atualizou sua conta, informe-nos imediatamente. Envie um e-mail para <b>pbd.healthtransportation@gmail.com</b>.</p>");
         builder.append("<p>Obrigada,<br>A Equipe de Contas do Health Transportation.</p> ");
 
-        try {
-            MimeMessage mail = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mail);
-            helper.setTo(user.getEmail());
-            helper.setSubject("A senha da sua conta do Health Transportation foi redefinida");
-            helper.setText(builder.toString(), true);
-            mailSender.send(mail);
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        //! Enviando o email;
+        MimeMessage mail = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mail);
+        helper.setTo(user.getEmail());
+        helper.setSubject("A senha da sua conta do Health Transportation foi redefinida");
+        helper.setText(builder.toString(), true);
+        mailSender.send(mail);
     }
 
 
