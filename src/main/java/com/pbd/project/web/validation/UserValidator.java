@@ -32,7 +32,8 @@ public class UserValidator implements Validator {
 
         User user = (User) obj;
 
-        if(path.equals(updatePath)){
+
+        if (path.equals(updatePath)) {
             User userDTO = userService.findByUsername(user.getUsername());
 
             user.setId(userDTO.getId());
@@ -40,31 +41,18 @@ public class UserValidator implements Validator {
             user.setCreatedAt(userDTO.getCreatedAt());
             user.setStaff(userDTO.getStaff());
 
-            if(!user.getStaff()){
+            if (!user.getStaff()) {
                 user.setRoles(userDTO.getRoles());
                 user.setHealthCenter(userDTO.getHealthCenter());
             }
 
         }
 
+
         System.out.println(user.toString());
 
-        if (!user.getStaff()) {
-            if (user.getHealthCenter() == null) {
-                errors.rejectValue("healthCenter", "User.healthCenter.empty");
-            }
 
-            if (user.getEnrollment().isEmpty()) {
-                errors.rejectValue("enrollment", "User.enrollment.empty");
-            }
-
-            if (user.getRoles().isEmpty()) {
-                errors.rejectValue("roles", "User.role.empty");
-            }
-        }
-
-
-        if(path.equals(createPath)){
+        if (path.equals(createPath)) {
 
             String password = user.getPassword();
 
@@ -90,6 +78,36 @@ public class UserValidator implements Validator {
             if (!password.matches("^[^\\W]*$")) {
                 errors.rejectValue("password", "User.regex.special.error");
             }
+        }
+
+        if (user.getHealthCenter() == null) {
+            errors.rejectValue("healthCenter", "User.healthCenter.empty");
+            errors.rejectValue("enrollment", "Error.enrollment");
+        }
+
+        if (user.getEnrollment().isEmpty()) {
+            errors.rejectValue("enrollment", "User.enrollment.empty");
+        }
+
+
+        if (userService.findByEnrollment(user.getEnrollment(), user.getHealthCenter()) != null) {
+            errors.rejectValue("enrollment", "Unique.enrollment");
+        }
+
+        if (user.getRoles().isEmpty()) {
+            errors.rejectValue("roles", "User.role.empty");
+        }
+
+        if (user.getEmail().isEmpty()) {
+            errors.rejectValue("email", "NotEmpty.email");
+        }
+
+        if (user.getUsername().isEmpty()) {
+            errors.rejectValue("username", "NotEmpty.username");
+        }
+
+        if (user.getName().isEmpty()) {
+            errors.rejectValue("name", "NotEmpty.name");
         }
     }
 }

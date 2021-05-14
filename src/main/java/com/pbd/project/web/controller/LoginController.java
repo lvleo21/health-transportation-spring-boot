@@ -64,7 +64,7 @@ public class LoginController {
 
 
         attr.addFlashAttribute("success",
-                "Aguarde a analise da sua solicitação e verifique seu email.");
+                "- Aguarde a analise da sua solicitação e verifique seu email.");
         return "redirect:/forgout-password";
 
     }

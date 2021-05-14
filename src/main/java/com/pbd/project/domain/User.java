@@ -31,7 +31,7 @@ public class User extends AbstractEntity<Long> {
     private String email;
 
     @Column(name = "is_active")
-    private Boolean active;
+    private Boolean active = true;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

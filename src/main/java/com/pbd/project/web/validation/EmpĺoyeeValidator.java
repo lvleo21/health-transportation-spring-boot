@@ -38,7 +38,7 @@ public class EmpĺoyeeValidator implements Validator {
 
         User validateUsername = userService.findByUsername(employeeDto.getUsername());
         User validateEmail = userService.findByEmail(employeeDto.getEmail());
-        User validateEnrollment = userService.findByEnrollment(employeeDto.getEnrollment());
+        User validateEnrollment = userService.findByEnrollment(employeeDto.getEnrollment(), userService.getUserAuthenticated().getHealthCenter());
 
 
         if( validateUsername != null && validateUsername.getId() != user.getId()){

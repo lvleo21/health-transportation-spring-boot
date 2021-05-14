@@ -65,10 +65,11 @@ public class UserController {
 
     //! Método de CREATE: ADMIN
     @PostMapping("/create/save")
-    public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr) {
+    public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr, ModelMap model) {
 
         if (result.hasErrors()) {
-            attr.addFlashAttribute("createView", true);
+            System.out.println("Entrou no has error");
+            model.addAttribute("createView", true);
             return "user/create";
         }
 

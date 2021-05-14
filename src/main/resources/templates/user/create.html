@@ -38,7 +38,8 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Nome <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="name" th:field="*{name}">
+                                <input type="text" class="form-control" id="name" th:field="*{name}"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{name}"></small>
                             </div>
                         </div>
@@ -49,7 +50,8 @@
                                 <label class="font-weight-bold">Matrícula <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="enrollment" th:field="*{enrollment}"
-                                       onpaste="return false;">
+                                       onpaste="return false;"
+                                       th:classappend="${#fields.hasErrors('enrollment')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{enrollment}"></small>
                             </div>
                         </div>
@@ -69,7 +71,11 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Usuário <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="username" th:field="*{username}">
+                                <input type="text"
+                                       class="form-control"
+                                       id="username"
+                                       th:field="*{username}"
+                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{username}"></small>
                             </div>
                         </div>
@@ -78,7 +84,9 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="password" th:field="*{password}"
+                                <input type="text" class="form-control" id="password"
+                                       th:field="*{password}"
+                                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
                                        maxlength="11">
                                 <small class="text-danger" th:errors="*{password}"></small>
                             </div>
@@ -88,7 +96,9 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Email <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="email" class="form-control" id="email" th:field="*{email}">
+                                <input type="email" class="form-control" id="email"
+                                       th:field="*{email}"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{email}"></small>
                             </div>
                         </div>
@@ -100,7 +110,7 @@
                                 <label class="font-weight-bold">Função <small
                                         class="text-secondary">(Obrigatório)</small></label>
 
-                                <select class="custom-select" id="roles" th:field="*{roles}">
+                                <select class="custom-select" id="roles" th:field="*{roles}" th:classappend="${#fields.hasErrors('roles')} ? 'is-invalid'">
                                     <option value="">- - -</option>
                                     <option th:each="role : ${roles}" th:value="${role.id}"
                                             th:text="${role.role}"
@@ -116,7 +126,7 @@
                                 <label class="font-weight-bold">Centro de Saúde <small
                                         class="text-secondary">(Obrigatório)</small></label>
 
-                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}">
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}" th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
                                     <option value="">- - -</option>
                                     <option th:each="healthCenter : ${healthCenters}"
                                             th:value="${healthCenter.id}"
@@ -139,7 +149,8 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12 d-flex align-items-center" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <div class="col-md col-sm-12 d-flex align-items-center"
+                             th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                             <div class="form-group mt-2">
 
                                 <input type="checkbox" id="staff" th:field="*{staff}">
@@ -152,10 +163,6 @@
                     </div>
 
                     <br>
-
-                    <ul th:if="${#fields.hasErrors('*')}">
-                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
-                    </ul>
 
                     <div class="row d-flex justify-content-end">
                         <div class="col-sm-3">

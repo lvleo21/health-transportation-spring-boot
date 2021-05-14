@@ -2,6 +2,7 @@ package com.pbd.project.service.user;
 
 import com.pbd.project.dao.role.RoleDao;
 import com.pbd.project.dao.user.UserDao;
+import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.OrderResetPassword;
 import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
@@ -41,8 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User findByEnrollment(String enrollment) {
-        return userDao.findByEnrollment(enrollment);
+    public User findByEnrollment(String enrollment, HealthCenter healthCenter) {
+        return userDao.findUsersByEnrollmentAndHealthCenter(enrollment, healthCenter);
     }
 
     @Override
