@@ -33,7 +33,6 @@ public class UserValidator implements Validator {
         User user = (User) obj;
 
 
-
         if (path.contains(updatePath)) {
             System.out.println("USER =>" + user.toString());
 
@@ -41,13 +40,14 @@ public class UserValidator implements Validator {
             user.setPassword(tempUser.getPassword());
             user.setCreatedAt(tempUser.getCreatedAt());
 
+            if (tempUser.getStaff()) {
+                user.setRoles(tempUser.getRoles());
+            }
+
             System.out.println("USER => " + user.toString());
         }
 
-
-        System.out.println(user.toString());
-
-
+        //! Serve apenas para quando for criar um usuário;
         if (path.contains(createPath)) {
 
             String password = user.getPassword();
@@ -76,15 +76,37 @@ public class UserValidator implements Validator {
             }
         }
 
-        if (user.getHealthCenter() == null) {
-            errors.rejectValue("healthCenter", "User.healthCenter.empty");
-            errors.rejectValue("enrollment", "Error.enrollment");
+        //! Serve apenas para GESTOR e OPERADOR
+        if (!user.getStaff()) {
+
+            User enrollmentIsExist = userService.findByEnrollment(user.getEnrollment(), user.getHealthCenter());
+            User emailIsExist = userService.findByEmail(user.getEmail());
+            User usernameIsExist = userService.findByUsername(user.getUsername());
+
+
+            if (user.getHealthCenter() == null) {
+                errors.rejectValue("healthCenter", "User.healthCenter.empty");
+                errors.rejectValue("enrollment", "Error.enrollment");
+            }
+
+            if (user.getEnrollment().isEmpty()) {
+                errors.rejectValue("enrollment", "User.enrollment.empty");
+            }
+
+            if (enrollmentIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+                errors.rejectValue("enrollment", "Unique.enrollment");
+            }
+
+            if (emailIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+                errors.rejectValue("email", "Unique.email");
+            }
+
+            if (usernameIsExist != null && enrollmentIsExist.getId() != user.getId()) {
+                errors.rejectValue("username", "Unique.username");
+            }
         }
 
-        if (user.getEnrollment().isEmpty()) {
-            errors.rejectValue("enrollment", "User.enrollment.empty");
-        }
-
+        //! Parte comum a todos os usuários
         if (user.getRoles().isEmpty()) {
             errors.rejectValue("roles", "User.role.empty");
         }
@@ -101,21 +123,5 @@ public class UserValidator implements Validator {
             errors.rejectValue("name", "NotEmpty.name");
         }
 
-
-        User enrollmentIsExist = userService.findByEnrollment(user.getEnrollment(), user.getHealthCenter());
-        User emailIsExist = userService.findByEmail(user.getEmail());
-        User usernameIsExist = userService.findByUsername(user.getUsername());
-
-        if (enrollmentIsExist != null && enrollmentIsExist.getId() != user.getId()) {
-            errors.rejectValue("enrollment", "Unique.enrollment");
-        }
-
-        if (emailIsExist != null && enrollmentIsExist.getId() != user.getId()) {
-            errors.rejectValue("email", "Unique.email");
-        }
-
-        if (usernameIsExist != null && enrollmentIsExist.getId() != user.getId()) {
-            errors.rejectValue("username", "Unique.username");
-        }
     }
 }
