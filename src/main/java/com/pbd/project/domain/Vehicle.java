@@ -1,10 +1,9 @@
 package com.pbd.project.domain;
 
 
-import com.pbd.project.domain.enums.Status;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 @Table(name = "VEHICLES")
@@ -31,6 +30,17 @@ public class Vehicle extends AbstractEntity<Long>{
 
     @Column(name="is_available")
     private boolean available = true;
+
+    public List<Travel> getTravels() {
+        return travels;
+    }
+
+    public void setTravels(List<Travel> travels) {
+        this.travels = travels;
+    }
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<Travel> travels;
 
     public String getName() {
         return name;

@@ -3,6 +3,7 @@ package com.pbd.project.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name="DRIVERS")
@@ -21,6 +22,9 @@ public class Driver extends AbstractEntity<Long>{
 
     @Column(name="is_available")
     private boolean available = true;
+
+    @OneToMany(mappedBy = "driver")
+    private List<Travel> travels;
 
     public String getName() {
         return name;
@@ -52,5 +56,13 @@ public class Driver extends AbstractEntity<Long>{
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public List<Travel> getTravels() {
+        return travels;
+    }
+
+    public void setTravels(List<Travel> travels) {
+        this.travels = travels;
     }
 }

@@ -38,6 +38,9 @@ public class HealthCenter extends AbstractEntity<Long>{
     @OneToMany(mappedBy = "healthCenter")
     private List<Vehicle> vehicles;
 
+    @OneToMany(mappedBy = "healthCenter")
+    private List<Travel> travels;
+
 
     public Address getAddress() {
         return address;
