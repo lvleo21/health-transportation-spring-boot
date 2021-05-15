@@ -50,4 +50,12 @@ public class DriverServiceImpl implements DriverService{
     public List<Driver> findByHealthcenter(HealthCenter healthCenter) {
         return driverDao.findDriverByHealthCenter(healthCenter);
     }
+
+    @Override
+    public void changeAvailable(Driver driver) {
+        driver.setAvailable(driver.isAvailable() ? false : true);
+        this.save(driver);
+    }
+
+
 }

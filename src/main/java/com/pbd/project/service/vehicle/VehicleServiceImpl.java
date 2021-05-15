@@ -60,4 +60,10 @@ public class VehicleServiceImpl implements VehicleService{
     public List<Vehicle> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive) {
         return vehicleDao.findAvailables(idHealthCenter, isAvailable, isActive);
     }
+
+    @Override
+    public void changeAvailable(Vehicle vehicle) {
+        vehicle.setAvailable(vehicle.isAvailable() ? false : true);
+        this.save(vehicle);
+    }
 }

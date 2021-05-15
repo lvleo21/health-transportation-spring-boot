@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:with="action=${travel.id == null} ? 'Adicionar' : 'Editar'">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title"
+           th:text="${#strings.concat(action,' Viagem - Health Transportation')}"></title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
+        <h1 class="h3 mb-0 text-gray-800" th:text="${#strings.concat(action,' Viagem')}"></h1>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <div class="card shadow rounded mt-4">
+            <div class="card-body">
+
+
+                <form class="user" autocomplete="off"
+                      th:action="${createView} ?  @{/travels/create/save} : @{/travels/update/{id}/save (id=${travel.id})} "
+                      th:object="${travel}" method="post">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Informações da viagem</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Data de Saída <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="date" class="form-control" id="departureDate" th:field="*{departureDate}"
+                                       th:classappend="${#fields.hasErrors('departureDate')} ? 'is-invalid'">
+                                <small class="text-danger" th:errors="*{departureDate}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Data de Retorno <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="date" class="form-control disabled" id="returnDate"
+                                       th:field="*{returnDate}"
+                                       th:classappend="${#fields.hasErrors('returnDate')} ? 'is-invalid'" disabled>
+                                <small class="text-danger" th:errors="*{returnDate}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Status<small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <select class="custom-select" id="status" th:field="*{status}" th:disabled="${createView} ? true : false">
+                                    <option value="">- - - -</option>
+                                    <option th:each="ts : ${travelStatus}" th:value="${ts}"
+                                            th:text="${ts.description}"></option>
+                                </select>
+                                <small class="text-danger" th:errors="*{status}"></small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Centro de Saúde <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}"
+                                        th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
+                                    <option value="">- - -</option>
+                                    <option th:each="healthCenter : ${healthCenters}"
+                                            th:value="${healthCenter.id}"
+                                            th:text="${healthCenter.address.formatedAddress}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{healthCenter}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Veículo <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="vehicle" th:field="*{vehicle}"
+                                        th:classappend="${#fields.hasErrors('vehicle')} ? 'is-invalid'">
+                                    <option value="">- - -</option>
+                                    <option th:each="vehicle : ${vehicles}"
+                                            th:value="${vehicle.id}"
+                                            th:text="${#strings.concat(vehicle.name, ' - ', vehicle.capacity)}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{vehicle}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Motorista <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="driver" th:field="*{driver}"
+                                        th:classappend="${#fields.hasErrors('driver')} ? 'is-invalid'">
+                                    <option value="">- - -</option>
+                                    <option th:each="driver : ${drivers}"
+                                            th:value="${driver.id}"
+                                            th:text="${driver.name}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{driver}"></small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-1">
+
+                                <input type="checkbox" id="active" th:field="*{active}">
+                                <label th:for="${#ids.next('active')}">Ativo</label>
+                                <br>
+                                <small>Indica que esta viagem está ativa ou não no sistema.</small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Destino</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Cidade <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="destinyCity" th:field="*{destinyCity}">
+                                <small class="text-danger" th:errors="*{destinyCity}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Estado <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <select class="custom-select" id="destinyState" th:field="*{destinyState}">
+                                    <option value="">- - - -</option>
+                                    <option th:each="uf : ${ufs}" th:value="${uf}" th:text="${uf.initials}"></option>
+                                </select>
+                                <small class="text-danger" th:errors="*{destinyState}"></small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Observações</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <textarea id="observation" th:field="*{observation}" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="id" th:field="*{id}"/>
+
+                    <br>
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary w-100 font-weight-bold"
+                                    th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
+
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -14,4 +14,6 @@ public interface DriverService {
     List<Driver> findAll();
     List<Driver> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive);
     List<Driver> findByHealthcenter(HealthCenter healthCenter);
+
+    void changeAvailable(Driver driver);
 }

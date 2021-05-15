@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Table(name="TRAVELS")
 public class Travel extends AbstractEntity<Long>{
 
+    @NotNull(message = "{NotEmpty.departureDate}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "departure_date", columnDefinition = "DATE", nullable = false)
     private LocalDate departureDate;

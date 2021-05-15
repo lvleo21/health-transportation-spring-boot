@@ -1,5 +1,6 @@
 package com.pbd.project.service.vehicle;
 
+import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Vehicle;
 
@@ -15,4 +16,6 @@ public interface VehicleService {
     List<Vehicle> findAll();
     List<Vehicle> findByHealthcenter(HealthCenter healthCenter);
     List<Vehicle> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive);
+
+    void changeAvailable(Vehicle vehicle);
 }

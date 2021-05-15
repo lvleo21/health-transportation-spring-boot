@@ -40,8 +40,6 @@ public class VehicleController {
         binder.setValidator(this.vehicleValidator);
     }
 
-
-
     @GetMapping("")
     public String vehiclesListView(ModelMap model){
 

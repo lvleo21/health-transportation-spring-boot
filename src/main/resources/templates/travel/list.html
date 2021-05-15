@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}">
+<head>
+  <meta charset="UTF-8"/>
+  <title layout:fragment="title">Viagens - Health Transportation</title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Viagens</h1>
+  </div>
+
+  <div th:replace="fragments/alert"></div>
+
+  <div class="card shadow rounded mt-3">
+    <div class="card-header d-flex align-items-center d-flex justify-content-end">
+
+
+      <div>
+        <!-- Topbar Search -->
+        <form class="form-inline navbar-search">
+          <div class="input-group">
+            <input type="text" class="form-control border-1 small"
+                   placeholder="Buscar por data ..." aria-label="Search"
+                   aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <caption class="ml-4">
+            <i class="fas fa-caret-right"></i> Qnt. de viagens encontradas:
+            <span class="font-weight-bold" th:text="${#lists.size(travels)}"></span>
+          </caption>
+          <thead>
+          <tr>
+            <th class='text-center text-dark' scope="col">Saída</th>
+            <th class='text-center text-dark' scope="col">Retorno</th>
+            <th class='text-center text-dark' scope="col">Destino</th>
+            <th class='text-center text-dark' scope="col">Motorista</th>
+            <th class='text-center text-dark' scope="col">Veículo</th>
+            <th class='text-center text-dark' scope="col">Locações</th>
+            <th class='text-center text-dark' scope="col">Status</th>
+            <th class='text-center text-dark' scope="col">Ativo</th>
+            <th class='text-center text-dark' scope="col">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="travel : ${travels}">
+
+            <td class="text-center align-middle" th:text="*{#temporals.format(travel.departureDate, 'dd/MM/yyyy')}"></td>
+            <td class="text-center align-middle" th:text="${travel.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>
+            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>
+            <td class="text-center align-middle" th:text="*{travel.driver.name}"></td>
+            <td class="text-center align-middle" th:text="*{travel.vehicle.name}"></td>
+            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>
+            <td class="text-center align-middle" th:text="*{travel.status.description}">
+            <td class="text-center align-middle" th:switch="*{travel.active}">
+              <i class="fas fa-check text-success" th:case="true"></i>
+              <i class="fas fa-times text-danger" th:case="false"></i>
+            </td>
+
+            <td class="text-center align-middle nowrap">
+<!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+              <a class="btn btn-primary btn-sm" title="Editar"
+                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"
+                 th:href="@{/travels/update/{id} (id=${travel.id}) }">
+                <i class="fas fa-pen text-light"></i>
+              </a>
+
+<!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+              <button th:id="${#strings.concat('btn_travels/delete/', travel.id)}"
+                      th:disabled="${travel.status.description != 'Aguardando' ? true : false}"
+                      type="button" title="Remover"
+                      class="btn btn-danger btn-sm"
+                      data-toggle="modal" data-target="#myModal">
+                <i class="fas fa-trash text-light"></i>
+              </button>
+            </td>
+
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div th:replace="fragments/modal :: modal"></div>
+</div>
+
+
+</body>
+</html>
