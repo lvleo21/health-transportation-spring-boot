@@ -137,7 +137,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteHealthCenter(@PathVariable("id") Long id, RedirectAttributes attr) {
+    public String deleteUser(@PathVariable("id") Long id, RedirectAttributes attr) {
         userService.delete(id);
         attr.addFlashAttribute("success", "Usuário removido com sucesso.");
         return "redirect:/users";

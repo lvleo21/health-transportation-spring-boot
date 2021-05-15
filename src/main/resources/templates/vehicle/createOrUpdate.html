@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:with="action=${vehicle.id == null} ? 'Adicionar' : 'Editar'">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title"
+           th:text="${#strings.concat(action,' Veículo - Health Transportation')}"></title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
+        <h1 class="h3 mb-0 text-gray-800" th:text="${#strings.concat(action,' Veículo')}"></h1>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <div class="card shadow rounded mt-4">
+            <div class="card-body">
+
+
+                <form class="user" autocomplete="off"
+                      th:action="${createView} ?  @{/vehicles/create/save} : @{/vehicles/update/{plaque}/save (plaque=${vehicle.plaque})} "
+                      th:object="${vehicle}" method="post">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Informações do veículo</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nome <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}">
+                                <small class="text-danger" th:errors="*{name}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Capacidade <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="number" class="form-control" id="capacity" th:field="*{capacity}">
+                                <small class="text-danger" th:errors="*{capacity}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Placa <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="plaque" th:field="*{plaque}"
+                                       onpaste="return false;">
+                                <small class="text-danger" th:errors="*{plaque}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Centro de Saúde <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}" th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
+                                    <option value="">- - -</option>
+                                    <option th:each="healthCenter : ${healthCenters}"
+                                            th:value="${healthCenter.id}"
+                                            th:text="${healthCenter.address.formatedAddress}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{healthCenter}"></small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-4">
+
+                                <input type="checkbox" id="active" th:field="*{active}">
+                                <label th:for="${#ids.next('active')}">Ativo</label>
+                                <br>
+                                <small>Indica que este veículo está ativo ou não no sistema.</small>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12 d-flex align-items-center">
+                            <div class="form-group mt-4">
+
+                                <input type="checkbox" id="available" th:field="*{available}">
+                                <label th:for="${#ids.next('available')}">Disponível</label>
+                                <br>
+                                <small>Indica que este veículo está disponível para viagem.</small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="id" th:field="*{id}"/>
+
+                    <br>
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary w-100 font-weight-bold" th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
+
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

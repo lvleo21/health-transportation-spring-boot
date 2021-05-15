@@ -4,7 +4,7 @@ package com.pbd.project.domain;
 import com.pbd.project.domain.enums.Status;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "VEHICLES")
@@ -13,11 +13,14 @@ public class Vehicle extends AbstractEntity<Long>{
     @NotEmpty(message = "{NotEmpty.name}")
     private String name;
 
-    @NotEmpty(message = "{NotEmpty.capacity}")
+    @NotNull(message="{NotNull.capacity}")
+    @Digits(integer = 2, fraction = 0)
+    @Column(nullable = false, length = 2)
     private Integer capacity;
 
     @ManyToOne
     @JoinColumn(name = "health_center_id", nullable = false)
+    @NotNull(message = "{NotEmpty.healthCenter}")
     private HealthCenter healthCenter;
 
     @NotEmpty(message = "{NotEmpty.plaque}")
