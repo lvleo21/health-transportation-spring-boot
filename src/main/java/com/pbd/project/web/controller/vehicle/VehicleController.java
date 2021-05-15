@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.vehicle;
 
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.User;
@@ -64,7 +64,7 @@ public class VehicleController {
     }
 
     @PostMapping("/create/save")
-    public String saveVehicle(@Valid Vehicle vehicle, BindingResult result, RedirectAttributes attr, ModelMap model){
+    public String createVehicle(@Valid Vehicle vehicle, BindingResult result, RedirectAttributes attr, ModelMap model){
 
         if(result.hasErrors()){
             model.addAttribute("createView", true);
@@ -95,9 +95,6 @@ public class VehicleController {
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("createView", false);
         return "vehicle/createOrUpdate";
-
-
-
     }
 
     @PostMapping("/update/{plaque}/save")
@@ -115,7 +112,7 @@ public class VehicleController {
     }
 
     @GetMapping("delete/{id}")
-    public String deleteVehicle(@PathVariable("id")Long id, RedirectAttributes attr){
+    public String deleteVehicle(@PathVariable("id") Long id, RedirectAttributes attr){
 
         vehicleService.delete(id);
         attr.addFlashAttribute("success", "Veículo deletado com sucesso.");

@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.user;
 
 
 import com.pbd.project.domain.OrderResetPassword;

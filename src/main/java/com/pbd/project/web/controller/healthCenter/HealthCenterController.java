@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.healthCenter;
 
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Prefecture;

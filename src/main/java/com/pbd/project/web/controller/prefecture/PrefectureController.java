@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.prefecture;
 
 import com.pbd.project.domain.Prefecture;
 import com.pbd.project.domain.enums.UF;

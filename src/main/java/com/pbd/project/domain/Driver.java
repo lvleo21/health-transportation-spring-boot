@@ -2,6 +2,7 @@ package com.pbd.project.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="DRIVERS")
@@ -10,8 +11,7 @@ public class Driver extends AbstractEntity<Long>{
     @NotEmpty(message = "{NotEmpty.name}")
     private String name;
 
-
-    @NotEmpty(message = "{NotEmpty.healthCenter}")
+    @NotNull(message = "{NotEmpty.healthCenter}")
     @ManyToOne
     @JoinColumn(name = "health_center_id", nullable = false)
     private HealthCenter healthCenter;

@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.user;
 
 import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.service.user.UserService;
