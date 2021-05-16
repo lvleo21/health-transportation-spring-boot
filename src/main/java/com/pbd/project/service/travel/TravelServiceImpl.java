@@ -47,8 +47,10 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void delete(Long id) {
-        travelDao.deleteById(id);
+    public void delete(Travel travel) {
+        driverService.changeAvailable(travel.getDriver());
+        vehicleService.changeAvailable(travel.getVehicle());
+        travelDao.delete(travel);
     }
 
     @Override

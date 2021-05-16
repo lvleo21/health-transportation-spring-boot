@@ -8,7 +8,7 @@ import java.util.List;
 public interface TravelService {
     void save(Travel travel);
     void update(Travel travel);
-    void delete(Long id);
+    void delete(Travel travel);
     Travel findById(Long id);
     List<Travel> findAll();
     List<Travel> findByHealthCenter(HealthCenter healthCenter);

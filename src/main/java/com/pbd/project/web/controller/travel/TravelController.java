@@ -105,6 +105,26 @@ public class TravelController {
         return  "redirect:/travels";
     }
 
+    @GetMapping("delete/{id}")
+    public String deleteTravel(@PathVariable("id") Long id, RedirectAttributes attr){
+
+        Travel travel = travelService.findById(id);
+
+
+        if (travel.getRegisteredPassengers() == 0) {
+            travelService.delete(travel);
+            attr.addFlashAttribute("success", "Viagem deletada com sucesso.");
+        }
+
+        else{
+            attr.addFlashAttribute("error", "Está viagem possue passageiros cadastrados.");
+        }
+
+
+
+        return  "redirect:/travels";
+    }
+
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
         User user = userService.getUserAuthenticated();
