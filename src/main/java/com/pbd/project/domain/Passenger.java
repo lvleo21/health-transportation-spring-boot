@@ -28,7 +28,7 @@ public class Passenger extends AbstractEntity<Long>{
 
     @NotNull(message = "{NotEmpty.people.dateOfBirth}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name ="date_of_birth", columnDefinition = "DATE")
+    @Column(name ="date_of_birth", columnDefinition = "DATE", nullable = false)
     private LocalDate dateOfBirth;
 
     @NotNull(message = "{NotNull.people.gender}")
@@ -45,20 +45,116 @@ public class Passenger extends AbstractEntity<Long>{
     private String cellPhone;
 
     @ManyToOne
+    @NotNull(message = "{NotEmpty.healthCenter}")
     @JoinColumn(name = "health_center_id", nullable = false)
     private HealthCenter healthCenter;
 
     @Column(length = 14) // (99) 9999-9999
     private String landline;
-    private Boolean isActive;
+
+    @Column(name="is_active")
+    private Boolean active = true;
 
     @Column(name="warning_count")
-    private Integer warningCount;
+    private Integer warningCount = 0;
 
     @Column(columnDefinition = "TEXT")
     private String observation;
 
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getSus() {
+        return sus;
+    }
+
+    public void setSus(String sus) {
+        this.sus = sus;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public com.pbd.project.domain.enums.Gender getGender() {
+        return Gender;
+    }
+
+    public void setGender(com.pbd.project.domain.enums.Gender gender) {
+        Gender = gender;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public HealthCenter getHealthCenter() {
+        return healthCenter;
+    }
+
+    public void setHealthCenter(HealthCenter healthCenter) {
+        this.healthCenter = healthCenter;
+    }
+
+    public String getLandline() {
+        return landline;
+    }
+
+    public void setLandline(String landline) {
+        this.landline = landline;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Integer getWarningCount() {
+        return warningCount;
+    }
+
+    public void setWarningCount(Integer warningCount) {
+        this.warningCount = warningCount;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 }

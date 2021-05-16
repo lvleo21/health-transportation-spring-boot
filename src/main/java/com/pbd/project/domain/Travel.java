@@ -20,7 +20,7 @@ public class Travel extends AbstractEntity<Long>{
     private LocalDate departureDate;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name = "return_data", columnDefinition = "DATE")
+    @Column(name = "return_date", columnDefinition = "DATE")
     private LocalDate returnDate;
 
     @NotBlank(message = "{notEmpty.city}")
