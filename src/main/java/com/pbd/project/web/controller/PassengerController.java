@@ -2,8 +2,10 @@ package com.pbd.project.web.controller;
 
 import com.pbd.project.domain.*;
 import com.pbd.project.domain.enums.Gender;
+import com.pbd.project.domain.enums.TravelStatus;
 import com.pbd.project.domain.enums.UF;
 import com.pbd.project.service.healthCenter.HealthCenterService;
+import com.pbd.project.service.location.LocationService;
 import com.pbd.project.service.passenger.PassengerService;
 import com.pbd.project.service.role.RoleService;
 import com.pbd.project.service.user.UserService;
@@ -38,6 +40,9 @@ public class PassengerController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private LocationService locationService;
 
 
 
@@ -131,6 +136,22 @@ public class PassengerController {
     public String deactivatePassenger(@PathVariable("rg") String rg, RedirectAttributes attr) {
 
         Passenger passenger = passengerService.findPassengerByRg(rg);
+
+
+        if(passenger != null){
+
+            if (locationService.findLocationByPassengerAndTravelStatus(passenger.getId(), TravelStatus.AGUARDANDO.getName()).isEmpty()){
+                passengerService.changePassengerStatus(passenger, false);
+                attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> desativado(a) com sucesso.");
+            } else{
+                attr.addFlashAttribute("error", "Este passageiro está em uma viagem ativa, tente novamente mais tarde.");
+            }
+        } else{
+            attr.addFlashAttribute("error", "Erro ao tentar ativar o passageiro, tente novamente.");
+        }
+
+
+
         //! Tenho que verificar se não esta em nenhuma viagem ativa;
 
         return "redirect:/passengers";
@@ -152,9 +173,9 @@ public class PassengerController {
 
         if(passenger != null){
             passengerService.changePassengerStatus(passenger, true);
-            attr.addFlashAttribute("error", "<b>"+passenger.getName()+"</b> ativado com sucesso.");
+            attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> ativado(a) com sucesso.");
         } else{
-            attr.addFlashAttribute("success", "Erro ao tentar ativar o passageiro, tente novamente.");
+            attr.addFlashAttribute("error", "Erro ao tentar ativar o passageiro, tente novamente.");
         }
 
         return "redirect:/passengers";

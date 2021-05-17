@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 @Entity
@@ -55,6 +55,10 @@ public class Passenger extends AbstractEntity<Long>{
     @NotNull(message = "{NotEmpty.healthCenter}")
     @JoinColumn(name = "health_center_id", nullable = false)
     private HealthCenter healthCenter;
+
+    @OneToMany(mappedBy = "passenger")
+    private List<Location> locações;
+
 
     @Column(name="is_active")
     private Boolean active = true;
@@ -172,4 +176,11 @@ public class Passenger extends AbstractEntity<Long>{
         this.blocked = blocked;
     }
 
+    public List<Location> getLocações() {
+        return locações;
+    }
+
+    public void setLocações(List<Location> locações) {
+        this.locações = locações;
+    }
 }

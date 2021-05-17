@@ -9,6 +9,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="TRAVELS")
@@ -60,6 +61,9 @@ public class Travel extends AbstractEntity<Long>{
     @NotNull(message="{NotNull.registeredPassengers}")
     @Column(nullable = false, name = "registered_passengers")
     private Integer registeredPassengers = 0;
+
+    @OneToMany(mappedBy = "travel")
+    private List<Location> locações;
 
     public LocalDate getDepartureDate() {
         return departureDate;
@@ -147,5 +151,13 @@ public class Travel extends AbstractEntity<Long>{
 
     public void setRegisteredPassengers(Integer registeredPassengers) {
         this.registeredPassengers = registeredPassengers;
+    }
+
+    public List<Location> getLocações() {
+        return locações;
+    }
+
+    public void setLocações(List<Location> locações) {
+        this.locações = locações;
     }
 }
