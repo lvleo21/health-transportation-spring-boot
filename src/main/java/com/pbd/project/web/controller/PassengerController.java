@@ -1,13 +1,11 @@
 package com.pbd.project.web.controller;
 
-import com.pbd.project.domain.HealthCenter;
-import com.pbd.project.domain.Passenger;
-import com.pbd.project.domain.Travel;
-import com.pbd.project.domain.User;
+import com.pbd.project.domain.*;
 import com.pbd.project.domain.enums.Gender;
 import com.pbd.project.domain.enums.UF;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.passenger.PassengerService;
+import com.pbd.project.service.role.RoleService;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.web.validation.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,11 @@ public class PassengerController {
     @Autowired
     private PassengerValidator passengerValidator;
 
+    @Autowired
+    private RoleService roleService;
+
+
+
 //    @InitBinder
 //    public void userInitBinder(WebDataBinder binder) {
 //        binder.setValidator(this.passengerValidator);
@@ -57,7 +60,12 @@ public class PassengerController {
         if (user.getStaff()) {
             model.addAttribute("passengers", passengerService.findAll());
         } else {
-            model.addAttribute("passengers", passengerService.findByHealthCenter(user.getHealthCenter()));
+
+            if (user.getRoles().contains(roleService.findByRole("GESTOR"))){
+                model.addAttribute("passengers", passengerService.findPassengerByHealthCenter(user.getHealthCenter()));
+            } else{
+                model.addAttribute("passengers", passengerService.findPassengerByHealthCenterAndActive(user.getHealthCenter(), true));
+            }
         }
 
         return "passenger/list";
@@ -118,6 +126,42 @@ public class PassengerController {
         attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> atualizado(a) com sucesso.");
         return "redirect:/passengers";
     }
+
+    @GetMapping("/{rg}/deactivate")
+    public String deactivatePassenger(@PathVariable("rg") String rg, RedirectAttributes attr) {
+
+        Passenger passenger = passengerService.findPassengerByRg(rg);
+        //! Tenho que verificar se não esta em nenhuma viagem ativa;
+
+        return "redirect:/passengers";
+    }
+
+    @GetMapping("/{rg}/activate")
+    public String activatePassenger(@PathVariable("rg") String rg, RedirectAttributes attr) {
+        Passenger passenger = passengerService.findPassengerByRg(rg);
+
+
+        //! faz um método para isso
+        User user = userService.getUserAuthenticated();
+        if (!user.getStaff()) {
+            if (!user.getHealthCenter().getId().equals(passenger.getHealthCenter().getId())) {
+                attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+                return "redirect:/passengers";
+            }
+        }
+
+        if(passenger != null){
+            passengerService.changePassengerStatus(passenger, true);
+            attr.addFlashAttribute("error", "<b>"+passenger.getName()+"</b> ativado com sucesso.");
+        } else{
+            attr.addFlashAttribute("success", "Erro ao tentar ativar o passageiro, tente novamente.");
+        }
+
+        return "redirect:/passengers";
+    }
+
+
+
 
     @ModelAttribute("ufs")
     public UF[] getUFs() {

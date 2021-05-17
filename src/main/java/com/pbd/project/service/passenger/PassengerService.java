@@ -14,5 +14,10 @@ public interface PassengerService {
     Passenger findPassengerByRg(String rg);
     Passenger findPassengerByAddressAndId(Address address, Long id);
     List<Passenger> findAll();
-    List<Passenger> findByHealthCenter(HealthCenter healthCenter);
+    List<Passenger> findPassengerByHealthCenterAndActive(HealthCenter healthCenter, boolean active);
+    List<Passenger> findPassengerByHealthCenter(HealthCenter healthCenter);
+
+    void changePassengerStatus(Passenger passenger, boolean active);
+
+
 }

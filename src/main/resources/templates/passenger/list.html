@@ -61,7 +61,8 @@
                         <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
                         <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
                         <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
-                        <td class="text-center align-middle text-truncate font-weight-bold" th:text="*{passenger.name}"></td>
+                        <td class="text-center align-middle text-truncate font-weight-bold"
+                            th:text="*{passenger.name}"></td>
                         <td class="text-center align-middle text-truncate" th:text="*{passenger.rg}"></td>
                         <td class="text-center align-middle text-truncate" th:text="*{passenger.sus}"></td>
                         <td class="text-center align-middle" th:text="*{passenger.gender}"></td>
@@ -91,16 +92,16 @@
                                 <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
                             </a>
 
-<!--                            <a class="btn btn-secondary btn-sm" data-container="body"-->
-<!--                                    role="button"-->
-<!--                                    title="<b>Endereço</b>"-->
-<!--                                    data-toggle="popover"-->
-<!--                                    data-placement="right"-->
-<!--                                    data-trigger="focus"-->
-<!--                                    th:data-content="${passenger.address.getAdressInformation}">-->
+                            <!--                            <a class="btn btn-secondary btn-sm" data-container="body"-->
+                            <!--                                    role="button"-->
+                            <!--                                    title="<b>Endereço</b>"-->
+                            <!--                                    data-toggle="popover"-->
+                            <!--                                    data-placement="right"-->
+                            <!--                                    data-trigger="focus"-->
+                            <!--                                    th:data-content="${passenger.address.getAdressInformation}">-->
 
-<!--                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>-->
-<!--                            </a>-->
+                            <!--                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>-->
+                            <!--                            </a>-->
                         </td>
 
 
@@ -114,12 +115,28 @@
 
                             <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
                             <!--                                    th:disabled="${travel.status.description != 'Aguardando' ? true : false}"-->
-                            <button th:id="${#strings.concat('btn_passengers/delete/', passenger.id)}"
-                                    type="button" title="Remover"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
+
+                            <th:block th:switch="${passenger.active}">
+                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"
+                                        type="button" title="Desativar"
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal" data-target="#myModal"
+                                        th:case="true">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+
+                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/activate')}"
+                                        type="button" title="Ativar"
+                                        class="btn btn-success btn-sm"
+                                        data-toggle="modal" data-target="#myModal"
+                                        th:case="false">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </th:block>
+
+
+
+
                         </td>
 
                     </tr>

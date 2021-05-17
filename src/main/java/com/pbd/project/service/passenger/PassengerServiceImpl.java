@@ -87,7 +87,21 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Passenger> findByHealthCenter(HealthCenter healthCenter) {
-        return passengerDao.findPassengerByHealthCenterAndActive(healthCenter, true);
+    public List<Passenger> findPassengerByHealthCenterAndActive(HealthCenter healthCenter, boolean active) {
+        return passengerDao.findPassengerByHealthCenterAndActive(healthCenter, active);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Passenger> findPassengerByHealthCenter(HealthCenter healthCenter) {
+        return passengerDao.findPassengerByHealthCenter(healthCenter);
+    }
+
+    @Override
+    public void changePassengerStatus(Passenger passenger, boolean active) {
+        passenger.setActive(active);
+        passengerDao.save(passenger);
+    }
+
+
 }
