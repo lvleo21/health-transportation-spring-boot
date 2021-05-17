@@ -1,10 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:with="action=${passenger.id == null} ? 'Adicionar' : 'Editar'">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title"
+           th:text="${#strings.concat(action,' Passageiro - Health Transportation')}"></title>
 </head>
 <body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
+        <h1 class="h3 mb-0 text-gray-800" th:text="${#strings.concat(action,' Passageiro')}"></h1>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <div class="card shadow rounded mt-4">
+            <div class="card-body">
+
+
+                <form class="user" autocomplete="off"
+                      th:action="${createView} ?  @{/passengers/create/save} : @{/passengers/update/{rg}/save (rg=${passenger.rg})} "
+                      th:object="${passenger}" method="post">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Informações do passageiro</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nome <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="name"
+                                       th:field="*{name}">
+                                <small class="text-danger" th:errors="*{name}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">RG <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="rg"
+                                       th:field="*{rg}">
+                                <small class="text-danger" th:errors="*{rg}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">SUS <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="sus"
+                                       th:field="*{sus}">
+                                <small class="text-danger" th:errors="*{sus}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Data de Nasc.<small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"
+                                       th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid'">
+                                <small class="text-danger" th:errors="*{dateOfBirth}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Gênero <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <select class="custom-select" id="gender" th:field="*{gender}">
+                                    <option value="">- - - -</option>
+                                    <option th:each="gender : ${genres}" th:value="${gender}" th:text="${gender.description}"></option>
+                                </select>
+                                <small class="text-danger" th:errors="*{gender}"></small>
+                            </div>
+                        </div>
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Centro de Saúde <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}"
+                                        th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
+                                    <option value="">- - -</option>
+                                    <option th:each="healthCenter : ${healthCenters}"
+                                            th:value="${healthCenter.id}"
+                                            th:text="${healthCenter.address.formatedAddress}"></option>
+                                </select>
+
+                                <small class="text-danger" th:errors="*{healthCenter}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Tel. Celular <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="cellPhone" th:field="*{cellPhone}"
+                                       th:classappend="${#fields.hasErrors('cellPhone')} ? 'is-invalid'">
+                                <small class="text-danger" th:errors="*{cellPhone}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="">Tel. Fixo</label>
+                                <input type="text" class="form-control" id="landline" th:field="*{landline}"
+                                       th:classappend="${#fields.hasErrors('landline')} ? 'is-invalid'">
+                                <small class="text-danger" th:errors="*{landline}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Endereço</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Logradouro <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="publicPlace"
+                                       th:field="*{address.publicPlace}">
+                                <small class="text-danger" th:errors="*{address.publicPlace}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Bairro <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="neighborhood"
+                                       th:field="*{address.neighborhood}">
+                                <small class="text-danger" th:errors="*{address.neighborhood}"></small>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Número <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="number" class="form-control" id="number" th:field="*{address.number}">
+                                <small class="text-danger" th:errors="*{address.number}"></small>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label>Complemento</label>
+                                <input type="text" class="form-control" id="complement"
+                                       th:field="*{address.complement}">
+                                <small class="text-danger" th:errors="*{address.complement}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Cidade <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="city" th:field="*{address.city}">
+                                <small class="text-danger" th:errors="*{address.city}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Estado <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <select class="custom-select" id="state" th:field="*{address.state}">
+                                    <option value="">- - - -</option>
+                                    <option th:each="uf : ${ufs}" th:value="${uf}" th:text="${uf.initials}"></option>
+                                </select>
+                                <small class="text-danger" th:errors="*{address.state}"></small>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">País <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="country" th:field="*{address.country}">
+                                <small class="text-danger" th:errors="*{address.country}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="h4 mb-0 text-gray-800">
+                            <i class="fas fa-caret-right"></i> <b>Observações</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <textarea id="observation" th:field="*{observation}" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="id" th:field="*{id}"/>
+                    <input type="hidden" id="address.id" th:field="*{address.id}"/>
+
+                    <br>
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary w-100 font-weight-bold"
+                                    th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
+
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>
