@@ -9,13 +9,16 @@ import com.pbd.project.domain.enums.UF;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.passenger.PassengerService;
 import com.pbd.project.service.user.UserService;
+import com.pbd.project.web.validation.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,15 @@ public class PassengerController {
 
     @Autowired
     private HealthCenterService healthCenterService;
+
+    @Autowired
+    private PassengerValidator passengerValidator;
+
+    @InitBinder
+    public void userInitBinder(WebDataBinder binder) {
+        binder.setValidator(this.passengerValidator);
+    }
+
 
     @GetMapping("")
     public String passengersListView(ModelMap model) {
@@ -51,6 +63,20 @@ public class PassengerController {
     public String passengersCreateView(Passenger passenger, ModelMap model) {
         model.addAttribute("createView", true);
         return "passenger/createOrUpdate";
+    }
+
+    @PostMapping("/create/save")
+    public String createPassenger(@Valid Passenger passenger, BindingResult result, RedirectAttributes attr, ModelMap model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("createView", true);
+            return "passenger/createOrUpdate";
+        }
+
+        passengerService.save(passenger);
+        attr.addFlashAttribute("success", "<b>"+ passenger.getName() + "</b> adicionado com sucesso.");
+
+        return "redirect:/passengers";
     }
 
     @ModelAttribute("ufs")

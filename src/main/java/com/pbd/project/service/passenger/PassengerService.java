@@ -9,6 +9,8 @@ public interface PassengerService {
     void save(Passenger passenger);
     void update(Passenger passenger);
     Passenger findById(Long id);
+    Passenger findPassengerBySus(String sus);
+    Passenger findPassengerByRg(String rg);
     List<Passenger> findAll();
     List<Passenger> findByHealthCenter(HealthCenter healthCenter);
 }

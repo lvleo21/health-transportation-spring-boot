@@ -5,6 +5,8 @@ import com.pbd.project.domain.enums.UF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,33 +17,34 @@ import java.time.LocalDate;
 @Table(name="PASSENGERS")
 public class Passenger extends AbstractEntity<Long>{
 
-    @NotNull(message = "{NotNull.name}")
+    @NotEmpty(message = "{NotNull.name}")
     @Column(nullable = false)
     private String name;
 
-    @NotNull(message = "{NotNull.people.rg}")
+    @NotEmpty(message = "{NotNull.passenger.rg}")
     @Column(nullable = false, unique = true, length = 9)
     private String rg;
 
-    @NotNull(message = "{NotNull.people.sus}")
+    @NotEmpty(message = "{NotNull.passenger.sus}")
     @Column(nullable = false, unique = true, length = 18)
     private String sus;
 
-    @NotNull(message = "{NotEmpty.people.dateOfBirth}")
+    @NotNull(message = "{NotNull.passenger.dateOfBirth}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name ="date_of_birth", columnDefinition = "DATE", nullable = false)
     private LocalDate dateOfBirth;
 
-    @NotNull(message = "{NotNull.people.gender}")
+    @NotNull(message = "{NotNull.passenger.gender}")
     @Column(length = 1)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Valid
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @NotNull(message = "{NotNull.people.cellPhone}")
+    @NotEmpty(message = "{NotNull.passenger.cellPhone}")
     @Column(name="cell_phone", length = 15)// (99) 99999-9999
     private String cellPhone;
 

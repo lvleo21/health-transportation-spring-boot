@@ -37,7 +37,8 @@
                                 <label class="font-weight-bold">Nome <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="name"
-                                       th:field="*{name}">
+                                       th:field="*{name}"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{name}"></small>
                             </div>
                         </div>
@@ -47,6 +48,7 @@
                                 <label class="font-weight-bold">RG <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="rg"
+                                       th:classappend="${#fields.hasErrors('rg')} ? 'is-invalid'"
                                        th:field="*{rg}">
                                 <small class="text-danger" th:errors="*{rg}"></small>
                             </div>
@@ -57,6 +59,7 @@
                                 <label class="font-weight-bold">SUS <small
                                         class="text-secondary">(Obrigatório)</small></label>
                                 <input type="text" class="form-control" id="sus"
+                                       th:classappend="${#fields.hasErrors('sus')} ? 'is-invalid'"
                                        th:field="*{sus}">
                                 <small class="text-danger" th:errors="*{sus}"></small>
                             </div>
@@ -78,7 +81,8 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Gênero <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <select class="custom-select" id="gender" th:field="*{gender}">
+                                <select class="custom-select" id="gender" th:field="*{gender}"
+                                        th:classappend="${#fields.hasErrors('gender')} ? 'is-invalid'">
                                     <option value="">- - - -</option>
                                     <option th:each="gender : ${genres}" th:value="${gender}" th:text="${gender.description}"></option>
                                 </select>

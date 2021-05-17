@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface PassengerDao extends JpaRepository<Passenger, Long> {
     List<Passenger> findPassengerByHealthCenterAndActive(HealthCenter healthCenter, boolean active);
+    Passenger findPassengerBySus(String sus);
+    Passenger findPassengerByRg(String rg);
 }
