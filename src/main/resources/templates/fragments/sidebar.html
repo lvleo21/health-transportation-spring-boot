@@ -37,6 +37,58 @@
 
 
     <li class="nav-item"
+        th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/health-center/')} ? 'active'"
+        th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesHealthCenters"
+           aria-expanded="true" aria-controls="collapsePagesHealthCenters">
+            <i class="fas fa-hospital"></i>
+            <span>Cent. de Saúde</span>
+        </a>
+        <div id="collapsePagesHealthCenters" class="collapse" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Ações</h6>
+                <a class="collapse-item" th:href="@{/health-center/list}">Visualizar</a>
+                <a class="collapse-item" th:href="@{/health-center/register}">Cadastrar</a>
+
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/drivers')} ? 'active'"
+        th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesDrivers"
+           aria-expanded="true" aria-controls="collapsePagesDrivers">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Motoristas</span>
+        </a>
+        <div id="collapsePagesDrivers" class="collapse" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Ações</h6>
+                <a class="collapse-item" th:href="@{/drivers}">Visualizar</a>
+                <a class="collapse-item" th:href="@{/drivers/create}">Cadastrar</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/passengers')} ? 'active'">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesPassengers"
+           aria-expanded="true" aria-controls="collapsePagesPassengers">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Passageiros</span>
+        </a>
+        <div id="collapsePagesPassengers" class="collapse" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Ações</h6>
+                <a class="collapse-item" th:href="@{/passengers}">Visualizar</a>
+                <a class="collapse-item" th:href="@{/passengers/create}">Cadastrar</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item"
         th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/prefecture/')} ? 'active'"
         th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesPrefectures"
@@ -50,25 +102,6 @@
                 <h6 class="collapse-header">Ações</h6>
                 <a class="collapse-item" th:href="@{/prefecture/list}">Visualizar</a>
                 <a class="collapse-item" th:href="@{/prefecture/register}">Cadastrar</a>
-
-            </div>
-        </div>
-    </li>
-
-    <li class="nav-item"
-        th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/health-center/')} ? 'active'"
-        th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesHealthCenters"
-           aria-expanded="true" aria-controls="collapsePagesHealthCenters">
-            <i class="fas fa-hospital"></i>
-            <span>Centros de Saúde</span>
-        </a>
-        <div id="collapsePagesHealthCenters" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" th:href="@{/health-center/list}">Visualizar</a>
-                <a class="collapse-item" th:href="@{/health-center/register}">Cadastrar</a>
 
             </div>
         </div>
@@ -140,23 +173,6 @@
                 <h6 class="collapse-header">Ações</h6>
                 <a class="collapse-item" th:href="@{/vehicles}">Visualizar</a>
                 <a class="collapse-item" th:href="@{/vehicles/create}">Cadastrar</a>
-            </div>
-        </div>
-    </li>
-
-    <li class="nav-item" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/drivers')} ? 'active'"
-        th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesDrivers"
-           aria-expanded="true" aria-controls="collapsePagesDrivers">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Motoristas</span>
-        </a>
-        <div id="collapsePagesDrivers" class="collapse" aria-labelledby="headingPages"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" th:href="@{/drivers}">Visualizar</a>
-                <a class="collapse-item" th:href="@{/drivers/create}">Cadastrar</a>
             </div>
         </div>
     </li>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Passageiros - Health Transportation</title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Passageiros</h1>
+    </div>
+
+    <div th:replace="fragments/alert"></div>
+
+    <div class="card shadow rounded mt-3">
+        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+
+
+            <div>
+                <!-- Topbar Search -->
+                <form class="form-inline navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-1 small"
+                               placeholder="Buscar por nome ..." aria-label="Search"
+                               aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <caption class="ml-4">
+                        <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
+                        <span class="font-weight-bold" th:text="${#lists.size(passengers)}"></span>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th class='text-center text-dark' scope="col">Nome</th>
+                        <th class='text-center text-dark' scope="col">RG</th>
+                        <th class='text-center text-dark' scope="col">SUS</th>
+                        <th class='text-center text-dark' scope="col">Gênero</th>
+                        <th class='text-center text-dark  text-truncate' scope="col">Dat. de Nascimento</th>
+                        <th class='text-center text-dark' scope="col">Telefone</th>
+                        <th class='text-center text-dark' scope="col">Bloqueado</th>
+                        <th class='text-center text-dark' scope="col">Endereço</th>
+                        <th class='text-center text-dark' scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="passenger : ${passengers}">
+
+                        <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
+                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
+                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
+                        <td class="text-center align-middle text-truncate font-weight-bold" th:text="*{passenger.name}"></td>
+                        <td class="text-center align-middle text-truncate" th:text="*{passenger.rg}"></td>
+                        <td class="text-center align-middle text-truncate" th:text="*{passenger.sus}"></td>
+                        <td class="text-center align-middle" th:text="*{passenger.gender}"></td>
+                        <td class="text-center align-middle text-truncate"
+                            th:text="*{#temporals.format(passenger.dateOfBirth, 'dd/MM/yyyy')}"></td>
+                        <td class="text-center align-middle text-truncate" th:text="*{passenger.cellPhone}"></td>
+
+                        <td class="text-center align-middle text-truncate" th:switch="*{passenger.blocked}">
+                            <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
+                            <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
+                        </td>
+
+                        <td class="text-center align-middle">
+
+                            <a tabindex="1"
+                               class="btn btn-secondary btn-sm"
+                               role="button"
+                               data-html="true"
+                               data-toggle="popover"
+                               data-trigger="focus"
+                               data-placement="left"
+                               data-container="body"
+                               title="<b>Endereço</b>"
+                               th:data-content="${passenger.address.getAdressInformation}">
+
+
+                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
+                            </a>
+
+<!--                            <a class="btn btn-secondary btn-sm" data-container="body"-->
+<!--                                    role="button"-->
+<!--                                    title="<b>Endereço</b>"-->
+<!--                                    data-toggle="popover"-->
+<!--                                    data-placement="right"-->
+<!--                                    data-trigger="focus"-->
+<!--                                    th:data-content="${passenger.address.getAdressInformation}">-->
+
+<!--                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>-->
+<!--                            </a>-->
+                        </td>
+
+
+                        <td class="text-center align-middle text-truncate">
+                            <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+                            <!--                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"-->
+                            <a class="btn btn-primary btn-sm" title="Editar"
+                               th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }">
+                                <i class="fas fa-pen text-light"></i>
+                            </a>
+
+                            <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+                            <!--                                    th:disabled="${travel.status.description != 'Aguardando' ? true : false}"-->
+                            <button th:id="${#strings.concat('btn_passengers/delete/', passenger.id)}"
+                                    type="button" title="Remover"
+                                    class="btn btn-danger btn-sm"
+                                    data-toggle="modal" data-target="#myModal">
+                                <i class="fas fa-trash text-light"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/modal :: modal"></div>
+</div>
+
+
+</body>
+</html>

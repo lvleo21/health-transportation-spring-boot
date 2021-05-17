@@ -41,7 +41,7 @@ public class Address extends AbstractEntity<Long> {
 
 
     @OneToMany(mappedBy = "address")
-    private List<Passenger> adresses;
+    private List<Passenger> passengers;
 
     public String getPublicPlace() {
         return publicPlace;
@@ -103,11 +103,25 @@ public class Address extends AbstractEntity<Long> {
         return this.city + " - " + this.state;
     }
 
-    public List<Passenger> getAdresses() {
-        return adresses;
+    public List<Passenger> getPassengers() {
+        return passengers;
     }
 
-    public void setAdresses(List<Passenger> adresses) {
-        this.adresses = adresses;
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
+    public String getAdressInformation(){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("<b>Rua:</b> " + this.getPublicPlace() + "</br>");
+        builder.append("<b>Bairro:</b> " + this.getNeighborhood() + "</br>");
+        builder.append("<b>Nº:</b> " + this.getNumber() + "</br>");
+        builder.append("<b>Complemento:</b> " + this.getComplement() + "</br>");
+        builder.append("<b>Cidade:</b> " + this.getCity() + "</br>");
+        builder.append("<b>Estado:</b> " + this.getState());
+
+        return builder.toString();
+
     }
 }

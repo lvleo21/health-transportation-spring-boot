@@ -56,6 +56,9 @@ public class Passenger extends AbstractEntity<Long>{
     @Column(name="is_active")
     private Boolean active = true;
 
+    @Column(name="is_blocked")
+    private Boolean blocked = false;
+
     @Column(name="warning_count")
     private Integer warningCount = 0;
 
@@ -157,4 +160,13 @@ public class Passenger extends AbstractEntity<Long>{
     public void setObservation(String observation) {
         this.observation = observation;
     }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
 }

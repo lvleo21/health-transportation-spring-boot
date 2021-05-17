@@ -57,13 +57,20 @@
                     <tr th:each="healthCenter : ${healthCenters}">
                         <td class="text-center align-middle">
 
-                            <button type="button" class="btn btn-secondary btn-sm" data-container="body"
-                                    title="Endereço"
-                                    data-toggle="popover" data-placement="right" data-trigger="focus"
-                                    th:attr="data-content=${healthCenter.getAdressInformation}">
+                            <a tabindex="1"
+                               class="btn btn-secondary btn-sm"
+                               role="button"
+                               data-html="true"
+                               data-toggle="popover"
+                               data-trigger="focus"
+                               data-placement="left"
+                               data-container="body"
+                               title="<b>Endereço</b>"
+                               th:data-content="${healthCenter.address.getAdressInformation}">
+
 
                                 <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
-                            </button>
+                            </a>
 
                         </td>
 

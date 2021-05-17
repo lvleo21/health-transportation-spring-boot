@@ -28,16 +28,19 @@ public class PassengerServiceImpl implements PassengerService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Passenger findById(Long id) {
         return passengerDao.findById(id).get();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Passenger> findAll() {
-        return passengerDao.findAll(Sort.by(Sort.Direction.ASC));
+        return passengerDao.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Passenger> findByHealthCenter(HealthCenter healthCenter) {
         return passengerDao.findPassengerByHealthCenterAndActive(healthCenter, true);
     }

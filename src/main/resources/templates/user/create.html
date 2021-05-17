@@ -45,7 +45,8 @@
                         </div>
 
 
-                        <div class="col-md-5 col-sm-12" th:if="${!#authorization.expression('hasAuthority(''ADMIN'')') and #strings.contains(#httpServletRequest.requestURI, '/users/update/authenticated-user')}">
+                        <div class="col-md-5 col-sm-12"
+                             th:if="${#authorization.expression('hasAuthority(''ADMIN'')') and !#strings.contains(#httpServletRequest.requestURI, '/users/update/authenticated-user')}">
                             <div class="form-group">
                                 <label class="font-weight-bold">Matrícula <small
                                         class="text-secondary">(Obrigatório)</small></label>
@@ -80,7 +81,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md col-sm-12" th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/create/')}">
+                        <div class="col-md col-sm-12" th:if="${#strings.contains(#httpServletRequest.requestURI, '/users/create')}">
                             <div class="form-group">
                                 <label class="font-weight-bold">Senha <small
                                         class="text-secondary">(Obrigatório)</small></label>
