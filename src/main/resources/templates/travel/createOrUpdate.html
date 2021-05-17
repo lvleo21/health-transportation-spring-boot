@@ -96,7 +96,7 @@
                                     <option value="">- - -</option>
                                     <option th:each="vehicle : ${vehicles}"
                                             th:value="${vehicle.id}"
-                                            th:text="${#strings.concat(vehicle.name, ' - ', vehicle.capacity)}"></option>
+                                            th:text="${vehicle.getFormatedString}"></option>
                                 </select>
 
                                 <small class="text-danger" th:errors="*{vehicle}"></small>

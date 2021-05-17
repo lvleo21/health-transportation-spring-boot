@@ -70,5 +70,4 @@ public class OrderResetPassword extends AbstractEntity<Long>{
         this.wasRejected = wasRejected;
     }
 
-
 }

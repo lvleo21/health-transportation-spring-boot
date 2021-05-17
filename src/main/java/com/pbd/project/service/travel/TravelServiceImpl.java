@@ -28,28 +28,38 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public void save(Travel travel) {
-        driverService.changeAvailable(travel.getDriver());
-        vehicleService.changeAvailable(travel.getVehicle());
-
+        this.changeDriverAndVehicleStatus(travel);
         travelDao.save(travel);
     }
 
     @Override
     public void update(Travel travel) {
 
+        Travel travelInDatabase = this.findById(travel.getId());
+
         if(travel.getStatus().equals(TravelStatus.CONCLUIDO)){
-            driverService.changeAvailable(travel.getDriver());
-            vehicleService.changeAvailable(travel.getVehicle());
+            this.changeDriverAndVehicleStatus(travel);
             travel.setReturnDate(LocalDate.now());
         }
+
+
+        if(travelInDatabase.getVehicle().getId() != travel.getVehicle().getId()){
+            vehicleService.changeAvailable(travelInDatabase.getVehicle());
+            vehicleService.changeAvailable(travel.getVehicle());
+        }
+
+        if(travelInDatabase.getDriver().getId() != travel.getDriver().getId()){
+            driverService.changeAvailable(travelInDatabase.getDriver());
+            driverService.changeAvailable(travel.getDriver());
+        }
+
 
         travelDao.save(travel);
     }
 
     @Override
     public void delete(Travel travel) {
-        driverService.changeAvailable(travel.getDriver());
-        vehicleService.changeAvailable(travel.getVehicle());
+        this.changeDriverAndVehicleStatus(travel);
         travelDao.delete(travel);
     }
 
@@ -69,5 +79,12 @@ public class TravelServiceImpl implements TravelService {
     @Transactional(readOnly = true)
     public List<Travel> findByHealthCenter(HealthCenter healthCenter) {
         return travelDao.findTravelByHealthCenter(healthCenter);
+    }
+
+
+
+    public void changeDriverAndVehicleStatus(Travel travel){
+        driverService.changeAvailable(travel.getDriver());
+        vehicleService.changeAvailable(travel.getVehicle());
     }
 }

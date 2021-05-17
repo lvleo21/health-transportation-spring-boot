@@ -89,4 +89,8 @@ public class Vehicle extends AbstractEntity<Long>{
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
+    public String getFormatedString(){
+        return "[" + this.getPlaque() + "] " + this.getName() + " - " + this.getCapacity();
+    }
 }

@@ -20,6 +20,8 @@ public class PrefectureController {
     private PrefectureService prefectureService;
 
 
+
+
     @GetMapping("/list")
     public String getPrefectures(ModelMap modelMap) {
 
