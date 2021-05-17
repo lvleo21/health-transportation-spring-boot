@@ -37,7 +37,21 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Override
     public void update(Passenger passenger) {
-        this.save(passenger);
+
+        Passenger tempPassenger = this.findPassengerByAddressAndId(passenger.getAddress(), passenger.getId());
+
+        //! Diferente de null é pq sofreu alteração no endereço
+        if(tempPassenger != null){
+            Address adr = addressService.findAddress(passenger.getAddress());
+
+            if (adr != null) {
+                passenger.setAddress(adr);
+            } else{
+                passenger.setAddress(addressService.save(passenger.getAddress()));
+            }
+        }
+
+        passengerDao.save(passenger);
     }
 
     @Override
@@ -56,6 +70,13 @@ public class PassengerServiceImpl implements PassengerService{
     @Transactional(readOnly = true)
     public Passenger findPassengerByRg(String rg) {
         return passengerDao.findPassengerByRg(rg);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Passenger findPassengerByAddressAndId(Address address, Long id) {
+        return passengerDao.findPassengerByAddressAndId(address, id);
     }
 
     @Override

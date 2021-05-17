@@ -1,5 +1,6 @@
 package com.pbd.project.service.passenger;
 
+import com.pbd.project.domain.Address;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
 
@@ -11,6 +12,7 @@ public interface PassengerService {
     Passenger findById(Long id);
     Passenger findPassengerBySus(String sus);
     Passenger findPassengerByRg(String rg);
+    Passenger findPassengerByAddressAndId(Address address, Long id);
     List<Passenger> findAll();
     List<Passenger> findByHealthCenter(HealthCenter healthCenter);
 }

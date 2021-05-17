@@ -38,9 +38,14 @@ public class PassengerController {
     @Autowired
     private PassengerValidator passengerValidator;
 
+//    @InitBinder
+//    public void userInitBinder(WebDataBinder binder) {
+//        binder.setValidator(this.passengerValidator);
+//    }
+
     @InitBinder
-    public void userInitBinder(WebDataBinder binder) {
-        binder.setValidator(this.passengerValidator);
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(this.passengerValidator);
     }
 
 
@@ -66,7 +71,10 @@ public class PassengerController {
     }
 
     @PostMapping("/create/save")
-    public String createPassenger(@Valid Passenger passenger, BindingResult result, RedirectAttributes attr, ModelMap model) {
+    public String createPassenger(@Valid Passenger passenger, BindingResult result, ModelMap model, RedirectAttributes attr){
+
+
+        System.out.println("RESULT => " + result.hasErrors());
 
         if (result.hasErrors()) {
             model.addAttribute("createView", true);
@@ -74,8 +82,40 @@ public class PassengerController {
         }
 
         passengerService.save(passenger);
+
         attr.addFlashAttribute("success", "<b>"+ passenger.getName() + "</b> adicionado com sucesso.");
 
+        return "redirect:/passengers";
+    }
+
+    @GetMapping("/update/{rg}")
+    public String travelUpdateView(@PathVariable("rg") String rg, ModelMap model, RedirectAttributes attr) {
+        Passenger passenger = passengerService.findPassengerByRg(rg);
+        User user = userService.getUserAuthenticated();
+
+        if (!user.getStaff()) {
+            if (!user.getHealthCenter().getId().equals(passenger.getHealthCenter().getId())) {
+                attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+                return "redirect:/passengers";
+            }
+        }
+
+        model.addAttribute("passenger", passenger);
+        model.addAttribute("createView", false);
+        return "passenger/createOrUpdate";
+    }
+
+    @PostMapping("/update/{rg}/save")
+    public String travelUpdateSave(@Valid Passenger passenger, BindingResult result, RedirectAttributes attr, ModelMap model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("createView", false);
+            return "passenger/createOrUpdate";
+        }
+
+        passengerService.update(passenger);
+
+        attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> atualizado(a) com sucesso.");
         return "redirect:/passengers";
     }
 
