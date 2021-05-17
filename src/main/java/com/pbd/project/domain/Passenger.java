@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Table(name="PASSENGERS")
 public class Passenger extends AbstractEntity<Long>{
 
+    @NotNull(message = "{NotNull.name}")
     @Column(nullable = false)
     private String name;
 
@@ -34,7 +35,7 @@ public class Passenger extends AbstractEntity<Long>{
     @NotNull(message = "{NotNull.people.gender}")
     @Column(length = 1)
     @Enumerated(EnumType.STRING)
-    private Gender Gender;
+    private Gender gender;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
@@ -44,13 +45,13 @@ public class Passenger extends AbstractEntity<Long>{
     @Column(name="cell_phone", length = 15)// (99) 99999-9999
     private String cellPhone;
 
+    @Column(length = 14) // (99) 9999-9999
+    private String landline;
+
     @ManyToOne
     @NotNull(message = "{NotEmpty.healthCenter}")
     @JoinColumn(name = "health_center_id", nullable = false)
     private HealthCenter healthCenter;
-
-    @Column(length = 14) // (99) 9999-9999
-    private String landline;
 
     @Column(name="is_active")
     private Boolean active = true;
@@ -60,7 +61,6 @@ public class Passenger extends AbstractEntity<Long>{
 
     @Column(columnDefinition = "TEXT")
     private String observation;
-
 
     public String getName() {
         return name;
@@ -94,12 +94,12 @@ public class Passenger extends AbstractEntity<Long>{
         this.dateOfBirth = dateOfBirth;
     }
 
-    public com.pbd.project.domain.enums.Gender getGender() {
-        return Gender;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setGender(com.pbd.project.domain.enums.Gender gender) {
-        Gender = gender;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Address getAddress() {
@@ -118,20 +118,20 @@ public class Passenger extends AbstractEntity<Long>{
         this.cellPhone = cellPhone;
     }
 
-    public HealthCenter getHealthCenter() {
-        return healthCenter;
-    }
-
-    public void setHealthCenter(HealthCenter healthCenter) {
-        this.healthCenter = healthCenter;
-    }
-
     public String getLandline() {
         return landline;
     }
 
     public void setLandline(String landline) {
         this.landline = landline;
+    }
+
+    public HealthCenter getHealthCenter() {
+        return healthCenter;
+    }
+
+    public void setHealthCenter(HealthCenter healthCenter) {
+        this.healthCenter = healthCenter;
     }
 
     public Boolean getActive() {

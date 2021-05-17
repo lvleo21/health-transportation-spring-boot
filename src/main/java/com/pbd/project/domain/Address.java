@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -37,6 +38,10 @@ public class Address extends AbstractEntity<Long> {
 
     @NotBlank(message = "{notEmpty.country}")
     private String country;
+
+
+    @OneToMany(mappedBy = "address")
+    private List<Passenger> adresses;
 
     public String getPublicPlace() {
         return publicPlace;
@@ -94,9 +99,15 @@ public class Address extends AbstractEntity<Long> {
         this.state = state;
     }
 
-
     public String formatedAddress(){
         return this.city + " - " + this.state;
     }
 
+    public List<Passenger> getAdresses() {
+        return adresses;
+    }
+
+    public void setAdresses(List<Passenger> adresses) {
+        this.adresses = adresses;
+    }
 }
