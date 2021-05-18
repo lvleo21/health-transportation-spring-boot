@@ -5,8 +5,8 @@
 <h2> Sumário</h2>
 
 <p>
- <li>🛠 <a href="#ferramentas-e-frameworks">Ferramentas e Frameworks</a></li>
- <li>💻 <a href="#rodando-em-sua-máquina">Rodando em sua máquina</a></li>
+ <li>🛠 <a href="ferramentas-e-frameworks">Ferramentas e Frameworks</a></li>
+ <li>💻 <a href="rodando-em-sua-máquina">Rodando em sua máquina</a></li>
  <li>📃 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf">Documentação (PDF)</a></li>
  <li>📊 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/Diagrama.png">Diagrama</a></li>
  <li>💾 <a href="#objetivo">Backup da Base de Dados</a></li>
