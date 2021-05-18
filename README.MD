@@ -8,7 +8,7 @@
 
 * 💻 [Rodando em sua máquina](#-rodando-em-sua-máquina)
 
-* 📃 [Documentação]("https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf")
+* 📃 [Documentação](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf)
 
 * 📊 [Diagrama](#markdown-header-links)
 
