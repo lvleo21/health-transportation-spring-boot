@@ -24,11 +24,15 @@
             </p>
             <hr class="my-4">
             <p>Aqui estão as nossas funcionalidades em forma de atalho rápido, aproveite. </p>
-            <a class="btn btn-primary" th:href="@{/health-center/list}" role="button">
+
+
+            <a class="btn btn-primary" th:href="@{/health-center/list}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <i class="fas fa-hospital"></i>
                 <span>Cent. de Saúde</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/drivers}" role="button">
+            <a class="btn btn-primary" th:href="@{/drivers}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Motoristas</span>
             </a>
@@ -36,26 +40,28 @@
                 <i class="fas fa-fw fa-user"></i>
                 <span>Passageiros</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/prefecture/list}" role="button">
+            <a class="btn btn-primary" th:href="@{/prefecture/list}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <i class="fas fa-fw fa-hotel"></i>
                 <span>Prefeituras</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/users}" role="button">
+            <a class="btn btn-primary" th:href="@{/users}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
                 <i class="fas fa-fw fa-user-tie"></i>
                 <span>Usuários</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/vehicles}" role="button">
+            <a class="btn btn-primary" th:href="@{/vehicles}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
                 <i class="fas fa-fw fa-car-side"></i>
                 <span>Veículos</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/travels}" role="button">
+            <a class="btn btn-primary" th:href="@{/travels}" role="button"
+               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}" >
                 <i class="fas fa-fw fa-route"></i>
                 <span>Viagens</span>
             </a>
 
         </div>
-
-
 
 
     </div>
