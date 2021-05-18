@@ -15,7 +15,7 @@
 
         <div class="jumbotron">
             <h1 class="display-4">Olá,
-                <th:block th:text="${#authentication.name}"></th:block>
+                <b></b><th:block th:text="${#authentication.name}"></th:block></b>
                 !
             </h1>
             <p class="lead">Seja bem-vindo ao <b>Health Transportations</b>. Este Sistema é utilizado para organização e
@@ -23,7 +23,7 @@
                     Domicílio (TFD)</b>.
             </p>
             <hr class="my-4">
-            <p>Aqui estão as nossas funcionalidades em forma de atalho rápido, aproveite. </p>
+            <p>Aqui estão as nossas funcionalidades em forma de atalhos rápidos, aproveite. </p>
 
 
             <a class="btn btn-primary" th:href="@{/health-center/list}" role="button"
@@ -55,8 +55,7 @@
                 <i class="fas fa-fw fa-car-side"></i>
                 <span>Veículos</span>
             </a>
-            <a class="btn btn-primary" th:href="@{/travels}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}" >
+            <a class="btn btn-primary" th:href="@{/travels}" role="button">
                 <i class="fas fa-fw fa-route"></i>
                 <span>Viagens</span>
             </a>

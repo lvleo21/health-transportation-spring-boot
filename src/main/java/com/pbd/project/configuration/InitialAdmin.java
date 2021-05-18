@@ -9,8 +9,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Properties;
 
 @Component
 public class InitialAdmin implements ApplicationRunner {
@@ -25,18 +27,29 @@ public class InitialAdmin implements ApplicationRunner {
         Role roleAdmin = roleService.findByRole("ADMIN");
 
         if (roleAdmin.getUsers().isEmpty()){
+
+            Properties prop = getProperties();
+
             Role roleGestor = roleService.findByRole("GESTOR");
             Role roleOperador = roleService.findByRole("OPERADOR");
             User user = new User();
-            user.setUsername("lvleo21");
-            user.setPassword("Leo10272109");
+            user.setUsername(prop.getProperty("username"));
+            user.setPassword(prop.getProperty("password"));
             user.setActive(true);
             user.setStaff(true);
-            user.setEmail("verasleonardo210@gmail.com");
-            user.setName("Leonardo Veras Mascena Oliveira Lopes");
+            user.setEmail(prop.getProperty("email"));
+            user.setName(prop.getProperty("name"));
             user.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleGestor, roleOperador)));
             userService.save(user);
         }
 
+    }
+
+    private static Properties getProperties() throws IOException {
+        Properties prop = new Properties();
+        String path="src/main/resources/admin.properties";
+        prop.load(InitialAdmin.class.getResourceAsStream(path));
+
+        return prop;
     }
 }

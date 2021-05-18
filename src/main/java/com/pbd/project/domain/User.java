@@ -1,6 +1,6 @@
 package com.pbd.project.domain;
 
-import com.pbd.project.dto.Employee;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -161,14 +161,6 @@ public class User extends AbstractEntity<Long> {
         }
 
         return text;
-    }
-
-    public void toMe(Employee employee) {
-        this.name = employee.getName();
-        this.enrollment = employee.getEnrollment();
-        this.username = employee.getUsername();
-        this.email = employee.getEmail();
-        this.active = employee.isActive();
     }
 
     public Boolean getStaff() {
