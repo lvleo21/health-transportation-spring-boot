@@ -5,28 +5,30 @@
 <h2> Sumário</h2>
 
 <p>
- <li><a href="#Status do Projeto">Status do Projeto</a></li>
- <li><a href="#Ferramentas e Frameworks">Ferramentas e Frameworks</a></li>
- <li><a href="#Rodando em sua máquina">Instalação e Configuração</a></li>
- <li><a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf">Documentação (PDF)</a></li>
- <li><a href="#objetivo">Diagrama</a></li>
- <li><a href="#objetivo">Backup da Base de Dados</a></li>
- <li><a href="#objetivo">Vídeo de Apresentação</a></li>
+ <li>🛠 <a href="#Ferramentas e Frameworks">Ferramentas e Frameworks</a></li>
+ <li>💻 <a href="#Rodando em sua máquina">Rodando em sua máquina</a></li>
+ <li>📃 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf">Documentação (PDF)</a></li>
+ <li>📊 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/Diagrama.png">Diagrama</a></li>
+ <li>💾 <a href="#objetivo">Backup da Base de Dados</a></li>
+ <li>📹 <a href="#objetivo">Vídeo de Apresentação</a></li>
 </p>
 
 <br>
 
-## [Status do Projeto]()
-
-
-    
-    
-    
 ## 🛠 [Ferramentas e Frameworks]()
 
-## [Rodando em sua máquina]()
+<ul>
+    <li>Desenvolvido em: <b>Java (versão 11)</b></li>
+    <li>Framework: <b>Spring Boot (versão 2.4.5)</b></li>
+    <li>Template engine: <b>Thymeleaf</b></li>
+    <li>SGBD: <b>PostgreSQL</b></li>
+    <li>IDE: <b>IntelliJ IDEA Ultimate Edition</b></li>
+    
+</ul>  
 
-- Clonar ou baixar (.zip) o repositório no [github](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras);
+## 💻 [Rodando em sua máquina]()
+
+0. Clonar ou baixar (.zip) o repositório no [github](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras);
     
     ```
     # Para clonar basta inserir o comando no terminal (linux)
