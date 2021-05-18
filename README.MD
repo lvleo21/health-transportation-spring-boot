@@ -5,8 +5,8 @@
 <h2> Sumário</h2>
 
 <p>
- <li>🛠 <a href="#Ferramentas e Frameworks">Ferramentas e Frameworks</a></li>
- <li>💻 <a href="#Rodando em sua máquina">Rodando em sua máquina</a></li>
+ <li>🛠 <a href="#ferramentas-e-frameworks">Ferramentas e Frameworks</a></li>
+ <li>💻 <a href="#rodando-em-sua-máquina">Rodando em sua máquina</a></li>
  <li>📃 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf">Documentação (PDF)</a></li>
  <li>📊 <a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/Diagrama.png">Diagrama</a></li>
  <li>💾 <a href="#objetivo">Backup da Base de Dados</a></li>
@@ -15,7 +15,7 @@
 
 <br>
 
-## 🛠 [Ferramentas e Frameworks]()
+## 🛠 [Ferramentas e Frameworks](ferramentas-e-frameworks)
 
 <ul>
     <li>Desenvolvido em: <b>Java (versão 11)</b></li>
@@ -26,7 +26,7 @@
     
 </ul>  
 
-## 💻 [Rodando em sua máquina]()
+## 💻 [Rodando em sua máquina](rodando-em-sua-máquina)
 
 0. Clonar ou baixar (.zip) o repositório no [github](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras);
     
