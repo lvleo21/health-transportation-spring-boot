@@ -47,8 +47,8 @@ public class InitialAdmin implements ApplicationRunner {
 
     private static Properties getProperties() throws IOException {
         Properties prop = new Properties();
-        String path="src/main/resources/admin.properties";
-        prop.load(InitialAdmin.class.getResourceAsStream(path));
+        String path="./admin.properties";
+        prop.load(InitialAdmin.class.getClassLoader().getResourceAsStream(path));
 
         return prop;
     }
