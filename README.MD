@@ -16,7 +16,7 @@
 <br>
 
 
-## 🛠 [Ferramentas e Frameworks](ferramentas-e-frameworks)
+## 🛠 [Ferramentas e Frameworks](#ferramentas-e-frameworks)
 
 <ul>
     <li>Desenvolvido em: <b>Java (versão 11)</b></li>
@@ -27,7 +27,7 @@
     
 </ul>  
 
-## 💻 [Rodando em sua máquina](rodando-em-sua-máquina)
+## 💻 [Rodando em sua máquina](#rodando-em-sua-máquina)
 
 0. Clonar ou baixar (.zip) o repositório no [github](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras);
     
