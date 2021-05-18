@@ -12,8 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name="TRAVELS")
-public class Travel extends AbstractEntity<Long>{
+@Table(name = "TRAVELS")
+public class Travel extends AbstractEntity<Long> {
 
     @NotNull(message = "{NotEmpty.departureDate}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -55,15 +55,15 @@ public class Travel extends AbstractEntity<Long>{
     @Column(columnDefinition = "TEXT")
     private String observation;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean active = true;
 
-    @NotNull(message="{NotNull.registeredPassengers}")
+    @NotNull(message = "{NotNull.registeredPassengers}")
     @Column(nullable = false, name = "registered_passengers")
     private Integer registeredPassengers = 0;
 
     @OneToMany(mappedBy = "travel")
-    private List<Location> locações;
+    private List<Location> locations;
 
     public LocalDate getDepartureDate() {
         return departureDate;
@@ -153,11 +153,20 @@ public class Travel extends AbstractEntity<Long>{
         this.registeredPassengers = registeredPassengers;
     }
 
-    public List<Location> getLocações() {
-        return locações;
+
+    public String getDestiny() {
+        return this.destinyCity + " - " + this.destinyState;
     }
 
-    public void setLocações(List<Location> locações) {
-        this.locações = locações;
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public int getQntPassengers() {
+        return this.getLocations().size();
     }
 }

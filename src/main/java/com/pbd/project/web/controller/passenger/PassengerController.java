@@ -1,4 +1,4 @@
-package com.pbd.project.web.controller;
+package com.pbd.project.web.controller.passenger;
 
 import com.pbd.project.domain.*;
 import com.pbd.project.domain.enums.Gender;

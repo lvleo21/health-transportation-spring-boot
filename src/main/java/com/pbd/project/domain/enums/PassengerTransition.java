@@ -2,9 +2,9 @@ package com.pbd.project.domain.enums;
 
 public enum PassengerTransition {
 
-    ONLY_GO("SI", "Somente Ida"),
-    ONLY_BACK("SV", "Somente Volta"),
-    ROUND_TRIP("IV", "Ida e Volta");
+    SI("SI", "Somente Ida"),
+    SV("SV", "Somente Volta"),
+    IV("IV", "Ida e Volta");
 
     private String initials;
     private String description;

@@ -1,8 +1,8 @@
 package com.pbd.project.domain.enums;
 
 public enum PassengerCategory {
-    PATIENT("PACIENTE", "Paciente"),
-    COMPANION("ACOMPANHANTE", "Acompanhante");
+    PACIENTE("PACIENTE", "Paciente"),
+    ACOMPANHENTE("ACOMPANHANTE", "Acompanhante");
 
     private String initials;
     private String description;

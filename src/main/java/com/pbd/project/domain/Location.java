@@ -5,6 +5,7 @@ import com.pbd.project.domain.enums.PassengerTransition;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -22,7 +23,6 @@ public class Location extends AbstractEntity<Long>{
     @JoinColumn(name = "travel_id", nullable = false)
     private Travel travel;
 
-
     @NotNull(message = "{NotEmpty.travel.category}")
     @Column(length = 13)
     @Enumerated(EnumType.STRING)
@@ -34,8 +34,9 @@ public class Location extends AbstractEntity<Long>{
     private PassengerTransition transition;
 
     @Column(name="is_preferential")
-    private boolean isPreferential = false;
+    private boolean preferential = false;
 
+    @NotEmpty(message = "{NotEmpty.destinationHospital}")
     @Column(name="destination_hospital", nullable = false)
     private String destinationHospital;
 
@@ -77,11 +78,11 @@ public class Location extends AbstractEntity<Long>{
     }
 
     public boolean isPreferential() {
-        return isPreferential;
+        return preferential;
     }
 
     public void setPreferential(boolean preferential) {
-        isPreferential = preferential;
+        this.preferential = preferential;
     }
 
     public String getDestinationHospital() {
@@ -99,4 +100,6 @@ public class Location extends AbstractEntity<Long>{
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
+
+
 }

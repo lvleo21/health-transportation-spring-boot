@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Locações - Health Transportation</title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center mb-4">
+        <div class="col-md col-sm-12">
+            <h1 class="h3 mb-0 text-gray-800">Locações</h1>
+        </div>
+
+
+        <div class="col-md-1 col-sm-12 mt-1">
+            <a class="btn btn-primary btn-block" title="Adicionar passageiro"
+               th:href="@{/travels/{id}/locations/create (id=${travel.id}) }">
+                <i class="fas fa-user-plus text-light"></i>
+            </a>
+        </div>
+    </div>
+
+    <div th:replace="fragments/alert"></div>
+
+    <div class="card shadow rounded mt-3">
+        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+
+            <div>
+                <!-- Topbar Search -->
+                <form class="form-inline navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-1 small"
+                               placeholder="Buscar por nome ..." aria-label="Search"
+                               aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <caption class="ml-4">
+                        <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
+                        <span class="font-weight-bold" th:text="${#lists.size(locations)}"></span>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th class='text-center text-dark' scope="col">Nome</th>
+                        <th class='text-center text-dark' scope="col">SUS</th>
+                        <th class='text-center text-dark' scope="col">Gênero</th>
+                        <th class='text-center text-dark' scope="col">Categoria</th>
+                        <th class='text-center text-dark' scope="col">Transição</th>
+                        <th class='text-center text-dark' scope="col">Preferencial ?</th>
+                        <th class='text-center text-dark' scope="col">Hospit/Especialidade</th>
+                        <th class='text-center text-dark' scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="location : ${locations}">
+
+                        <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
+                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
+                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
+                        <td class="text-center align-middle text-truncate font-weight-bold">
+                            <a th:text="*{location.passenger.name}"
+                               th:href="@{/passengers/update/{rg} (rg=${location.passenger.rg}) }"></a>
+                        </td>
+                        <td class="text-center align-middle text-truncate" th:text="*{location.passenger.sus}"></td>
+                        <td class="text-center align-middle" th:text="*{location.passenger.gender.initials}"></td>
+                        <td class="text-center align-middle" th:text="*{location.category}"></td>
+                        <td class="text-center align-middle" th:text="*{location.transition}"></td>
+
+                        <td class="text-center align-middle text-truncate" th:switch="*{location.isPreferential}">
+                            <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
+                            <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
+                        </td>
+
+                        <td class="text-center align-middle" th:text="*{location.destinationHospital}"></td>
+
+                        <td class="text-center align-middle text-truncate">
+                            <a class="btn btn-primary btn-sm" title="Editar"
+
+                               th:href="@{/travels/{idTravel}/locations/{idLocation}/update (idTravel=${travel.id}, idLocation=${location.id})}">
+                                <i class="fas fa-pen text-light"></i>
+                            </a>
+
+                            <button th:id="${#strings.concat('btn_travels/', travel.id,'/locations/', location.id ,'/delete')}"
+                                    type="button" title="Deletar locação"
+                                    class="btn btn-danger btn-sm"
+                                    data-toggle="modal" data-target="#myModal">
+                                <i class="fas fa-trash text-light"></i>
+                            </button>
+
+                            <!--                            <th:block th:switch="${passenger.active}">-->
+                            <!--                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
+                            <!--                                        type="button" title="Desativar"-->
+                            <!--                                        class="btn btn-danger btn-sm"-->
+                            <!--                                        data-toggle="modal" data-target="#myModal"-->
+                            <!--                                        th:case="true">-->
+                            <!--                                    <i class="fas fa-trash text-light"></i>-->
+                            <!--                                </button>-->
+
+
+                            <!--                            </th:block>-->
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/modal :: modal"></div>
+</div>
+
+
+</body>
+</html>

@@ -1,10 +1,14 @@
 package com.pbd.project.web.controller.travel;
 
 import com.pbd.project.domain.*;
+import com.pbd.project.domain.enums.PassengerCategory;
+import com.pbd.project.domain.enums.PassengerTransition;
 import com.pbd.project.domain.enums.TravelStatus;
 import com.pbd.project.domain.enums.UF;
 import com.pbd.project.service.driver.DriverService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
+import com.pbd.project.service.location.LocationService;
+import com.pbd.project.service.passenger.PassengerService;
 import com.pbd.project.service.travel.TravelService;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.service.vehicle.VehicleService;
@@ -40,6 +44,12 @@ public class TravelController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private PassengerService passengerService;
 
     @Autowired
     private HttpServletRequest request;
@@ -110,7 +120,7 @@ public class TravelController {
         return "redirect:/travels";
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteTravel(@PathVariable("id") Long id, RedirectAttributes attr) {
 
         Travel travel = travelService.findById(id);
@@ -125,6 +135,92 @@ public class TravelController {
 
         return "redirect:/travels";
     }
+
+    @GetMapping("/{id}/locations")
+    public String getAllLocation(@PathVariable("id") Long id, ModelMap model) {
+
+        Travel travel = travelService.findById(id);
+
+        model.addAttribute("travel", travel);
+        model.addAttribute("locations", locationService.findByTravel(travel));
+
+        return "location/list";
+    }
+
+    @GetMapping("/{id}/locations/create")
+    public String locationCreateView(@PathVariable("id") Long id, Location location, ModelMap model) {
+        Travel travel = travelService.findById(id);
+        model.addAttribute("travel", travel);
+        model.addAttribute("createView", true);
+
+        return "location/createOrUpdate";
+    }
+
+    @PostMapping("/{id}/locations/create/save")
+    public String createLocation(@PathVariable("id") Long id, @Valid Location location, BindingResult result, RedirectAttributes attr, ModelMap model) {
+
+        if (result.hasErrors()) {
+            Travel travel = travelService.findById(id);
+            model.addAttribute("travel", travel);
+            model.addAttribute("createView", true);
+            return "location/createOrUpdate";
+        }
+
+        locationService.save(location);
+        attr.addFlashAttribute("success", "Passageiro(a) adicionado(a) com sucesso.");
+
+        return "redirect:/travels/" + id + "/locations";
+    }
+
+    @GetMapping("/{idTravel}/locations/{idLocation}/update")
+    public String locationUpdateView(@PathVariable("idTravel") Long idTravel, @PathVariable("idLocation") Long idLocation, ModelMap model, RedirectAttributes attr) {
+
+        Travel travel = travelService.findById(idTravel);
+        Location location = locationService.findById(idLocation);
+        model.addAttribute("travel", travel);
+        model.addAttribute("createView", false);
+        model.addAttribute("location", location);
+
+        return "location/createOrUpdate";
+    }
+
+    @PostMapping("/{idTravel}/locations/{idLocation}/update/save")
+    public String locationUpdateSave(@PathVariable("idTravel") Long idTravel,
+                                     @PathVariable("idLocation") Long idLocation,
+                                     @Valid Location location,
+                                     BindingResult result,
+                                     RedirectAttributes attr,
+                                     ModelMap model) {
+
+        if (result.hasErrors()) {
+            Travel travel = travelService.findById(idTravel);
+            model.addAttribute("travel", travel);
+            model.addAttribute("createView", false);
+            model.addAttribute("location", location);
+
+            return "location/createOrUpdate";
+        }
+
+        locationService.save(location);
+        attr.addFlashAttribute("success", "Passageiro(a) editado(a) com sucesso.");
+
+        return "redirect:/travels/" + idTravel + "/locations";
+    }
+
+    @GetMapping("{idTravel}/locations/{idLocation}/delete")
+    public String deleteLocation(@PathVariable("idTravel") Long idTravel,
+                                 @PathVariable("idLocation") Long idLocation,
+                                 RedirectAttributes attr) {
+
+
+        locationService.delete(locationService.findById(idLocation));
+
+        attr.addFlashAttribute("success", "Locação deletada com sucesso.");
+
+        return "redirect:/travels/" + idTravel + "/locations";
+
+    }
+
 
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
@@ -141,6 +237,17 @@ public class TravelController {
         }
     }
 
+    @ModelAttribute("passengers")
+    public List<Passenger> passengers() {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
+            return passengerService.findAll();
+        } else {
+            return passengerService.findPassengerByHealthCenter(user.getHealthCenter());
+        }
+    }
+
     @ModelAttribute("drivers")
     public List<Driver> drivers() {
         User user = userService.getUserAuthenticated();
@@ -149,7 +256,7 @@ public class TravelController {
         if (user.getStaff()) {
             return driverService.findAll();
         } else {
-            List<Driver> drivers = driverService.findAvailable(user.getHealthCenter().getId(), true,true);
+            List<Driver> drivers = driverService.findAvailable(user.getHealthCenter().getId(), true, true);
 
             if (path.contains("/travels/update/")) {
                 drivers.add(getTravel().getDriver());
@@ -180,6 +287,16 @@ public class TravelController {
     @ModelAttribute("ufs")
     public UF[] getUFs() {
         return UF.values();
+    }
+
+    @ModelAttribute("passengerCategories")
+    public PassengerCategory[] getPassengerCategories() {
+        return PassengerCategory.values();
+    }
+
+    @ModelAttribute("passengerTransitions")
+    public PassengerTransition[] getPassengerTransitions() {
+        return PassengerTransition.values();
     }
 
     @ModelAttribute("travelStatus")
