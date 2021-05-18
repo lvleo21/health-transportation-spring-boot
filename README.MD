@@ -61,11 +61,28 @@
 
 9. Em seguida, vá para o arquivo **application.properties**, neste arquivo nos iremos inserir o usuário e senha do Postgre, como também, o nome do database;
 
-   - Guarde este nome_do_database que logo ele será usado.
+   - Guarde o nome do database que você escolheu, logo ele será usado.
 
     ![5](./Documentação%20e%20Artefatos/1ª%20V.A/images/5.png)
 
     
-    - Inseri alguns dados como exemplo.
+    - 🔶 Inseri alguns dados como exemplo.
   
     ![6](./Documentação%20e%20Artefatos/1ª%20V.A/images/6.png)
+
+
+10. Agora vamos abrir o **PgAdmin 4**
+11. Selecione um server e em seguida crie um novo database
+    
+    ![7](./Documentação%20e%20Artefatos/1ª%20V.A/images/7.png)
+    - Lembra do nome que vc escolheu para o database la no arquivo **application.properties** ? ele será inserido no campo database (em vermelho).
+
+12. Agora vá para o arquivo **HealthTransportationApplication.java** (main do nosso projeto) e o execute clicando na setinha verde no canto superior direito.
+    ![8](./Documentação%20e%20Artefatos/1ª%20V.A/images/8.png)
+
+13. O usuário admin será adicionado na base de dados, como também, algumas roles (permissões/funções) pré estabelecidas.
+14. Por fim, vá para url http://localhost:8080/ e logue com o usuário e senha definidos em **admin.properties**
+
+    ![9](./Documentação%20e%20Artefatos/1ª%20V.A/images/9.png)
+
+    - Você deverá ver esta tela.
