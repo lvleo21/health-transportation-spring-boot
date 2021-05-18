@@ -3,11 +3,9 @@ package com.pbd.project.web.controller.user;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Role;
 import com.pbd.project.domain.User;
-import com.pbd.project.dto.Employee;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
-import com.pbd.project.web.validation.EmpĺoyeeValidator;
 import com.pbd.project.web.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -41,18 +38,12 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-    @Autowired
-    private EmpĺoyeeValidator employeeValidator;
 
-    @InitBinder("user")
+    @InitBinder
     public void userInitBinder(WebDataBinder binder) {
-        binder.setValidator(this.userValidator);
+        binder.addValidators(this.userValidator);
     }
 
-    @InitBinder("employee")
-    public void employeeInitBinder(WebDataBinder binder) {
-        binder.setValidator(this.employeeValidator);
-    }
 
     @GetMapping("")
     public String usersListView(ModelMap model) {
@@ -71,7 +62,6 @@ public class UserController {
     public String userCreateView(@Valid User user, BindingResult result, RedirectAttributes attr, ModelMap model) {
 
         if (result.hasErrors()) {
-            System.out.println("Entrou no has error");
             model.addAttribute("createView", true);
             return "user/create";
         }
@@ -86,33 +76,9 @@ public class UserController {
     @GetMapping("/update/{username}")
     public String userUpdateView(@PathVariable("username") String username, ModelMap model) {
         User user = userService.findByUsername(username);
-
-
         model.addAttribute("user", user);
         model.addAttribute("createView", false);
         return "user/create";
-    }
-
-    //! Método de UPDATE: GESTOR E OPERADOR
-    @PostMapping("/update/{id}/save")
-    public String employeeUpdateSave(@PathVariable("id") Long id,
-                                     @Valid Employee employee,
-                                     BindingResult result,
-                                     ModelMap model, RedirectAttributes attr) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("createView", false);
-            model.addAttribute("employee", employee);
-            model.addAttribute("id", id);
-            return "user/employee/createOrUpdate";
-        }
-
-        User user = userService.findById(id);
-        user.toMe(employee);
-
-        userService.update(user);
-        attr.addFlashAttribute("success", "Usuário editado com sucesso.");
-        return "redirect:/users";
     }
 
     @GetMapping("/update/authenticated-user")
