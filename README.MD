@@ -5,10 +5,10 @@
 <h2> Sumário</h2>
 
 <p>
- <li><a href="#objetivo">Status do Projeto</a></li>
- <li><a href="#objetivo">Ferramentas e Frameworks</a></li>
- <li><a href="#objetivo">Intalação e Configuração</a></li>
- <li><a href="#objetivo">Documentação (PDF)</a></li>
+ <li><a href="#Status do Projeto">Status do Projeto</a></li>
+ <li><a href="#Ferramentas e Frameworks">Ferramentas e Frameworks</a></li>
+ <li><a href="#Rodando em sua máquina">Instalação e Configuração</a></li>
+ <li><a href="https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf">Documentação (PDF)</a></li>
  <li><a href="#objetivo">Diagrama</a></li>
  <li><a href="#objetivo">Backup da Base de Dados</a></li>
  <li><a href="#objetivo">Vídeo de Apresentação</a></li>
@@ -24,7 +24,7 @@
     
 ## 🛠 [Ferramentas e Frameworks]()
 
-## [Intalação e Configurações]()
+## [Rodando em sua máquina]()
 
 - Clonar ou baixar (.zip) o repositório no [github](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras);
     
