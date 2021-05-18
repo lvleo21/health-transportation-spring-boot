@@ -11,41 +11,88 @@
     <div th:replace="fragments/alert"></div>
 
 
+    <div class="container">
 
-<!--    <div sec:authorize="isAuthenticated()">-->
-<!--        This content is only shown to authenticated users.-->
-<!--    </div>-->
+        <div class="jumbotron">
+            <h1 class="display-4">Olá,
+                <th:block th:text="${#authentication.name}"></th:block>
+                !
+            </h1>
+            <p class="lead">Seja bem-vindo ao <b>Health Transportations</b>. Este Sistema é utilizado para organização e
+                gerenciamento das viagens e seus respectivos processos, referentes ao programa de <b>Tratamento Fora de
+                    Domicílio (TFD)</b>.
+            </p>
+            <hr class="my-4">
+            <p>Aqui estão as nossas funcionalidades em forma de atalho rápido, aproveite. </p>
+            <a class="btn btn-primary" th:href="@{/health-center/list}" role="button">
+                <i class="fas fa-hospital"></i>
+                <span>Cent. de Saúde</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/drivers}" role="button">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Motoristas</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/passengers}" role="button">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Passageiros</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/prefecture/list}" role="button">
+                <i class="fas fa-fw fa-hotel"></i>
+                <span>Prefeituras</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/users}" role="button">
+                <i class="fas fa-fw fa-user-tie"></i>
+                <span>Usuários</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/vehicles}" role="button">
+                <i class="fas fa-fw fa-car-side"></i>
+                <span>Veículos</span>
+            </a>
+            <a class="btn btn-primary" th:href="@{/travels}" role="button">
+                <i class="fas fa-fw fa-route"></i>
+                <span>Viagens</span>
+            </a>
 
-<!--    <sec:authorize access="hasRole('ADMIN')" var="isAdmin"></sec:authorize>-->
-
-<!--    <div class="form-group" th:if="${isAdmin}">-->
-<!--        asdaosldkapsodkapsodkapsodk-->
-<!--    </div>-->
-
-
-<!--    <div sec:authentication="principal"></div>-->
+        </div>
 
 
 
-<!--    <div sec:authorize="hasAuthority('ADMIN')">-->
-<!--        This will only be displayed if authenticated user has role ROLE_ADMIN.-->
-<!--    </div>-->
-<!--    <div sec:authorize="hasAuthority('OPERADOR')">-->
-<!--        This will only be displayed if authenticated user has role OPERADOR.-->
-<!--    </div>-->
-<!--    -->
-<!--    <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">-->
-<!--    </div>-->
+
+    </div>
 
 
+    <!--    <div sec:authorize="isAuthenticated()">-->
+    <!--        This content is only shown to authenticated users.-->
+    <!--    </div>-->
 
-<!--    Logged user: <span sec:authentication="name"></span> <br>-->
-<!--    Roles: <span sec:authentication="principal.authorities"></span>-->
+    <!--    <sec:authorize access="hasRole('ADMIN')" var="isAdmin"></sec:authorize>-->
+
+    <!--    <div class="form-group" th:if="${isAdmin}">-->
+    <!--        asdaosldkapsodkapsodkapsodk-->
+    <!--    </div>-->
 
 
-<!--    <div sec:authorize="hasRole('ADMIN')">-->
-<!--        This content is only shown to users.-->
-<!--    </div>-->
+    <!--    <div sec:authentication="principal"></div>-->
+
+
+    <!--    <div sec:authorize="hasAuthority('ADMIN')">-->
+    <!--        This will only be displayed if authenticated user has role ROLE_ADMIN.-->
+    <!--    </div>-->
+    <!--    <div sec:authorize="hasAuthority('OPERADOR')">-->
+    <!--        This will only be displayed if authenticated user has role OPERADOR.-->
+    <!--    </div>-->
+    <!--    -->
+    <!--    <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">-->
+    <!--    </div>-->
+
+
+    <!--    Logged user: <span sec:authentication="name"></span> <br>-->
+    <!--    Roles: <span sec:authentication="principal.authorities"></span>-->
+
+
+    <!--    <div sec:authorize="hasRole('ADMIN')">-->
+    <!--        This content is only shown to users.-->
+    <!--    </div>-->
 
 
     <!--    <h1 class="text-black-50" th:text="${#strings.contains(#httpServletRequest.getUserPrincipal().authorities, 'GESTOR')}"></h1>-->
