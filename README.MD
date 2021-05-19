@@ -16,7 +16,7 @@
 
 * 📹 [Vídeo de Apresentação](https://ufrpebr-my.sharepoint.com/:f:/g/personal/leonardo_mascena_ufrpe_br/EiK5PiTMicBClDRB5p_jCtsBYjsLDb6EtEzcmTgDSOLHDg?e=m5YvqG)
   
-* ⚠️ [Observações](#-observações)
+* ⚠️ [Observações](#observações)
 
 
 <br>
