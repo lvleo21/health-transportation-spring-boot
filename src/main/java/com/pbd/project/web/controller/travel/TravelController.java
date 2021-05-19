@@ -126,11 +126,11 @@ public class TravelController {
         Travel travel = travelService.findById(id);
 
 
-        if (travel.getRegisteredPassengers() == 0) {
+        if (travel.getLocations().isEmpty()) {
             travelService.delete(travel);
             attr.addFlashAttribute("success", "Viagem deletada com sucesso.");
         } else {
-            attr.addFlashAttribute("error", "Está viagem possue passageiros cadastrados.");
+            attr.addFlashAttribute("error", "Está viagem possui passageiros cadastrados.");
         }
 
         return "redirect:/travels";

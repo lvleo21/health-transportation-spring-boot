@@ -40,7 +40,7 @@ public class ResetPasswordController {
         if (user.getStaff()) {
             orderResetPasswordList = orderResetPasswordService.findAll();
         } else {
-            orderResetPasswordList = orderResetPasswordService.findByHealthCenters(user.getHealthCenter().getId());
+            orderResetPasswordList = orderResetPasswordService.findByHealthCenters(user.getHealthCenter().getId(), user.getId());
         }
 
         model.addAttribute("orps", orderResetPasswordList);

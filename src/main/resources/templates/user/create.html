@@ -166,12 +166,11 @@
 
                     <input type="hidden" th:field="*{id}">
 
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary w-100 font-weight-bold"
-                                    th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
-                            </button>
-                        </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary font-weight-bold" th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
+                            <b>CADASTRAR</b>
+                        </button>
                     </div>
                 </form>
             </div>

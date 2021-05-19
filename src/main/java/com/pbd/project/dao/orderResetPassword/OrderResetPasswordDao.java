@@ -14,6 +14,7 @@ public interface OrderResetPasswordDao extends JpaRepository<OrderResetPassword,
     //! Trás todos os OrderResetPassword respectivos ao centro de saúde do usuário que esta logado;
     @Query(value = "select orp.* from order_reset_passwords orp, users u " +
             "where id_user_who_requested != ?2 and u.health_center_id = ?1 " +
+            "and u.id = id_user_who_requested " +
             "order by orp.request_on desc", nativeQuery = true)
     List<OrderResetPassword> findByHealthCenters(Long idHealthCenter, Long idUser);
 

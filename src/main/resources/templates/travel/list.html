@@ -70,7 +70,7 @@
               <i class="fas fa-times text-danger" th:case="false"></i>
             </td>
 
-            <td class="text-center align-middle nowrap">
+            <td class="text-center align-middle text-truncate">
 <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
               <a class="btn btn-primary btn-sm" title="Editar"
                  th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"

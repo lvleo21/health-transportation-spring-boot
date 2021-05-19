@@ -6,7 +6,7 @@
 
 - 🛠 [Ferramentas e Frameworks](#-ferramentas-e-frameworks)
 
-* 💻 [Rodando em sua máquina](#-rodando-em-sua-máquina)
+* 💻 [Rodando em sua máquina](#-rodando-em-sua-máquina) 
 
 * 📃 [Documentação](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/PBD%20-%20Documenta%C3%A7%C3%A3o.pdf)
 
@@ -14,7 +14,9 @@
 
 * 💾 [Backup da Base de Dados](#markdown-header-images)
 
-* 📹 [Vídeo de Apresentação](#markdown-header-images)
+* 📹 [Vídeo de Apresentação](https://ufrpebr-my.sharepoint.com/:f:/g/personal/leonardo_mascena_ufrpe_br/EiK5PiTMicBClDRB5p_jCtsBYjsLDb6EtEzcmTgDSOLHDg?e=m5YvqG)
+  
+* ⚠️ [Observações](#-observações)
 
 
 <br>
@@ -93,3 +95,39 @@
     ![9](./Documentação%20e%20Artefatos/1ª%20V.A/images/9.png)
 
     - Você deverá ver esta tela.
+
+
+
+## ⚠️ Observações
+
+
+1. Usuários e Senhas caso esteja utilizando o backup da base de dados;
+   
+   - Lembrar que esta base já contem um usuário admin, logo ele não será criado no InitialAdmin utilizando as informações contidas em admin.properties
+
+    ```
+        GESTOR DE SERRA TALHADA
+        usuário: gustavo
+        senha: Gustavo1
+
+        GESTOR DE AFOGADOS DA INGAZEIRA
+        usuário: mequeirosz
+        senha: Mequeirosz1
+
+
+        ADMIN DO SISTEMA
+        usuário: lvleo21
+        senha: Leo1027210916
+
+
+        GESTOR DE CAJAZEIRAS
+        usuário: bergO
+        senha: Berg123
+
+
+        OPERADOR DE SERRA TALHADA
+        usuário: mariaF
+        senha: Maria123
+    ```  
+
+2. Lembrar que os dados referentes a emails são fictícios, logo se houver a necessidade de enviar o email para resetar a senha, utilize um email válido (na hora de cadastrar os usuários).

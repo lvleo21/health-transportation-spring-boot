@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderResetPasswordService {
     void create(User user);
     void update(OrderResetPassword orderResetPassword);
-    List<OrderResetPassword> findByHealthCenters(Long id);
+    public List<OrderResetPassword> findByHealthCenters(Long idHealthCenter, Long idUser);
     List<OrderResetPassword> findAll();
     List<OrderResetPassword> findActivesByUser(Long id);
     OrderResetPassword findById(Long id);
