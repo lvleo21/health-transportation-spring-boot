@@ -3,10 +3,14 @@ package com.pbd.project.service.healthCenter;
 
 import com.pbd.project.dao.healthCenter.HealthCenterDao;
 import com.pbd.project.domain.HealthCenter;
+import com.pbd.project.domain.User;
+import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +20,9 @@ public class HealthCenterServiceImpl implements HealthCenterService {
 
     @Autowired
     private HealthCenterDao dao;
+
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -37,5 +44,18 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     @Transactional(readOnly = true)
     public List<HealthCenter> findAll() {
         return dao.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<HealthCenter> getModelAttribute() {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
+            return this.findAll();
+        } else {
+            HealthCenter healthCenter = this.findById(user.getHealthCenter().getId());
+            return Arrays.asList(healthCenter);
+        }
     }
 }

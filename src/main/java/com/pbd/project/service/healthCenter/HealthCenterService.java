@@ -11,4 +11,5 @@ public interface HealthCenterService {
     void deleteById(Long id);
     HealthCenter findById(Long id);
     List<HealthCenter> findAll();
+    List<HealthCenter> getModelAttribute();
 }

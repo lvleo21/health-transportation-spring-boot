@@ -112,16 +112,6 @@ public class DriverController {
 
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
-        User user = userService.getUserAuthenticated();
-
-        if (user.getStaff()) {
-            return healthCenterService.findAll();
-        } else {
-            List<HealthCenter> healthCenters = new ArrayList<>();
-            HealthCenter healthCenter = healthCenterService.findById(user.getHealthCenter().getId());
-            healthCenters.add(healthCenter);
-
-            return healthCenters;
-        }
+        return healthCenterService.getModelAttribute();
     }
 }
