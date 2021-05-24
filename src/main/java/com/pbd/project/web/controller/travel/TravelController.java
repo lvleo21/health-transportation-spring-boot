@@ -147,9 +147,9 @@ public class TravelController {
         String path = request.getRequestURI();
 
         if (user.getStaff()) {
-            return driverService.findAll();
+            return driverService.getAllDrivers();
         } else {
-            List<Driver> drivers = driverService.findAvailable(user.getHealthCenter().getId(), true, true);
+            List<Driver> drivers = driverService.getAllDriversByAvailableAndActive(user.getHealthCenter().getId(), true, true);
 
             if (path.contains("/travels/update/")) {
                 drivers.add(getTravel().getDriver());

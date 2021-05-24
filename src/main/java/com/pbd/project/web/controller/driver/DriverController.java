@@ -35,27 +35,27 @@ public class DriverController {
 
 
     @GetMapping("")
-    public String driversListView(ModelMap model){
+    public String driverListView(ModelMap model){
 
         User user = userService.getUserAuthenticated();
 
         if(user.getStaff()){
-            model.addAttribute("drivers", driverService.findAll());
+            model.addAttribute("drivers", driverService.getAllDrivers());
         } else {
-            model.addAttribute("drivers", driverService.findByHealthcenter(user.getHealthCenter()));
+            model.addAttribute("drivers", driverService.getAllDriversByHealthCenter(user.getHealthCenter()));
         }
 
         return "driver/list";
     }
 
     @GetMapping("/create")
-    public String driversCreateView(Driver driver, ModelMap model){
+    public String driverCreateView(Driver driver, ModelMap model){
         model.addAttribute("createView", true);
         return "driver/createOrUpdate";
     }
 
     @PostMapping("/create/save")
-    public String createDriver(@Valid Driver driver, BindingResult result, RedirectAttributes attr, ModelMap model){
+    public String driverCreateSave(@Valid Driver driver, BindingResult result, RedirectAttributes attr, ModelMap model){
 
         if(result.hasErrors()){
             model.addAttribute("createView", true);
@@ -72,46 +72,69 @@ public class DriverController {
     @GetMapping("/update/{id}")
     public String driverUpdateView(@PathVariable("id") Long id, ModelMap model, RedirectAttributes attr){
 
-        Driver driver = driverService.findById(id);
-        User user = userService.getUserAuthenticated();
+        Driver driver = driverService.findDriverById(id);
+        String url;
 
-
-        if(!user.getStaff()){
-            if (!user.getHealthCenter().getId().equals(driver.getHealthCenter().getId())){
-                attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
-                return  "redirect:/drivers";
-            }
+        if(this.hasPermission(driver.getHealthCenter().getId())){
+            model.addAttribute("driver", driver);
+            model.addAttribute("createView", false);
+            url = "driver/createOrUpdate";
+        } else{
+            attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+            url = "redirect:/drivers";
         }
 
-        model.addAttribute("driver", driver);
-        model.addAttribute("createView", false);
-        return "driver/createOrUpdate";
+        return url;
     }
 
     @PostMapping("/update/{id}/save")
     public String driverUpdateSave(@Valid Driver driver, BindingResult result, RedirectAttributes attr, ModelMap model){
+        String url ;
 
-        if (result.hasErrors()){
-            model.addAttribute("createView", false);
-            return "driver/createOrUpdate";
+        if(this.hasPermission(driver.getHealthCenter().getId())){
+            if (result.hasErrors()){
+                model.addAttribute("createView", false);
+                url = "driver/createOrUpdate";
+            }
+
+            driverService.save(driver);
+
+            attr.addFlashAttribute("success", "<b>" + driver.getName() +"</b> atualizado com sucesso.");
+            url = "redirect:/drivers";
+        } else {
+            attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+            url = "redirect:/drivers";
         }
 
-        driverService.save(driver);
-
-        attr.addFlashAttribute("success", "<b>" + driver.getName() +"</b> atualizado com sucesso.");
-        return  "redirect:/drivers";
+        return url ;
     }
 
     @GetMapping("delete/{id}")
     public String deleteDriver(@PathVariable("id") Long id, RedirectAttributes attr){
+        String url;
+        Driver driver = driverService.findDriverById(id);
 
-        driverService.delete(id);
-        attr.addFlashAttribute("success", "Motorista deletado com sucesso.");
-        return  "redirect:/drivers";
+        if(this.hasPermission(driver.getHealthCenter().getId())){
+            driverService.delete(id);
+            attr.addFlashAttribute("success", "Motorista deletado com sucesso.");
+            return  "redirect:/drivers";
+        } else {
+            attr.addFlashAttribute("error", "Você não tem permissões para deletar este veículo.");
+            url = "redirect:/drivers";
+        }
+
+        return url;
     }
 
     @ModelAttribute("healthCenters")
     public List<HealthCenter> healthCenters() {
         return healthCenterService.getModelAttribute();
     }
+
+    public boolean hasPermission(Long idDriverHealthCenter){
+        User user = userService.getUserAuthenticated();
+        return (user.getStaff() || (user.getHealthCenter().getId().equals(idDriverHealthCenter))) ? true : false;
+    }
 }
+
+

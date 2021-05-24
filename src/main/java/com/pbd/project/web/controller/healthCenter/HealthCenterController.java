@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/health-center")
+@RequestMapping("/health-centers")
 public class HealthCenterController {
 
 
@@ -29,18 +29,17 @@ public class HealthCenterController {
     private PrefectureService prefectureService;
 
 
-    @GetMapping("/list")
-    public String getHealthCenters(ModelMap model){
+    @GetMapping("/")
+    public String healthCenterListView(ModelMap model){
         model.addAttribute("healthCenters", healthCenterService.findAll());
         return "healthCenter/list";
     }
 
+    @GetMapping("/create")
+    public String healthCenterCreateView(HealthCenter healthCenter){ return "healthCenter/create"; }
 
-    @GetMapping("/register")
-    public String viewRegisterHealthCenter(HealthCenter healthCenter){ return "healthCenter/create"; }
-
-    @PostMapping("/register/save")
-    public String saveHealthcenter(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr){
+    @PostMapping("/create/save")
+    public String healthCenterCreateSave(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr){
         if(result.hasErrors()){
             return "healthCenter/create";
         }

@@ -10,10 +10,9 @@ import java.util.List;
 public interface DriverService {
     Driver save(Driver driver);
     void delete(Long id);
-    Driver findById(Long id);
-    List<Driver> findAll();
-    List<Driver> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive);
-    List<Driver> findByHealthcenter(HealthCenter healthCenter);
-
+    Driver findDriverById(Long id);
+    List<Driver> getAllDrivers();
+    List<Driver> getAllDriversByAvailableAndActive(Long idHealthCenter, boolean isAvailable, boolean isActive);
+    List<Driver> getAllDriversByHealthCenter(HealthCenter healthCenter);
     void changeAvailable(Driver driver);
 }
