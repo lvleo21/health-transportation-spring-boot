@@ -4,7 +4,9 @@ import com.pbd.project.dao.passenger.PassengerDao;
 import com.pbd.project.domain.Address;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
+import com.pbd.project.domain.User;
 import com.pbd.project.service.address.AddressService;
+import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void save(Passenger passenger) {
@@ -101,6 +106,17 @@ public class PassengerServiceImpl implements PassengerService{
     public void changePassengerStatus(Passenger passenger, boolean active) {
         passenger.setActive(active);
         passengerDao.save(passenger);
+    }
+
+    @Override
+    public List<Passenger> getModelAttribute() {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
+            return this.findAll();
+        } else {
+            return this.findPassengerByHealthCenter(user.getHealthCenter());
+        }
     }
 
 

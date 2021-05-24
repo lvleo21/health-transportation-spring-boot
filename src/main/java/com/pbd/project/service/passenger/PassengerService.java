@@ -18,6 +18,7 @@ public interface PassengerService {
     List<Passenger> findPassengerByHealthCenter(HealthCenter healthCenter);
 
     void changePassengerStatus(Passenger passenger, boolean active);
+    List<Passenger> getModelAttribute();
 
 
 }
