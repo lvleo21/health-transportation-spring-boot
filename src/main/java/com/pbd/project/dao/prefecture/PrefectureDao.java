@@ -9,4 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PrefectureDao extends JpaRepository<Prefecture, Long> {
+    List<Prefecture> getPrefectureByHealthCenterIsNull();
+    Prefecture findPrefectureByHealthCenterId(Long id);
 }

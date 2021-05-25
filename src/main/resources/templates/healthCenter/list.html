@@ -82,13 +82,13 @@
                             <i class="fas fa-times text-danger" th:case="false"></i>
                         </td>
 
-                        <td class="text-center align-middle nowrap">
+                        <td class="text-center align-middle text-truncate">
                             <a class="btn btn-primary btn-sm"
-                               th:href="@{/health-center/update/{id} (id=${healthCenter.id}) }">
+                               th:href="@{/health-centers/update/{id} (id=${healthCenter.id}) }">
                                 <i class="fas fa-pen text-light"></i>
                             </a>
 
-                            <button th:id="${#strings.concat('btn_health-center/delete/', healthCenter.id)}"
+                            <button th:id="${#strings.concat('btn_health-centers/delete/', healthCenter.id)}"
                                     type="button"
                                     class="btn btn-danger btn-sm"
                                     data-toggle="modal" data-target="#myModal">

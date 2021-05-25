@@ -9,4 +9,6 @@ public interface PrefectureService {
     void delete(Long id);
     Prefecture findById(Long id);
     List<Prefecture> findAll();
+
+    List<Prefecture> getModelAttribute();
 }
