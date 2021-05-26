@@ -24,14 +24,26 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     @Autowired
     private UserService userService;
 
-
     @Override
     public void save(HealthCenter healthCenter) {
         dao.save(healthCenter);
     }
 
-    public void deleteById(Long id) {
-        dao.deleteById(id);
+    public boolean deleteById(Long id) {
+        HealthCenter healthCenter = this.findById(id);
+
+        if (healthCenter.getDrivers().isEmpty()
+                && healthCenter.getPassengers().isEmpty()
+                && healthCenter.getVehicles().isEmpty()
+                && healthCenter.getUsers().isEmpty()
+                && healthCenter.getTravels().isEmpty()){
+
+            dao.deleteById(id);
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -61,12 +73,7 @@ public class HealthCenterServiceImpl implements HealthCenterService {
 
     @Override
     public List<HealthCenter> findHealthCentersByCity(String city) {
-
-        List<HealthCenter> healthCenters =  dao.findHealthCentersByCity(city);
-
-        System.out.println("ENCONTRADOS => " + healthCenters    );
-
-        return healthCenters;
+        return dao.findHealthCentersByCity(city);
     }
 
 

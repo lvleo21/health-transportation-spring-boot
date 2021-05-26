@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface HealthCenterService {
     void save(HealthCenter healthCenter);
-    void deleteById(Long id);
+    boolean deleteById(Long id);
     HealthCenter findById(Long id);
     List<HealthCenter> findAll();
     List<HealthCenter> getModelAttribute();

@@ -28,7 +28,7 @@
 
 
                 <form class="user" autocomplete="off"
-                      th:action="${createView} ?  @{/health-centers/create/save} : @{/health-centers/update/save}"
+                      th:action="${createView} ?  @{/health-centers/create/save} : @{/health-centers/update/{id}/save (id=${healthCenter.prefecture.id})}"
                       th:object="${healthCenter}"  method="post">
 
                     <div class="row">
@@ -146,8 +146,8 @@
                         <div class="col-md col-sm-12 d-flex align-items-center">
                             <div class="form-group mt-4">
 
-                                <label th:for="${#ids.next('active')}">Ativo</label>
                                 <input type="checkbox" id="active" th:field="*{active}">
+                                <label th:for="${#ids.next('active')}">Ativo</label>
                                 <br>
                                 <small>Indica que este centro de saúde está ativo ou não no sistema.</small>
 

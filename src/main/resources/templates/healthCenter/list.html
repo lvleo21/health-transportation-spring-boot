@@ -9,7 +9,7 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Centros de Saúde</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"> <i class="fas fa-caret-right"></i> Centros de Saúde</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
@@ -91,7 +91,7 @@
 
                             <td class="text-center align-middle text-truncate"
                                 th:text="*{healthCenter.prefecture.getCityAndState}"></td>
-                            <td class="text-center align-middle" th:text="*{healthCenter.cnpj}"></td>
+                            <td class="text-center align-middle text-truncate" th:text="*{healthCenter.cnpj}"></td>
 
                             <td class="text-center align-middle  text-truncate" th:switch="*{healthCenter.active}">
                                 <i class="fas fa-check text-success" th:case="true"></i>
@@ -119,12 +119,19 @@
             </th:block>
 
             <th:block th:case="${true}">
-                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center">
-                    <div class="text-center">
-                        <i class="fas fa-frown" style="font-size: 5rem"></i>
-                        <h4 class="mt-2 text-justify">Não encontramos nenhum <b>centro de saúde</b> relacionado a cidade</h4>
-                        <h3 class="text-danger font-weight-bold" th:text="${city}"></h3>
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center" th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">Nenhum resultado encontrado</h3>
+                        <h4>Não encontramos nenhum centro de saúde relacionado a cidade <b class="text-danger" th:text='|"${city}"|'></b>.</h4>
                     </div>
+
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há centros de saúde cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1" th:href="@{/health-centers/create}">CADASTRAR</a>
+                    </div>
+
                 </div>
             </th:block>
         </div>
