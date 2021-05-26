@@ -58,4 +58,16 @@ public class HealthCenterServiceImpl implements HealthCenterService {
             return Arrays.asList(healthCenter);
         }
     }
+
+    @Override
+    public List<HealthCenter> findHealthCentersByCity(String city) {
+
+        List<HealthCenter> healthCenters =  dao.findHealthCentersByCity(city);
+
+        System.out.println("ENCONTRADOS => " + healthCenters    );
+
+        return healthCenters;
+    }
+
+
 }

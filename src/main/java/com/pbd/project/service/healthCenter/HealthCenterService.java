@@ -12,4 +12,5 @@ public interface HealthCenterService {
     HealthCenter findById(Long id);
     List<HealthCenter> findAll();
     List<HealthCenter> getModelAttribute();
+    List<HealthCenter> findHealthCentersByCity(String city);
 }

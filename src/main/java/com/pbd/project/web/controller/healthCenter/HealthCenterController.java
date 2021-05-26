@@ -34,8 +34,25 @@ public class HealthCenterController {
     private PrefectureService prefectureService;
 
     @GetMapping("")
-    public String healthCenterListView(ModelMap model){
-        model.addAttribute("healthCenters", healthCenterService.findAll());
+    public String healthCenterListView(ModelMap model, @RequestParam("city") Optional<String> city){
+
+        String cityParam = city.orElse("");
+        List<HealthCenter> healthCenters;
+
+        if (cityParam != ""){
+            healthCenters = healthCenterService.findHealthCentersByCity(cityParam);
+            model.addAttribute("isSearch", true);
+            model.addAttribute("city", cityParam);
+        } else{
+            healthCenters = healthCenterService.findAll();
+            model.addAttribute("isSearch", false);
+        }
+
+        System.out.println(healthCenters);
+
+        model.addAttribute("healthCenters", healthCenters);
+        model.addAttribute("querIsEmpty", healthCenters.isEmpty());
+
         return "healthCenter/list";
     }
 
