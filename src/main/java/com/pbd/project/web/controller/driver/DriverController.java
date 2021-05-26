@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/drivers")
@@ -32,17 +33,16 @@ public class DriverController {
     @Autowired
     private HealthCenterService healthCenterService;
 
-
-
     @GetMapping("")
-    public String driverListView(ModelMap model){
+    public String driverListView(ModelMap model, @RequestParam("page") Optional<Integer> page){
 
         User user = userService.getUserAuthenticated();
+        int currentPage = page.orElse(0);
 
         if(user.getStaff()){
-            model.addAttribute("drivers", driverService.getAllDrivers());
+            model.addAttribute("drivers", driverService.getPaginatedDrivers(currentPage));
         } else {
-            model.addAttribute("drivers", driverService.getAllDriversByHealthCenter(user.getHealthCenter()));
+            model.addAttribute("drivers", driverService.getDriversByHealthCenter(currentPage, user.getHealthCenter()));
         }
 
         return "driver/list";

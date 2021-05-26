@@ -6,6 +6,10 @@ import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Vehicle;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class DriverServiceImpl implements DriverService{
+public class DriverServiceImpl implements DriverService {
 
     @Autowired
     private DriverDao driverDao;
@@ -56,6 +60,33 @@ public class DriverServiceImpl implements DriverService{
     public void changeAvailable(Driver driver) {
         driver.setAvailable(driver.isAvailable() ? false : true);
         this.save(driver);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Driver> getPaginatedDrivers(int currentPage) {
+        return driverDao.findAll(getPageable(currentPage));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Driver> getDriversByHealthCenter(int currentPage, HealthCenter healthCenter) {
+        return driverDao.findDriversByHealthCenter(getPageable(currentPage), healthCenter);
+    }
+
+    @Override
+    public Page<Driver> findDriversByNameAndHealthCenter(int currentPage, HealthCenter healthCenter, String name) {
+        return null;
+    }
+
+    @Override
+    public Page<Driver> findDriversByName(int currentPage, String name) {
+        return null;
+    }
+
+
+    public Pageable getPageable(int currentPage){
+        return PageRequest.of(currentPage, 5, Sort.by("name").ascending());
     }
 
 
