@@ -9,7 +9,7 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"> <i class="fas fa-caret-right"></i> Centros de Saúde</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Centros de Saúde</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
@@ -119,17 +119,21 @@
             </th:block>
 
             <th:block th:case="${true}">
-                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center" th:switch="${isSearch}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
                     <div class="text-center" th:case="${true}">
                         <i class="fas fa-search" style="font-size: 5rem"></i>
-                        <h3 class="mt-2 font-weight-bold">Nenhum resultado encontrado</h3>
-                        <h4>Não encontramos nenhum centro de saúde relacionado a cidade <b class="text-danger" th:text='|"${city}"|'></b>.</h4>
+                        <h3 class="mt-2 font-weight-bold">Nenhum resultado encontrado !</h3>
+                        <h4>Não encontramos nenhum centro de saúde relacionado a cidade <b class="text-danger"
+                                                                                           th:text='|"${city}"|'></b>.
+                        </h4>
                     </div>
 
                     <div class="text-center" th:case="${false}">
-                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-hospital" style="font-size: 5rem"></i>
                         <h3 class="mt-2 font-weight-bold">Não há centros de saúde cadastrados.</h3>
-                        <a class="btn btn-primary font-weight-bold mt-1" th:href="@{/health-centers/create}">CADASTRAR</a>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/health-centers/create}">CADASTRAR</a>
                     </div>
 
                 </div>

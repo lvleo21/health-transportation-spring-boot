@@ -18,103 +18,147 @@
         <div class="card-header d-flex align-items-center d-flex justify-content-between">
             <div class="inline">
                 <nav>
-                    <ul class="pagination ">
+                    <ul class="pagination">
                         <li class="page-item" th:classappend="${drivers.isFirst()} ? 'disabled'">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" th:href="@{drivers(page=${1})}">Primeira</a>
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
+                               th:href="@{drivers(page=${1})}">Primeira</a>
                         </li>
                         <li class="page-item" th:classappend="${!drivers.hasPrevious()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getNumber - 1})}" tabindex="-1" aria-disabled="true">
+                            <a class="page-link" th:href="@{drivers(page=${drivers.getNumber - 1})}" tabindex="-1"
+                               aria-disabled="true">
                                 <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
                             </a>
                         </li>
 
                         <li class="page-item">
-                            <span class="page-link" th:text="|${drivers.getNumber} de ${drivers.getTotalPages - 1}|"></span>
+                            <span class="page-link"
+                                  th:text="${queryIsEmpty} ? '0' : |${drivers.getNumber} de ${drivers.getTotalPages - 1}|"></span>
                         </li>
 
                         <li class="page-item" th:classappend="${!drivers.hasNext()} ? 'disabled'">
-                            <a class="page-link"  th:href="@{drivers(page=${drivers.getNumber + 1})}"  tabindex="-1" aria-disabled="true">
-                                <span aria-hidden="true" class="font-weight-bold"><i class="fas fa-chevron-right"></i></i></span>
+                            <a class="page-link" th:href="@{drivers(page=${drivers.getNumber + 1})}" tabindex="-1"
+                               aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${drivers.isLast()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getTotalPages - 1})}" tabindex="-1" aria-disabled="true">Última</a>
+                            <a class="page-link" th:href="@{drivers(page=${drivers.getTotalPages - 1})}" tabindex="-1"
+                               aria-disabled="true">Última</a>
                         </li>
                     </ul>
                 </nav>
             </div>
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
+            <div th:switch="${isSearch}">
+                <div th:case="${false}">
+                    <!-- Topbar Search -->
+                    <form class="form-inline navbar-search" th:action="@{/drivers}" method="get">
+                        <div class="input-group">
+                            <input type="search" class="form-control border-1 small"
+                                   placeholder="Buscar por nome ..." aria-label="Search"
+                                   aria-describedby="basic-addon2" th:name="name">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div th:case="${true}">
                     <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por nome ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
+                        <input type="search" class="form-control border-1 small"
+                               aria-label="Search"
+                               aria-describedby="basic-addon2" th:name="name" th:value="${driverName}" disabled>
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
+                            <a class="btn btn-danger" type="button" th:href="@{/drivers}" title="Voltar">
+                                <i class="fas fa-times fa-sm"></i>
+                            </a>
                         </div>
                     </div>
-                </form>
-
+                </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-3">
-                        <i class="fas fa-caret-right"></i> Qnt. de motoristas encontrados:
-                        <span class="font-weight-bold" th:text="${drivers.getTotalElements}"></span>
-                    </caption>
-                    <thead>
-                    <tr>
-                        <th class='text-center text-dark text-truncate' scope="col">Nome</th>
-                        <th class='text-center text-dark text-truncate' scope="col">Centro de Saúde</th>
-                        <th class='text-center text-dark' scope="col">Ativo</th>
-                        <th class='text-center text-dark' scope="col">Disponível</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="driver : ${drivers}">
 
-                        <td class="text-center align-middle text-truncate" th:text="*{driver.name}"></td>
-                        <td class="text-center align-middle text-truncate"
-                            th:text="*{driver.healthCenter.address.formatedAddress}"></td>
+        <div class="card-body p-0" th:switch="${queryIsEmpty}">
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <caption class="ml-3">
+                            <i class="fas fa-caret-right"></i> Qnt. de motoristas encontrados:
+                            <span class="font-weight-bold" th:text="${drivers.getTotalElements}"></span>
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th class='text-center text-dark text-truncate' scope="col">Nome</th>
+                            <th class='text-center text-dark text-truncate' scope="col">Centro de Saúde</th>
+                            <th class='text-center text-dark' scope="col">Ativo</th>
+                            <th class='text-center text-dark' scope="col">Disponível</th>
+                            <th class='text-center text-dark' scope="col">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="driver : ${drivers}">
 
-                        <td class="text-center align-middle" th:switch="*{driver.active}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                            <td class="text-center align-middle text-truncate" th:text="*{driver.name}"></td>
+                            <td class="text-center align-middle text-truncate"
+                                th:text="*{driver.healthCenter.address.formatedAddress}"></td>
 
-                        <td class="text-center align-middle" th:switch="*{driver.available}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                            <td class="text-center align-middle" th:switch="*{driver.active}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
 
-                        <td class="text-center align-middle text-truncate">
-                            <a class="btn btn-primary btn-sm" title="Editar"
-                               th:classappend="${!driver.available} ? 'disabled'"
-                               th:href="@{/drivers/update/{id} (id=${driver.id}) }">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            <td class="text-center align-middle" th:switch="*{driver.available}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
 
-                            <button th:id="${#strings.concat('btn_drivers/delete/', driver.id)}"
-                                    th:disabled="${driver.available} ? false : true"
-                                    type="button" title="Remover"
-                                    class="btn btn-danger btn-sm ml-1"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
-                        </td>
+                            <td class="text-center align-middle text-truncate">
+                                <a class="btn btn-primary btn-sm" title="Editar"
+                                   th:classappend="${!driver.available} ? 'disabled'"
+                                   th:href="@{/drivers/update/{id} (id=${driver.id}) }">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
 
-                    </tr>
+                                <button th:id="${#strings.concat('btn_drivers/delete/', driver.id)}"
+                                        th:disabled="${driver.available} ? false : true"
+                                        type="button" title="Remover"
+                                        class="btn btn-danger btn-sm ml-1"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </td>
 
-                    </tbody>
-                </table>
-            </div>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
+
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                        <h4>Não encontramos nenhum motorista relacionado com o nome <b class="text-danger"
+                                                                                       th:text='|"${driverName}"|'></b>.
+                        </h4>
+                    </div>
+
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-user"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há motoristas cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/drivers/create}">CADASTRAR</a>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>

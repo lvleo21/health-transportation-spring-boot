@@ -153,7 +153,7 @@ public class User extends AbstractEntity<Long> {
                 '}';
     }
 
-    public String ShowRoles() {
+    public String showRoles() {
         String text = "";
 
         for (Role role : this.roles) {
@@ -162,6 +162,8 @@ public class User extends AbstractEntity<Long> {
 
         return text;
     }
+
+
 
     public Boolean getStaff() {
         return staff;

@@ -20,8 +20,17 @@ public interface DriverDao extends JpaRepository<Driver, Long> {
     List<Driver> findDriverByHealthCenter (HealthCenter healthCenter);
     List<Driver> findAllByOrderByNameAsc();
 
+    //! PARA GESTOR
     Page<Driver> findDriversByHealthCenter(Pageable pageable, HealthCenter healthCenter);
-    Page<Driver> findDriversByHealthCenterAndNameAndActive(Pageable pageable, HealthCenter healthCenter, String name);
-    Page<Driver> findDriversByHealthCenterAndName(Pageable pageable, HealthCenter healthCenter, String name);
-    Page<Driver> findDriversByName(Pageable pageable, String name);
+    //! PARA GESTOR
+    Page<Driver> findDriversByHealthCenterAndNameContainsIgnoreCase(Pageable pageable, HealthCenter healthCenter, String name);
+    //! PARA OPERADOR
+    Page<Driver> findDriversByHealthCenterAndNameAndActive(Pageable pageable, HealthCenter healthCenter, String name, boolean active);
+    //! PARA ADMIN
+    Page<Driver> findDriversByNameContainsIgnoreCase(Pageable pageable, String name);
+
+
+    //! For get all
+
+    //! For search
 }

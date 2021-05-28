@@ -3,6 +3,7 @@ package com.pbd.project.service.driver;
 import com.pbd.project.dao.driver.DriverDao;
 import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
+import com.pbd.project.domain.User;
 import com.pbd.project.domain.Vehicle;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,19 +76,40 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Driver> findDriversByNameAndHealthCenter(int currentPage, HealthCenter healthCenter, String name) {
-        return null;
+        return driverDao.findDriversByHealthCenterAndNameContainsIgnoreCase(this.getPageable(currentPage), healthCenter, name);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Driver> findDriversByName(int currentPage, String name) {
-        return null;
+
+        Page<Driver> drivers = driverDao.findDriversByNameContainsIgnoreCase(this.getPageable(currentPage), name);
+
+        System.out.println(drivers);
+
+        return drivers;
     }
 
+    @Override
+    public Page<Driver> getDrivers(int currentPage, String name, boolean isStaff, HealthCenter healthCenter) {
+        if (name == null) {
+            return isStaff ?
+                    this.getPaginatedDrivers(currentPage) :
+                    this.getDriversByHealthCenter(currentPage, healthCenter);
+        } else {
+            return isStaff ?
+                    this.findDriversByName(currentPage, name) :
+                    this.findDriversByNameAndHealthCenter(currentPage, healthCenter, name);
+        }
+    }
 
     public Pageable getPageable(int currentPage){
         return PageRequest.of(currentPage, 5, Sort.by("name").ascending());
     }
 
 
+
+    
 }

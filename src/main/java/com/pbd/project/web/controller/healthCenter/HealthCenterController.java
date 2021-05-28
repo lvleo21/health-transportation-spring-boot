@@ -41,8 +41,8 @@ public class HealthCenterController {
             healthCenters = healthCenterService.findAll();
         }
 
-        model.addAttribute("isSearch", cityParam != "" ? true : false);
         model.addAttribute("healthCenters", healthCenters);
+        model.addAttribute("isSearch", cityParam != "" ? true : false);
         model.addAttribute("querIsEmpty", healthCenters.isEmpty());
 
         return "healthCenter/list";
