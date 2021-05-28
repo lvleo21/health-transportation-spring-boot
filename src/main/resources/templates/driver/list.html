@@ -15,13 +15,13 @@
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-between">
-            <div class="inline">
-                <nav>
-                    <ul class="pagination">
+        <div class="card-header">
+            <div class="row">
+                <nav class="col-md col-sm-12">
+                    <ul class="pagination m-0">
                         <li class="page-item" th:classappend="${drivers.isFirst()} ? 'disabled'">
                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-                               th:href="@{drivers(page=${1})}">Primeira</a>
+                               th:href="@{drivers(page=${0})}" th:text="'0º'"></a>
                         </li>
                         <li class="page-item" th:classappend="${!drivers.hasPrevious()} ? 'disabled'">
                             <a class="page-link" th:href="@{drivers(page=${drivers.getNumber - 1})}" tabindex="-1"
@@ -43,42 +43,48 @@
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${drivers.isLast()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getTotalPages - 1})}" tabindex="-1"
-                               aria-disabled="true">Última</a>
+                            <a class="page-link" th:href="@{drivers(page=${drivers.getTotalPages - 1})}"
+                               tabindex="-1"
+                               aria-disabled="true" th:text="${queryIsEmpty} ? '0º' : |${drivers.getTotalPages - 1}ª|"></a>
                         </li>
                     </ul>
                 </nav>
-            </div>
 
-            <div th:switch="${isSearch}">
-                <div th:case="${false}">
-                    <!-- Topbar Search -->
-                    <form class="form-inline navbar-search" th:action="@{/drivers}" method="get">
-                        <div class="input-group">
-                            <input type="search" class="form-control border-1 small"
-                                   placeholder="Buscar por nome ..." aria-label="Search"
-                                   aria-describedby="basic-addon2" th:name="name">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/drivers}" method="get">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           placeholder="Buscar por nome ..." aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name" th:value="${driverName}" disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/drivers}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </th:block>
+                    </th:block>
                 </div>
 
-                <div th:case="${true}">
-                    <div class="input-group">
-                        <input type="search" class="form-control border-1 small"
-                               aria-label="Search"
-                               aria-describedby="basic-addon2" th:name="name" th:value="${driverName}" disabled>
-                        <div class="input-group-append">
-                            <a class="btn btn-danger" type="button" th:href="@{/drivers}" title="Voltar">
-                                <i class="fas fa-times fa-sm"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
