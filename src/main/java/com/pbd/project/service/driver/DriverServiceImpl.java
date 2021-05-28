@@ -64,6 +64,12 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    public void changeActive(Driver driver) {
+        driver.setActive(driver.isActive() ? false : true);
+        this.save(driver);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<Driver> getPaginatedDrivers(int currentPage) {
         return driverDao.findAll(getPageable(currentPage));

@@ -18,6 +18,7 @@ public interface DriverService {
     List<Driver> getAllDriversByAvailableAndActive(Long idHealthCenter, boolean isAvailable, boolean isActive);
     List<Driver> getAllDriversByHealthCenter(HealthCenter healthCenter);
     void changeAvailable(Driver driver);
+    void changeActive(Driver driver);
     Page<Driver> getPaginatedDrivers(int currentPage);
     Page<Driver> getDriversByHealthCenter(int currentPage, HealthCenter healthCenter);
     Page<Driver> findDriversByNameAndHealthCenter(int currentPage, HealthCenter healthCenter, String name);
@@ -25,4 +26,5 @@ public interface DriverService {
 
 
     Page<Driver> getDrivers(int currentPage, String name, boolean isStaff, HealthCenter healthCenter);
+
 }

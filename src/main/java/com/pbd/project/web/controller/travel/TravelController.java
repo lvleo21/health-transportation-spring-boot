@@ -154,7 +154,6 @@ public class TravelController {
             if (path.contains("/travels/update/")) {
                 drivers.add(getTravel().getDriver());
             }
-
             return drivers;
         }
     }

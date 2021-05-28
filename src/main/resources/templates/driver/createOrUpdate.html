@@ -17,7 +17,7 @@
     <hr>
 
     <div class="d-flex justify-content-center">
-        <div class="card shadow rounded mt-4 w-50">
+        <div class="card shadow rounded mt-4 w-25">
             <div class="card-body">
 
 
@@ -25,28 +25,26 @@
                       th:action="${createView} ?  @{/drivers/create/save} : @{/drivers/update/{id}/save (id=${driver.id})} "
                       th:object="${driver}" method="post">
 
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <div class="h4 mb-0 text-gray-800">
-                            <i class="fas fa-caret-right"></i> <b>Informações do motorista</b>
+                    <div class="row">
+                        <div class="col-md col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nome <small
+                                        class="text-secondary">(Obrigatório)</small></label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
+                                <small class="text-danger" th:errors="*{name}"></small>
+                            </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md col-sm-12">
                             <div class="form-group">
-                                <label class="font-weight-bold">Nome <small
-                                        class="text-secondary">(Obrigatório)</small></label>
-                                <input type="text" class="form-control" id="name" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
-                                <small class="text-danger" th:errors="*{name}"></small>
-                            </div>
-                        </div>
-
-                        <div class="col-md col-sm-12">
-                            <div class="form-group">
                                 <label class="font-weight-bold">Centro de Saúde <small
                                         class="text-secondary">(Obrigatório)</small></label>
 
-                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}" th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
+                                <select class="custom-select" id="healthCenter" th:field="*{healthCenter}"
+                                        th:classappend="${#fields.hasErrors('healthCenter')} ? 'is-invalid'">
                                     <option value="">- - -</option>
                                     <option th:each="healthCenter : ${healthCenters}"
                                             th:value="${healthCenter.id}"
@@ -58,35 +56,13 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md col-sm-12 d-flex align-items-center">
-                            <div class="form-group">
-
-                                <input type="checkbox" id="active" th:field="*{active}">
-                                <label th:for="${#ids.next('active')}">Ativo</label>
-                                <br>
-                                <small>Indica que este motorista está ativo ou não no sistema.</small>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md col-sm-12 d-flex align-items-center">
-                            <div class="form-group">
-                                <input type="checkbox" id="available" th:field="*{available}">
-                                <label th:for="${#ids.next('available')}">Disponível</label>
-                                <br>
-                                <small>Indica que este motorista está disponível para viagem.</small>
-                            </div>
-                        </div>
-                    </div>
-
                     <input type="hidden" id="id" th:field="*{id}"/>
 
                     <br>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary font-weight-bold" th:text="${createView} ? 'CADASTRAR' : 'SALVAR'"></button>
-                    </div>
+                    <button type="submit" class="btn btn-primary font-weight-bold btn-block"
+                            th:text="${createView} ? 'CADASTRAR' : 'SALVAR'"></button>
+
                 </form>
             </div>
         </div>

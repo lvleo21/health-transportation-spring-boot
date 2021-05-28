@@ -86,7 +86,7 @@ public class DriverController {
             model.addAttribute("createView", false);
             url = "driver/createOrUpdate";
         } else {
-            attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+            attr.addFlashAttribute("error", "Você não tem permissões para editar este motorista.");
             url = "redirect:/drivers";
         }
 
@@ -105,31 +105,45 @@ public class DriverController {
 
             driverService.save(driver);
 
-            attr.addFlashAttribute("success", "<b>" + driver.getName() + "</b> atualizado com sucesso.");
+            attr.addFlashAttribute("success", "<b>" + driver.getName() + "</b> atualizado(a) com sucesso.");
             url = "redirect:/drivers";
         } else {
-            attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
+            attr.addFlashAttribute("error", "Você não tem permissões para editar este motorista.");
             url = "redirect:/drivers";
         }
 
         return url;
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteDriver(@PathVariable("id") Long id, RedirectAttributes attr) {
-        String url;
         Driver driver = driverService.findDriverById(id);
 
         if (this.hasPermission(driver.getHealthCenter().getId())) {
             driverService.delete(id);
             attr.addFlashAttribute("success", "Motorista deletado com sucesso.");
-            return "redirect:/drivers";
         } else {
-            attr.addFlashAttribute("error", "Você não tem permissões para deletar este veículo.");
-            url = "redirect:/drivers";
+            attr.addFlashAttribute("error", "Você não tem permissões para deletar este motorista.");
         }
 
-        return url;
+        return "redirect:/drivers";
+    }
+
+    @GetMapping("/{id}/change-status")
+    public String changeDriverActive(@PathVariable("id") Long id, RedirectAttributes attr){
+
+        Driver driver = driverService.findDriverById(id);
+
+        if (this.hasPermission(driver.getHealthCenter().getId())) {
+            driverService.changeActive(driver);
+            attr.addFlashAttribute("success", "Motorista <b>"+ driver.getName() +
+                    "</b> modificado com sucesso.");
+
+        } else {
+            attr.addFlashAttribute("error", "Você não tem permissões para modificar este motorista.");
+        }
+
+        return "redirect:/drivers";
     }
 
     @ModelAttribute("healthCenters")

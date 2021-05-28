@@ -132,10 +132,26 @@
                                 <button th:id="${#strings.concat('btn_drivers/delete/', driver.id)}"
                                         th:disabled="${driver.available} ? false : true"
                                         type="button" title="Remover"
-                                        class="btn btn-danger btn-sm ml-1"
+                                        class="btn btn-danger btn-sm ml-1 mr-1"
                                         data-toggle="modal" data-target="#myModal">
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
+
+                                <th:block th:switch="${driver.active}">
+                                    <a class="btn btn-secondary btn-sm" title="Desativar motorista"
+                                       th:case="${true}"
+                                       th:classappend="${!driver.available} ? 'disabled'"
+                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">
+                                        <i class="fas fa-times text-light"></i>
+                                    </a>
+
+                                    <a class="btn btn-secondary btn-sm" title="Ativar motorista"
+                                       th:case="${false}"
+                                       th:classappend="${!driver.available} ? 'disabled'"
+                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">
+                                        <i class="fas fa-check text-light"></i>
+                                    </a>
+                                </th:block>
                             </td>
 
                         </tr>
