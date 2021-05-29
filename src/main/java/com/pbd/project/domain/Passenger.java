@@ -183,4 +183,29 @@ public class Passenger extends AbstractEntity<Long>{
     public void setLocações(List<Location> locações) {
         this.locações = locações;
     }
+
+    public String getShortName(){
+        String shortName = "";
+        String[] splitName = this.name.split(" ");
+        int size = splitName.length - 1;
+        int count=0;
+
+        for (String world: splitName) {
+            boolean firstCondition = count < 2 && Character.isUpperCase(world.charAt(0));
+            boolean secondCondition = count>=2 && Character.isLowerCase(world.charAt(0));
+            boolean thirdCondition = count == size;
+
+            if (firstCondition || secondCondition){
+                shortName+=(world+" ");
+            } else if(thirdCondition){
+                shortName+=(world);
+            } else{
+                shortName+=(world.substring(0,1)+". ");
+            }
+            count+=1;
+        }
+
+        return shortName;
+    }
+
 }

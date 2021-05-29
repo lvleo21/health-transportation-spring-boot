@@ -62,6 +62,9 @@ public class PassengerController {
 
         User user = userService.getUserAuthenticated();
 
+
+        Passenger passenger = passengerService.findPassengerByRg("4.123.123");
+
         if (user.getStaff()) {
             model.addAttribute("passengers", passengerService.findAll());
         } else {

@@ -62,7 +62,7 @@
                         <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
                         <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
                         <td class="text-center align-middle text-truncate font-weight-bold"
-                            th:text="*{passenger.name}"></td>
+                            th:text="*{passenger.getShortName}"></td>
                         <td class="text-center align-middle text-truncate" th:text="*{passenger.rg}"></td>
                         <td class="text-center align-middle text-truncate" th:text="*{passenger.sus}"></td>
                         <td class="text-center align-middle" th:text="*{passenger.gender}"></td>
