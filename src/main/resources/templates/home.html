@@ -15,7 +15,9 @@
 
         <div class="jumbotron">
             <h1 class="display-4">Olá,
-                <b></b><th:block th:text="${#authentication.name}"></th:block></b>
+                <b></b>
+                <th:block th:text="${#authentication.name}"></th:block>
+                </b>
                 !
             </h1>
             <p class="lead">Seja bem-vindo ao <b>Health Transportations</b>. Este Sistema é utilizado para organização e
@@ -25,41 +27,73 @@
             <hr class="my-4">
             <p>Aqui estão as nossas funcionalidades em forma de atalhos rápidos, aproveite. </p>
 
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4"
+                     th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a th:href="@{/health-centers}"
+                       class="btn btn-primary btn-block font-weight-bold">
+                        <span class="icon text-light"><i class="fas fa-hospital mr-1"></i></span>
+                        <span class="text">Centros de Saúde</span>
+                    </a>
+                </div>
 
-            <a class="btn btn-primary" th:href="@{/health-center/list}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                <i class="fas fa-hospital"></i>
-                <span>Cent. de Saúde</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/drivers}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Motoristas</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/passengers}" role="button">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Passageiros</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/prefecture/list}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                <i class="fas fa-fw fa-hotel"></i>
-                <span>Prefeituras</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/users}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
-                <i class="fas fa-fw fa-user-tie"></i>
-                <span>Usuários</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/vehicles}" role="button"
-               th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
-                <i class="fas fa-fw fa-car-side"></i>
-                <span>Veículos</span>
-            </a>
-            <a class="btn btn-primary" th:href="@{/travels}" role="button">
-                <i class="fas fa-fw fa-route"></i>
-                <span>Viagens</span>
-            </a>
+                <div class="col-xl-3 col-md-6 mb-4"
+                     th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+                    <a class="btn btn-primary btn-block font-weight-bold"
+                       th:href="@{/drivers}">
+                <span class="icon text-light">
+                    <i class="fas fa-user mr-1"></i>
+                </span>
+                        <span class="text">Motoristas</span>
+                    </a>
+                </div>
 
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <a th:href="@{/passengers}" class="btn btn-primary btn-block font-weight-bold">
+                <span class="icon text-light">
+                    <i class="fas fa-user mr-1"></i>
+                </span>
+                        <span class="text">Passageiros</span>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4"
+                     th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a th:href="@{/prefecture/list}"
+                       class="btn btn-primary btn-block font-weight-bold">
+                <span class="icon text-light">
+                    <i class="fas fa-hotel mr-1"></i>
+                </span>
+                        <span class="text">Prefeituras</span>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4"
+                     th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+                    <a th:href="@{/users}" class="btn btn-primary btn-block font-weight-bold">
+                <span class="icon text-light">
+                    <i class="fas fa-user-tie mr-1"></i>
+                </span>
+                        <span class="text">Usuários</span>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4"
+                     th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+                    <a th:href="@{/vehicles}"
+                       class="btn btn-primary btn-block font-weight-bold">
+                <span class="icon text-light"><i class="fas fa-car-side mr-1"></i>
+                </span><span class="text">Veículos</span>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <a th:href="@{/travels}" class="btn btn-primary btn-block font-weight-bold">
+                        <span class="icon text-light"><i class="fas fa-route mr-1"></i></span>
+                        <span class="text">Viagens</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
 

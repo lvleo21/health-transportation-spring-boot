@@ -108,13 +108,26 @@
                         <tbody>
                         <tr th:each="driver : ${drivers}">
 
-                            <td class="text-center align-middle text-truncate" th:text="*{driver.name}"></td>
+                            <td class="text-center align-middle text-truncate font-weight-bold" th:text="*{driver.name}"></td>
                             <td class="text-center align-middle text-truncate"
                                 th:text="*{driver.healthCenter.address.formatedAddress}"></td>
 
-                            <td class="text-center align-middle" th:switch="*{driver.active}">
-                                <i class="fas fa-check text-success" th:case="true"></i>
-                                <i class="fas fa-times text-danger" th:case="false"></i>
+<!--                            <td class="text-center align-middle" th:switch="*{driver.active}">-->
+<!--                                <i class="fas fa-check text-success" th:case="true"></i>-->
+<!--                                <i class="fas fa-times text-danger" th:case="false"></i>-->
+<!--                            </td>-->
+
+
+                            <td class="text-center align-middle">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                           class="custom-control-input lg"
+                                           th:id="|switch_drivers/${driver.id}/change-status/|"
+                                           th:checked="*{driver.active}"
+                                    th:disabled="${!driver.available}">
+                                    <label class="custom-control-label"
+                                           th:for="|switch_drivers/${driver.id}/change-status/|"></label>
+                                </div>
                             </td>
 
                             <td class="text-center align-middle" th:switch="*{driver.available}">
@@ -137,21 +150,21 @@
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
 
-                                <th:block th:switch="${driver.active}">
-                                    <a class="btn btn-secondary btn-sm" title="Desativar motorista"
-                                       th:case="${true}"
-                                       th:classappend="${!driver.available} ? 'disabled'"
-                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">
-                                        <i class="fas fa-times text-light"></i>
-                                    </a>
+<!--                                <th:block th:switch="${driver.active}">-->
+<!--                                    <a class="btn btn-secondary btn-sm" title="Desativar motorista"-->
+<!--                                       th:case="${true}"-->
+<!--                                       th:classappend="${!driver.available} ? 'disabled'"-->
+<!--                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">-->
+<!--                                        <i class="fas fa-times text-light"></i>-->
+<!--                                    </a>-->
 
-                                    <a class="btn btn-secondary btn-sm" title="Ativar motorista"
-                                       th:case="${false}"
-                                       th:classappend="${!driver.available} ? 'disabled'"
-                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">
-                                        <i class="fas fa-check text-light"></i>
-                                    </a>
-                                </th:block>
+<!--                                    <a class="btn btn-secondary btn-sm" title="Ativar motorista"-->
+<!--                                       th:case="${false}"-->
+<!--                                       th:classappend="${!driver.available} ? 'disabled'"-->
+<!--                                       th:href="@{drivers/{id}/change-status (id=${driver.id}) }">-->
+<!--                                        <i class="fas fa-check text-light"></i>-->
+<!--                                    </a>-->
+<!--                                </th:block>-->
                             </td>
 
                         </tr>
