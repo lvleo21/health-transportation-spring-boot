@@ -5,6 +5,7 @@ import com.pbd.project.domain.*;
 import com.pbd.project.service.driver.DriverService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
+import com.pbd.project.service.travel.TravelService;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,9 @@ public class DriverController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private TravelService travelService;
 
     @GetMapping("")
     public String driverListView(ModelMap model,
@@ -118,14 +122,26 @@ public class DriverController {
     @GetMapping("/delete/{id}")
     public String deleteDriver(@PathVariable("id") Long id, RedirectAttributes attr) {
         Driver driver = driverService.findDriverById(id);
+        String tag, message;
 
         if (this.hasPermission(driver.getHealthCenter().getId())) {
-            driverService.delete(id);
-            attr.addFlashAttribute("success", "Motorista deletado com sucesso.");
+            if(travelService.findTravelByDriver(driver).isEmpty()){
+                driverService.delete(id);
+                tag="success";
+                message="Motorista deletado com sucesso.";
+
+            } else{
+                tag="error";
+                message="Este(a) motorista possui recursos atralados a ele(a).";
+            }
+
         } else {
-            attr.addFlashAttribute("error", "Você não tem permissões para deletar este motorista.");
+            tag="error";
+            message="Você não tem permissões para deletar este motorista.";
         }
 
+
+        attr.addFlashAttribute(tag, message);
         return "redirect:/drivers";
     }
 
