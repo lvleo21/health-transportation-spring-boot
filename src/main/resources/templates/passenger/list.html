@@ -9,38 +9,88 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Passageiros</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Passageiros</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+        <div class="card-header">
+            <div class="row">
+                <nav class="col-md col-sm-12">
+                    <ul class="pagination m-0">
 
+                        <li class="page-item" th:classappend="${!passengers.hasPrevious()} ? 'disabled'">
+                            <a class="page-link" th:href="@{passengers(page=${passengers.getNumber - 1})}" tabindex="-1"
+                               aria-disabled="true">
+                                <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
+                            </a>
+                        </li>
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por nome ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                        <th:block th:each="i: ${#numbers.sequence(0, passengers.getTotalPages - 1)}">
+                            <li class="page-item" th:classappend="${passengers.getNumber == i} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{passengers(page=${i})}"
+                                   th:text="${i}"></a>
+                            </li>
+                        </th:block>
+
+                        <li class="page-item" th:classappend="${!passengers.hasNext()} ? 'disabled'">
+                            <a class="page-link" th:href="@{passengers(page=${passengers.getNumber + 1})}" tabindex="-1"
+                               aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/passengers}" method="get">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           placeholder="Buscar por nome ..." aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name" th:value="${driverName}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/drivers}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
 
             </div>
+
+
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <caption class="ml-4">
                         <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(passengers)}"></span>
+                        <span class="font-weight-bold" th:text="${passengers.getTotalElements()}"></span>
                     </caption>
                     <thead>
                     <tr>
@@ -133,8 +183,6 @@
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
                             </th:block>
-
-
 
 
                         </td>

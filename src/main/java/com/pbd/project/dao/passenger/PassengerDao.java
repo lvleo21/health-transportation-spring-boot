@@ -3,6 +3,8 @@ package com.pbd.project.dao.passenger;
 import com.pbd.project.domain.Address;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,8 @@ public interface PassengerDao extends JpaRepository<Passenger, Long> {
     Passenger findPassengerBySus(String sus);
     Passenger findPassengerByRg(String rg);
     Passenger findPassengerByAddressAndId(Address address, Long id);
+
+
+    Page<Passenger> findPassengerByHealthCenter(Pageable pageable, HealthCenter healthCenter);
+    Page<Passenger> findPassengerByHealthCenterAndActive(Pageable pageable,HealthCenter healthCenter, boolean active);
 }

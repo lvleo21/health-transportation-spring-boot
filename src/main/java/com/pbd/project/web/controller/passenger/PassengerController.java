@@ -11,6 +11,7 @@ import com.pbd.project.service.role.RoleService;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.web.validation.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/passengers")
@@ -35,8 +37,8 @@ public class PassengerController {
     @Autowired
     private HealthCenterService healthCenterService;
 
-    @Autowired
-    private PassengerValidator passengerValidator;
+//    @Autowired
+//    private PassengerValidator passengerValidator;
 
     @Autowired
     private RoleService roleService;
@@ -44,37 +46,39 @@ public class PassengerController {
     @Autowired
     private LocationService locationService;
 
-
-
 //    @InitBinder
-//    public void userInitBinder(WebDataBinder binder) {
-//        binder.setValidator(this.passengerValidator);
+//    public void initBinder(WebDataBinder binder) {
+//        binder.addValidators(this.passengerValidator);
 //    }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.addValidators(this.passengerValidator);
-    }
-
-
     @GetMapping("")
-    public String passengersListView(ModelMap model) {
+    public String passengersListView(ModelMap model,
+                                     @RequestParam("page") Optional<Integer> page,
+                                     @RequestParam("name") Optional<String> name) {
 
         User user = userService.getUserAuthenticated();
+        int currentPage = page.orElse(0);
+        String passengerName = name.orElse(null);
 
-
-        Passenger passenger = passengerService.findPassengerByRg("4.123.123");
 
         if (user.getStaff()) {
-            model.addAttribute("passengers", passengerService.findAll());
+            model.addAttribute("passengers", passengerService.findAll(currentPage));
         } else {
 
             if (user.getRoles().contains(roleService.findByRole("GESTOR"))){
-                model.addAttribute("passengers", passengerService.findPassengerByHealthCenter(user.getHealthCenter()));
+                model.addAttribute("passengers", passengerService.findPassengerByHealthCenter(
+                        currentPage,
+                        user.getHealthCenter()));
             } else{
-                model.addAttribute("passengers", passengerService.findPassengerByHealthCenterAndActive(user.getHealthCenter(), true));
+                model.addAttribute("passengers", passengerService.findPassengerByHealthCenterAndActive(currentPage, user.getHealthCenter(), true));
             }
+
         }
+
+
+        model.addAttribute("passengerName", passengerName);
+        model.addAttribute("isSearch", passengerName != null ? true : false);
+        model.addAttribute("queryIsEmpty", false);
 
         return "passenger/list";
 
@@ -201,4 +205,6 @@ public class PassengerController {
     public List<HealthCenter> healthCenters() {
         return healthCenterService.getModelAttribute();
     }
+
+
 }

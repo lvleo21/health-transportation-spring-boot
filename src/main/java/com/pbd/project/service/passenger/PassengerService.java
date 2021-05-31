@@ -3,6 +3,8 @@ package com.pbd.project.service.passenger;
 import com.pbd.project.domain.Address;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,5 +22,12 @@ public interface PassengerService {
     void changePassengerStatus(Passenger passenger, boolean active);
     List<Passenger> getModelAttribute();
 
+
+    //! Paginação
+    Page<Passenger> findAll(int currentPage);
+    Page<Passenger> findPassengerByName(int currentPage, String name);
+
+    Page<Passenger> findPassengerByHealthCenter(int currentPage, HealthCenter healthCenter);
+    Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage,HealthCenter healthCenter, boolean active);
 
 }

@@ -8,6 +8,9 @@ import com.pbd.project.domain.User;
 import com.pbd.project.service.address.AddressService;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,6 +120,33 @@ public class PassengerServiceImpl implements PassengerService{
         } else {
             return this.findPassengerByHealthCenter(user.getHealthCenter());
         }
+    }
+
+    @Override
+    public Page<Passenger> findAll(int currentPage) {
+        return passengerDao.findAll(this.getPageable(currentPage));
+    }
+
+    @Override
+    public Page<Passenger> findPassengerByName(int currentPage, String name) {
+        return null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenter(int currentPage, HealthCenter healthCenter) {
+        return passengerDao.findPassengerByHealthCenter(this.getPageable(currentPage), healthCenter);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage, HealthCenter healthCenter, boolean active) {
+        return passengerDao.findPassengerByHealthCenterAndActive(this.getPageable(currentPage), healthCenter, active);
+    }
+
+
+    public Pageable getPageable(int currentPage){
+        return PageRequest.of(currentPage, 12, Sort.by("name").ascending());
     }
 
 
