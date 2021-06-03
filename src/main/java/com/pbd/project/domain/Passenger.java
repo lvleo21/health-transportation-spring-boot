@@ -66,6 +66,9 @@ public class Passenger extends AbstractEntity<Long>{
     @Column(name="is_blocked")
     private Boolean blocked = false;
 
+    @Column(name="in_travel")
+    private Boolean inTravel = false;
+
     @Column(name="warning_count")
     private Integer warningCount = 0;
 
@@ -208,4 +211,11 @@ public class Passenger extends AbstractEntity<Long>{
         return shortName;
     }
 
+    public Boolean getInTravel() {
+        return inTravel;
+    }
+
+    public void setInTravel(Boolean inTravel) {
+        this.inTravel = inTravel;
+    }
 }

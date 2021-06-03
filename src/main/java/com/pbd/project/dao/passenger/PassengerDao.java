@@ -19,7 +19,7 @@ public interface PassengerDao extends JpaRepository<Passenger, Long> {
     Passenger findPassengerByRg(String rg);
     Passenger findPassengerByAddressAndId(Address address, Long id);
 
-
+    Page<Passenger> findPassengerByNameContainsIgnoreCase(Pageable pageable, String name);
     Page<Passenger> findPassengerByHealthCenter(Pageable pageable, HealthCenter healthCenter);
     Page<Passenger> findPassengerByHealthCenterAndActive(Pageable pageable,HealthCenter healthCenter, boolean active);
     Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(Pageable pageable,

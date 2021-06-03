@@ -62,7 +62,6 @@ public class PassengerController {
         int currentPage = page.orElse(0);
         String passengerName = name.orElse(null);
 
-
         Page<Passenger> passengers = null;
 
         if (user.getStaff()){
@@ -84,11 +83,7 @@ public class PassengerController {
                             currentPage,
                             user.getHealthCenter(),
                             passengerName);
-
-
         }
-
-
 
         model.addAttribute("passengers", passengers);
         model.addAttribute("passengerName", passengerName);
@@ -96,7 +91,6 @@ public class PassengerController {
         model.addAttribute("queryIsEmpty", passengers.getTotalElements() == 0 ? true : false);
 
         return "passenger/list";
-
     }
 
     @GetMapping("/create")
@@ -108,16 +102,12 @@ public class PassengerController {
     @PostMapping("/create/save")
     public String createPassenger(@Valid Passenger passenger, BindingResult result, ModelMap model, RedirectAttributes attr){
 
-
-        System.out.println("RESULT => " + result.hasErrors());
-
         if (result.hasErrors()) {
             model.addAttribute("createView", true);
             return "passenger/createOrUpdate";
         }
 
         passengerService.save(passenger);
-
         attr.addFlashAttribute("success", "<b>"+ passenger.getName() + "</b> adicionado com sucesso.");
 
         return "redirect:/passengers";
@@ -149,21 +139,17 @@ public class PassengerController {
         }
 
         passengerService.update(passenger);
-
         attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> atualizado(a) com sucesso.");
         return "redirect:/passengers";
     }
 
     @GetMapping("/{rg}/deactivate")
     public String deactivatePassenger(@PathVariable("rg") String rg, RedirectAttributes attr) {
-
         Passenger passenger = passengerService.findPassengerByRg(rg);
 
-
-        if(passenger != null){
-
+        if(passenger != null && this.hasPermission(passenger.getHealthCenter().getId())){
             if (locationService.findLocationByPassengerAndTravelStatus(passenger.getId(), TravelStatus.AGUARDANDO.getName()).isEmpty()){
-                passengerService.changePassengerStatus(passenger, false);
+                passengerService.changePassengerStatus(passenger);
                 attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> desativado(a) com sucesso.");
             } else{
                 attr.addFlashAttribute("error", "Este passageiro está em uma viagem ativa, tente novamente mais tarde.");
@@ -172,10 +158,6 @@ public class PassengerController {
             attr.addFlashAttribute("error", "Erro ao tentar ativar o passageiro, tente novamente.");
         }
 
-
-
-        //! Tenho que verificar se não esta em nenhuma viagem ativa;
-
         return "redirect:/passengers";
     }
 
@@ -183,18 +165,8 @@ public class PassengerController {
     public String activatePassenger(@PathVariable("rg") String rg, RedirectAttributes attr) {
         Passenger passenger = passengerService.findPassengerByRg(rg);
 
-
-        //! faz um método para isso
-        User user = userService.getUserAuthenticated();
-        if (!user.getStaff()) {
-            if (!user.getHealthCenter().getId().equals(passenger.getHealthCenter().getId())) {
-                attr.addFlashAttribute("error", "Você não tem permissões para editar este veículo.");
-                return "redirect:/passengers";
-            }
-        }
-
-        if(passenger != null){
-            passengerService.changePassengerStatus(passenger, true);
+        if(this.hasPermission(passenger.getHealthCenter().getId()) && passenger != null){
+            passengerService.changePassengerStatus(passenger);
             attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> ativado(a) com sucesso.");
         } else{
             attr.addFlashAttribute("error", "Erro ao tentar ativar o passageiro, tente novamente.");
@@ -203,8 +175,12 @@ public class PassengerController {
         return "redirect:/passengers";
     }
 
-
-
+    @GetMapping("/{id}/change-status")
+    public String changePassengerActive(@PathVariable("id") Long id, RedirectAttributes attr){
+        Passenger passenger = passengerService.findById(id);
+        passengerService.changePassengerStatus(passenger);
+        return "redirect:/passengers";
+    }
 
     @ModelAttribute("ufs")
     public UF[] getUFs() {
@@ -221,5 +197,8 @@ public class PassengerController {
         return healthCenterService.getModelAttribute();
     }
 
-
+    public boolean hasPermission(Long idHealthCenter) {
+        User user = userService.getUserAuthenticated();
+        return (user.getStaff() || (user.getHealthCenter().getId().equals(idHealthCenter))) ? true : false;
+    }
 }

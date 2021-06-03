@@ -110,8 +110,8 @@ public class PassengerServiceImpl implements PassengerService{
     }
 
     @Override
-    public void changePassengerStatus(Passenger passenger, boolean active) {
-        passenger.setActive(active);
+    public void changePassengerStatus(Passenger passenger) {
+        passenger.setActive(!passenger.getActive());
         passengerDao.save(passenger);
     }
 
@@ -133,7 +133,8 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Override
     public Page<Passenger> findPassengerByName(int currentPage, String name) {
-        return null;
+
+        return passengerDao.findPassengerByNameContainsIgnoreCase(this.getPageable(currentPage), name);
     }
 
     @Override
@@ -148,27 +149,7 @@ public class PassengerServiceImpl implements PassengerService{
         return passengerDao.findPassengerByHealthCenterAndActive(this.getPageable(currentPage), healthCenter, active);
     }
 
-    @Override
-    public Page<Passenger> getPassengers(int currentPage, String name) {
-        User user = userService.getUserAuthenticated();
 
-        if (user.getStaff()){
-            return (name == null) ?
-                    this.findAll(currentPage) :
-                    this.findPassengerByName(currentPage, name);
-        }
-        else if(user.getRoles().contains(roleService.findByRole("GESTOR"))){
-            return (name.isEmpty()) ?
-                    this.findPassengerByHealthCenter(currentPage, user.getHealthCenter()) :
-                    this.findPassengerByHealthCenterAndNameContainsIgnoreCase(
-                            currentPage,
-                            user.getHealthCenter(),
-                            name
-                    );
-        }
-
-        return null;
-    }
 
     @Override
     public Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(int currentPage, HealthCenter healthCenter, String name) {

@@ -19,24 +19,20 @@ public interface PassengerService {
     List<Passenger> findPassengerByHealthCenterAndActive(HealthCenter healthCenter, boolean active);
     List<Passenger> findPassengerByHealthCenter(HealthCenter healthCenter);
 
-    void changePassengerStatus(Passenger passenger, boolean active);
+    void changePassengerStatus(Passenger passenger);
     List<Passenger> getModelAttribute();
 
 
     //! Paginação
     Page<Passenger> findAll(int currentPage);
     Page<Passenger> findPassengerByName(int currentPage, String name);
-
     Page<Passenger> findPassengerByHealthCenter(int currentPage, HealthCenter healthCenter);
     Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage, HealthCenter healthCenter, boolean active);
-    Page<Passenger> getPassengers(int currentPage, String name);
-
     Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(
             int currentPage,
             HealthCenter healthCenter,
             String name
     );
-
     Page<Passenger> findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(int currentPage,
                                                                                   HealthCenter healthCenter,
                                                                                   boolean isActive,
