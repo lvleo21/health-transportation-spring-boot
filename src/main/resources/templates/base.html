@@ -117,6 +117,7 @@
 <script type="text/javascript" src="https://www.geradorcpf.com/assets/js/jquery.maskedinput-1.1.4.pack.js"></script>
 
 <script type="text/javascript" th:src="@{/js/mask.js}"></script>
+<script type="text/javascript" th:src="@{/js/changeActive.js}"></script>
 
 <script>
     let url;
@@ -134,7 +135,7 @@
     });
 
 
-    function setSpinner(id){
+    function setSpinner(id) {
 
         let btnId = "btnResetPassword_" + id;
         let spinnerId = "spinner_" + id;
@@ -151,26 +152,23 @@
 
         spinner.className = "btn btn-success btn-sm";
         spinner.disabled = true;
-
-
-
     }
 
 </script>
 
 
-<script th:if = "${#strings.contains(#httpServletRequest.requestURI, '/user/change-password/')}" >
+<script th:if="${#strings.contains(#httpServletRequest.requestURI, '/user/change-password/')}">
     let oldPasswordField = document.getElementById("oldPassword");
     let newPasswordField = document.getElementById("newPassword");
     let checkbox = document.getElementById("showPasswordsCheckbox");
 
     checkbox.onclick = () => {
-        if(oldPasswordField.type == "password" && newPasswordField.type == "password"){
-            oldPasswordField.type="text";
-            newPasswordField.type="text";
+        if (oldPasswordField.type == "password" && newPasswordField.type == "password") {
+            oldPasswordField.type = "text";
+            newPasswordField.type = "text";
         } else {
-            oldPasswordField.type="password";
-            newPasswordField.type="password";
+            oldPasswordField.type = "password";
+            newPasswordField.type = "password";
         }
     }
 </script>

@@ -1,6 +1,7 @@
 package com.pbd.project.service.travel;
 
 import com.pbd.project.dao.travel.TravelDao;
+import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Travel;
 import com.pbd.project.domain.enums.TravelStatus;
@@ -81,6 +82,10 @@ public class TravelServiceImpl implements TravelService {
         return travelDao.findTravelByHealthCenter(healthCenter);
     }
 
+    @Override
+    public List<Travel> findTravelByDriver(Driver driver) {
+        return travelDao.findTravelByDriver(driver);
+    }
 
 
     public void changeDriverAndVehicleStatus(Travel travel){

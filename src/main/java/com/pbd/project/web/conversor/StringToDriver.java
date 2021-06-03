@@ -13,6 +13,6 @@ public class StringToDriver implements Converter<String, Driver> {
     private DriverService driverService;
 
     public Driver convert(String text) {
-        return (!text.isEmpty()) ? driverService.findById(Long.valueOf(text)) : null;
+        return (!text.isEmpty()) ? driverService.findDriverById(Long.valueOf(text)) : null;
     }
 }

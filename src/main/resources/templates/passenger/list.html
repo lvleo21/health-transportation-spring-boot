@@ -9,140 +9,219 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Passageiros</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Passageiros</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+        <div class="card-header">
+            <div class="row">
+                <div class="ml-3 d-flex align-items-center">
+                    <i class="fas fa-caret-right mr-1"></i> Qnt. de Passageiros encontrados:
+                    <span class="font-weight-bold ml-1"
+                          th:text="${queryIsEmpty} ? '0' : ${passengers.getTotalElements()} "></span>
+                </div>
 
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/passengers}" method="get">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           placeholder="Buscar por nome ..." aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por nome ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name" th:value="${passengerName}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/passengers}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
 
             </div>
+
+
         </div>
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(passengers)}"></span>
-                    </caption>
-                    <thead>
-                    <tr>
-                        <th class='text-center text-dark' scope="col">Nome</th>
-                        <th class='text-center text-dark' scope="col">RG</th>
-                        <th class='text-center text-dark' scope="col">SUS</th>
-                        <th class='text-center text-dark' scope="col">Gênero</th>
-                        <th class='text-center text-dark  text-truncate' scope="col">Dat. de Nascimento</th>
-                        <th class='text-center text-dark' scope="col">Telefone</th>
-                        <th class='text-center text-dark' scope="col">Bloqueado</th>
-                        <th class='text-center text-dark' scope="col">Endereço</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="passenger : ${passengers}">
+            <div class="table-responsive" th:switch="${queryIsEmpty}">
+                <th:block th:case="${false}">
+                    <table class="table table-hover mb-0">
+                        <caption>
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${!passengers.hasPrevious()} ? 'disabled'">
+                                        <a class="page-link" th:href="@{passengers(page=${passengers.getNumber - 1})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                            <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
+                                        </a>
+                                    </li>
 
-                        <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
-                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
-                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
-                        <td class="text-center align-middle text-truncate font-weight-bold"
-                            th:text="*{passenger.name}"></td>
-                        <td class="text-center align-middle text-truncate" th:text="*{passenger.rg}"></td>
-                        <td class="text-center align-middle text-truncate" th:text="*{passenger.sus}"></td>
-                        <td class="text-center align-middle" th:text="*{passenger.gender}"></td>
-                        <td class="text-center align-middle text-truncate"
-                            th:text="*{#temporals.format(passenger.dateOfBirth, 'dd/MM/yyyy')}"></td>
-                        <td class="text-center align-middle text-truncate" th:text="*{passenger.cellPhone}"></td>
+                                    <th:block th:each="i: ${#numbers.sequence(0, passengers.getTotalPages - 1)}">
+                                        <li class="page-item" th:classappend="${passengers.getNumber == i} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="${passengerName == null } ? @{/passengers(page=${i})} : @{/passengers(page=${i}, name=${passengerName})}"
+                                               th:text="${i}"></a>
+                                        </li>
+                                    </th:block>
 
-                        <td class="text-center align-middle text-truncate" th:switch="*{passenger.blocked}">
-                            <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
-                            <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
-                        </td>
+                                    <li class="page-item" th:classappend="${!passengers.hasNext()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${passengerName == null } ? @{/passengers(page=${passengers.getNumber + 1})} : @{/passengers(page=${passengers.getNumber + 1}, name=${passengerName})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th class='text-center text-dark' scope="col">Nome</th>
+                            <th class='text-center text-dark' scope="col">SUS</th>
+                            <th class='text-center text-dark' scope="col">Gênero</th>
+                            <th class='text-center text-dark  text-truncate' scope="col">Dat. de Nascimento</th>
+                            <th class='text-center text-dark' scope="col">Telefone</th>
+                            <th class='text-center text-dark' scope="col">Bloqueado</th>
+                            <th class='text-center text-dark' scope="col">Endereço</th>
+                            <th class='text-center text-dark text-truncate' scope="col"
+                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">Ativo ?</th>
+                            <th class='text-center text-dark' scope="col">Editar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="passenger : ${passengers}">
+                            <td class="text-center align-middle text-truncate font-weight-bold"
+                                th:text="*{passenger.getShortName}"></td>
 
-                        <td class="text-center align-middle">
+                            <td class="text-center align-middle text-truncate" th:text="*{passenger.sus}"></td>
 
-                            <a tabindex="1"
-                               class="btn btn-secondary btn-sm"
-                               role="button"
-                               data-html="true"
-                               data-toggle="popover"
-                               data-trigger="focus"
-                               data-placement="left"
-                               data-container="body"
-                               title="<b>Endereço</b>"
-                               th:data-content="${passenger.address.getAdressInformation}">
+                            <td class="text-center align-middle font-weight-bold" th:text="*{passenger.gender}"
+                                th:classappend="${passenger.gender.initials == 'M'} ? text-primary : text-danger"></td>
 
+                            <td class="text-center align-middle text-truncate"
+                                th:text="*{#temporals.format(passenger.dateOfBirth, 'dd/MM/yyyy')}"></td>
 
-                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
-                            </a>
-
-                            <!--                            <a class="btn btn-secondary btn-sm" data-container="body"-->
-                            <!--                                    role="button"-->
-                            <!--                                    title="<b>Endereço</b>"-->
-                            <!--                                    data-toggle="popover"-->
-                            <!--                                    data-placement="right"-->
-                            <!--                                    data-trigger="focus"-->
-                            <!--                                    th:data-content="${passenger.address.getAdressInformation}">-->
-
-                            <!--                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>-->
-                            <!--                            </a>-->
-                        </td>
+                            <td class="text-center align-middle text-truncate" th:text="*{passenger.cellPhone}"></td>
 
 
-                        <td class="text-center align-middle text-truncate">
-                            <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
-                            <!--                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"-->
-                            <a class="btn btn-primary btn-sm" title="Editar"
-                               th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            <td class="text-center align-middle text-truncate"
+                                th:switch="*{passenger.blocked}">
 
-                            <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
-                            <!--                                    th:disabled="${travel.status.description != 'Aguardando' ? true : false}"-->
+                                <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
+                                <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
+                            </td>
 
-                            <th:block th:switch="${passenger.active}">
-                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"
-                                        type="button" title="Desativar"
-                                        class="btn btn-danger btn-sm"
-                                        data-toggle="modal" data-target="#myModal"
-                                        th:case="true">
-                                    <i class="fas fa-trash text-light"></i>
-                                </button>
+                            <td class="text-center align-middle">
 
-                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/activate')}"
-                                        type="button" title="Ativar"
-                                        class="btn btn-success btn-sm"
-                                        data-toggle="modal" data-target="#myModal"
-                                        th:case="false">
-                                    <i class="fas fa-trash text-light"></i>
-                                </button>
-                            </th:block>
+                                <a tabindex="1"
+                                   class="btn btn-secondary btn-sm"
+                                   role="button"
+                                   data-html="true"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   data-placement="left"
+                                   data-container="body"
+                                   title="<b>Endereço</b>"
+                                   th:data-content="${passenger.address.getAdressInformation}">
 
 
+                                    <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
+                                </a>
+                            </td>
+
+                            <td class="text-center align-middle"
+                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           th:id="|switch_passengers/${passenger.id}/change-status/|"
+                                           th:checked="*{passenger.active}">
+                                    <label class="custom-control-label"
+                                           th:for="|switch_passengers/${passenger.id}/change-status/|"></label>
+                                </div>
+                            </td>
 
 
-                        </td>
+                            <td class="text-center align-middle text-truncate">
+                                <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+                                <!--                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"-->
+                                <a class="btn btn-primary btn-sm mr-1" title="Editar"
+                                   th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
 
-                    </tr>
 
-                    </tbody>
-                </table>
+<!--                                <th:block th:switch="${passenger.active}">-->
+<!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
+<!--                                            type="button" title="Desativar"-->
+<!--                                            class="btn btn-danger btn-sm"-->
+<!--                                            data-toggle="modal" data-target="#myModal"-->
+<!--                                            th:case="true">-->
+<!--                                        <i class="fas fa-trash text-light"></i>-->
+<!--                                    </button>-->
+
+<!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/activate')}"-->
+<!--                                            type="button" title="Ativar"-->
+<!--                                            class="btn btn-success btn-sm"-->
+<!--                                            data-toggle="modal" data-target="#myModal"-->
+<!--                                            th:case="false">-->
+<!--                                        <i class="fas fa-trash text-light"></i>-->
+<!--                                    </button>-->
+<!--                                </th:block>-->
+
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </th:block>
+
+                <th:block th:case="${true}">
+                    <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                         th:switch="${isSearch}">
+                        <div class="text-center" th:case="${true}">
+                            <i class="fas fa-search" style="font-size: 5rem"></i>
+                            <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                            <h4>Não encontramos nenhum passageiro relacionado com o nome <b class="text-danger"
+                                                                                           th:text='|"${passengerName}"|'></b>.
+                            </h4>
+                        </div>
+
+                        <div class="text-center" th:case="${false}">
+                            <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                            <i class="fas fa-fw fa-user"></i>
+                            <h3 class="mt-2 font-weight-bold">Não há passageiros cadastrados.</h3>
+                            <a class="btn btn-primary font-weight-bold mt-1"
+                               th:href="@{/passengers/create}">CADASTRAR</a>
+                        </div>
+                    </div>
+                </th:block>
             </div>
         </div>
     </div>

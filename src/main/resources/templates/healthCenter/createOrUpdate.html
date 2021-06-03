@@ -28,7 +28,7 @@
 
 
                 <form class="user" autocomplete="off"
-                      th:action="${action == 'Adicionar'} ?  @{/health-center/register/save} : @{/health-center/update/save}"
+                      th:action="${createView} ?  @{/health-centers/create/save} : @{/health-centers/update/{id}/save (id=${healthCenter.prefecture.id})}"
                       th:object="${healthCenter}"  method="post">
 
                     <div class="row">
@@ -121,10 +121,10 @@
 
                                 <select class="custom-select" id="prefecture" th:field="*{prefecture}">
                                     <option value="">- - - -</option>
-                                    <option th:each="prefecture : ${prefectures}" th:value="${prefecture.id}" th:text="${prefecture.getCityAndState}" th:if="${prefecture.healthCenter} == null"></option>
+                                    <option th:each="prefecture : ${prefectures}"
+                                            th:value="${prefecture.id}"
+                                            th:text="${prefecture.getCityAndState}"></option>
                                 </select>
-
-
                             </div>
                         </div>
 
@@ -146,8 +146,8 @@
                         <div class="col-md col-sm-12 d-flex align-items-center">
                             <div class="form-group mt-4">
 
-                                <label th:for="${#ids.next('active')}">Ativo</label>
                                 <input type="checkbox" id="active" th:field="*{active}">
+                                <label th:for="${#ids.next('active')}">Ativo</label>
                                 <br>
                                 <small>Indica que este centro de saúde está ativo ou não no sistema.</small>
 
@@ -162,7 +162,7 @@
 
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary font-weight-bold">
-                            <b>CADASTRAR</b>
+                            <b th:text="${createView} ? 'CADASTRAR' : 'SALVAR'"></b>
                         </button>
                     </div>
                 </form>

@@ -9,98 +9,135 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Centros de Saúde</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Centros de Saúde</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
-
-
-            <div>
+        <div class="card-header d-flex align-items-center d-flex justify-content-end" th:switch="${isSearch}">
+            <div th:case="${false}">
                 <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
+                <form class="form-inline navbar-search" th:action="@{/health-centers}" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
+                        <input type="search" class="form-control border-1 small"
                                placeholder="Buscar por cidade ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
+                               aria-describedby="basic-addon2" th:name="city">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
+                            <button class="btn btn-primary" type="submit">
                                 <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
                     </div>
                 </form>
-
             </div>
+
+            <div th:case="${true}">
+                <div class="input-group">
+                    <input type="search" class="form-control border-1 small"
+                           aria-label="Search"
+                           aria-describedby="basic-addon2" th:name="city" th:value="${city}" disabled>
+                    <div class="input-group-append">
+                        <a class="btn btn-danger" type="button" th:href="@{/health-centers}" title="Voltar">
+                            <i class="fas fa-times fa-sm"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de centros de saúde encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(healthCenters)}"></span>
-                    </caption>
-                    <thead>
-                    <tr>
-                        <th class='text-center text-dark' scope="col">Endereço</th>
-                        <th class='text-center text-dark' scope="col">Prefeitura</th>
-                        <th class='text-center text-dark' scope="col">CNPJ</th>
-                        <th class='text-center text-dark' scope="col">Ativa</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
+
+        <div class="card-body p-0" th:switch="${querIsEmpty}">
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <caption class="ml-4">
+                            <i class="fas fa-caret-right"></i> Qnt. de centros de saúde encontrados:
+                            <span class="font-weight-bold" th:text="${#lists.size(healthCenters)}"></span>
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th class='text-center align-middle  text-dark text-truncate' scope="col">Endereço</th>
+                            <th class='text-center align-middle  text-dark text-truncate' scope="col">Prefeitura</th>
+                            <th class='text-center align-middle  text-dark text-truncate' scope="col">CNPJ</th>
+                            <th class='text-center align-middle  text-dark text-truncate' scope="col">Ativo ?</th>
+                            <th class='text-center align-middle  text-dark text-truncate' scope="col">Ações</th>
 
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="healthCenter : ${healthCenters}">
-                        <td class="text-center align-middle">
-
-                            <a tabindex="1"
-                               class="btn btn-secondary btn-sm"
-                               role="button"
-                               data-html="true"
-                               data-toggle="popover"
-                               data-trigger="focus"
-                               data-placement="left"
-                               data-container="body"
-                               title="<b>Endereço</b>"
-                               th:data-content="${healthCenter.address.getAdressInformation}">
+                        </tr>
+                        </thead>
+                        <tbody>
 
 
-                                <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
-                            </a>
+                        <tr th:each="healthCenter : ${healthCenters}">
+                            <td class="text-center align-middle">
 
-                        </td>
+                                <a tabindex="1"
+                                   class="btn btn-secondary btn-sm"
+                                   role="button"
+                                   data-html="true"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   data-placement="left"
+                                   data-container="body"
+                                   title="<b>Endereço</b>"
+                                   th:data-content="${healthCenter.address.getAdressInformation}">
 
-                        <td class="text-center align-middle" th:text="*{healthCenter.prefecture.getCityAndState}"></td>
-                        <td class="text-center align-middle" th:text="*{healthCenter.cnpj}"></td>
 
-                        <td class="text-center align-middle" th:switch="*{healthCenter.active}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                                    <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
+                                </a>
 
-                        <td class="text-center align-middle nowrap">
-                            <a class="btn btn-primary btn-sm"
-                               th:href="@{/health-center/update/{id} (id=${healthCenter.id}) }">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            </td>
 
-                            <button th:id="${#strings.concat('btn_health-center/delete/', healthCenter.id)}"
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
-                        </td>
+                            <td class="text-center align-middle text-truncate"
+                                th:text="*{healthCenter.prefecture.getCityAndState}"></td>
+                            <td class="text-center align-middle text-truncate" th:text="*{healthCenter.cnpj}"></td>
 
-                    </tr>
+                            <td class="text-center align-middle  text-truncate" th:switch="*{healthCenter.active}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
 
-                    </tbody>
-                </table>
-            </div>
+                            <td class="text-center align-middle text-truncate">
+                                <a class="btn btn-primary btn-sm"
+                                   th:href="@{/health-centers/update/{id} (id=${healthCenter.id}) }">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
+
+                                <button th:id="${#strings.concat('btn_health-centers/delete/', healthCenter.id)}"
+                                        type="button"
+                                        class="btn btn-danger btn-sm ml-1"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
+
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">Nenhum resultado encontrado !</h3>
+                        <h4>Não encontramos nenhum centro de saúde relacionado a cidade <b class="text-danger"
+                                                                                           th:text='|"${city}"|'></b>.
+                        </h4>
+                    </div>
+
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-fw fa-hospital" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há centros de saúde cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/health-centers/create}">CADASTRAR</a>
+                    </div>
+
+                </div>
+            </th:block>
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>

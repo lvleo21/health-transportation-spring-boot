@@ -4,8 +4,14 @@ import com.pbd.project.dao.passenger.PassengerDao;
 import com.pbd.project.domain.Address;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
+import com.pbd.project.domain.User;
 import com.pbd.project.service.address.AddressService;
+import com.pbd.project.service.role.RoleService;
+import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +27,12 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public void save(Passenger passenger) {
@@ -98,9 +110,72 @@ public class PassengerServiceImpl implements PassengerService{
     }
 
     @Override
-    public void changePassengerStatus(Passenger passenger, boolean active) {
-        passenger.setActive(active);
+    public void changePassengerStatus(Passenger passenger) {
+        passenger.setActive(!passenger.getActive());
         passengerDao.save(passenger);
+    }
+
+    @Override
+    public List<Passenger> getModelAttribute() {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()) {
+            return this.findAll();
+        } else {
+            return this.findPassengerByHealthCenter(user.getHealthCenter());
+        }
+    }
+
+    @Override
+    public Page<Passenger> findAll(int currentPage) {
+        return passengerDao.findAll(this.getPageable(currentPage));
+    }
+
+    @Override
+    public Page<Passenger> findPassengerByName(int currentPage, String name) {
+
+        return passengerDao.findPassengerByNameContainsIgnoreCase(this.getPageable(currentPage), name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenter(int currentPage, HealthCenter healthCenter) {
+        return passengerDao.findPassengerByHealthCenter(this.getPageable(currentPage), healthCenter);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage, HealthCenter healthCenter, boolean active) {
+        return passengerDao.findPassengerByHealthCenterAndActive(this.getPageable(currentPage), healthCenter, active);
+    }
+
+
+
+    @Override
+    public Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(int currentPage, HealthCenter healthCenter, String name) {
+        return passengerDao.findPassengerByHealthCenterAndNameContainsIgnoreCase(
+                this.getPageable(currentPage),
+                healthCenter,
+                name
+        );
+    }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(int currentPage, HealthCenter healthCenter, boolean isActive, String name) {
+        return passengerDao.findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(
+                this.getPageable(currentPage),
+                healthCenter,
+                isActive,
+                name
+        );
+    }
+
+
+    public Pageable getPageable(int currentPage){
+        return PageRequest.of(currentPage, 12, Sort.by("name").ascending());
     }
 
 

@@ -37,19 +37,19 @@
 
 
     <li class="nav-item"
-        th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/health-center/')} ? 'active'"
+        th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/health-centers')} ? 'active'"
         th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesHealthCenters"
            aria-expanded="true" aria-controls="collapsePagesHealthCenters">
-            <i class="fas fa-hospital"></i>
+            <i class="fas fa-fw fa-hospital"></i>
             <span>Cent. de Saúde</span>
         </a>
         <div id="collapsePagesHealthCenters" class="collapse" aria-labelledby="headingPages"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Ações</h6>
-                <a class="collapse-item" th:href="@{/health-center/list}">Visualizar</a>
-                <a class="collapse-item" th:href="@{/health-center/register}">Cadastrar</a>
+                <a class="collapse-item" th:href="@{/health-centers}">Visualizar</a>
+                <a class="collapse-item" th:href="@{/health-centers/create}">Cadastrar</a>
 
             </div>
         </div>

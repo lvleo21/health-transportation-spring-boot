@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/health-center")
+@RequestMapping("/health-centers")
 public class HealthCenterController {
 
 
@@ -28,58 +28,76 @@ public class HealthCenterController {
     @Autowired
     private PrefectureService prefectureService;
 
+    @GetMapping("")
+    public String healthCenterListView(ModelMap model, @RequestParam("city") Optional<String> city) {
 
-    @GetMapping("/list")
-    public String getHealthCenters(ModelMap model){
-        model.addAttribute("healthCenters", healthCenterService.findAll());
+        String cityParam = city.orElse("");
+        List<HealthCenter> healthCenters;
+
+        if (cityParam != "") {
+            healthCenters = healthCenterService.findHealthCentersByCity(cityParam);
+            model.addAttribute("city", cityParam);
+        } else {
+            healthCenters = healthCenterService.findAll();
+        }
+
+        model.addAttribute("healthCenters", healthCenters);
+        model.addAttribute("isSearch", cityParam != "" ? true : false);
+        model.addAttribute("querIsEmpty", healthCenters.isEmpty());
+
         return "healthCenter/list";
     }
 
+    @GetMapping("/create")
+    public String healthCenterCreateView(HealthCenter healthCenter, ModelMap model) {
+        model.addAttribute("createView", true);
+        return "healthCenter/createOrUpdate";
+    }
 
-    @GetMapping("/register")
-    public String viewRegisterHealthCenter(HealthCenter healthCenter){ return "healthCenter/create"; }
-
-    @PostMapping("/register/save")
-    public String saveHealthcenter(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr){
-        if(result.hasErrors()){
-            return "healthCenter/create";
+    @PostMapping("/create/save")
+    public String healthCenterCreateSave(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
+            return "healthCenter/createOrUpdate";
         }
 
         healthCenterService.save(healthCenter);
         attr.addFlashAttribute("success", "Centro de saúde adicionado com sucesso.");
 
-        return "redirect:/health-center/list";
-
+        return "redirect:/health-centers";
     }
 
     @GetMapping("/update/{id}")
-    public String preUpdate(@PathVariable("id") Long id, ModelMap model){
+    public String healthCenterUpdateView(@PathVariable("id") Long id, ModelMap model) {
         HealthCenter healthCenter = healthCenterService.findById(id);
         model.addAttribute("healthCenter", healthCenter);
 
-        return "healthCenter/create";
+        return "healthCenter/createOrUpdate";
     }
 
-    @PostMapping("/update/save")
-    public String update(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr) {
+    @PostMapping("/update/{id}/save")
+    public String healthCenterUpdateSave(@Valid HealthCenter healthCenter, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
-            return "healthCenter/create";
+            return "healthCenter/createOrUpdate";
         }
 
         healthCenterService.save(healthCenter);
         attr.addFlashAttribute("success", "Centro de saúde editado com sucesso.");
-        return "redirect:/health-center/list";
-
+        return "redirect:/health-centers";
     }
 
 
     @GetMapping("/delete/{id}")
-    public String deleteHealthCenter(@PathVariable("id") Long id, RedirectAttributes attr) {
-        healthCenterService.deleteById(id);
-        attr.addFlashAttribute("success", "Centro de saúde removido com sucesso.");
-        return "redirect:/health-center/list";
-    }
+    public String healthCenterDelete(@PathVariable("id") Long id, RedirectAttributes attr) {
 
+        if (healthCenterService.deleteById(id)) {
+            attr.addFlashAttribute("success", "Centro de saúde removido com sucesso.");
+
+        } else {
+            attr.addFlashAttribute("error", "Este centro de saúde não pode ser removido, o mesmo possui recursos atrelados a ele.");
+        }
+
+        return "redirect:/health-centers";
+    }
 
 
     @ModelAttribute("ufs")
@@ -89,8 +107,8 @@ public class HealthCenterController {
 
 
     @ModelAttribute("prefectures")
-    public List<Prefecture> getPrefectures(){
-        return  prefectureService.findAll();
+    public List<Prefecture> getPrefectures() {
+        return prefectureService.getModelAttribute();
     }
 
 }

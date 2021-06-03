@@ -1,5 +1,6 @@
 package com.pbd.project.service.travel;
 
+import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Travel;
 
@@ -12,4 +13,5 @@ public interface TravelService {
     Travel findById(Long id);
     List<Travel> findAll();
     List<Travel> findByHealthCenter(HealthCenter healthCenter);
+    List<Travel> findTravelByDriver(Driver driver);
 }

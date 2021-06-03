@@ -153,7 +153,7 @@ public class User extends AbstractEntity<Long> {
                 '}';
     }
 
-    public String ShowRoles() {
+    public String showRoles() {
         String text = "";
 
         for (Role role : this.roles) {
@@ -163,12 +163,25 @@ public class User extends AbstractEntity<Long> {
         return text;
     }
 
+
+
     public Boolean getStaff() {
         return staff;
     }
 
     public void setStaff(Boolean staff) {
         this.staff = staff;
+    }
+
+
+    public boolean userIs(String role){
+        for (Role r: this.roles) {
+            if (r.getRole().equals(role)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
