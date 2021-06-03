@@ -6,6 +6,7 @@ import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Passenger;
 import com.pbd.project.domain.User;
 import com.pbd.project.service.address.AddressService;
+import com.pbd.project.service.role.RoleService;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public void save(Passenger passenger) {
@@ -142,6 +146,50 @@ public class PassengerServiceImpl implements PassengerService{
     @Transactional(readOnly = true)
     public Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage, HealthCenter healthCenter, boolean active) {
         return passengerDao.findPassengerByHealthCenterAndActive(this.getPageable(currentPage), healthCenter, active);
+    }
+
+    @Override
+    public Page<Passenger> getPassengers(int currentPage, String name) {
+        User user = userService.getUserAuthenticated();
+
+        if (user.getStaff()){
+            return (name == null) ?
+                    this.findAll(currentPage) :
+                    this.findPassengerByName(currentPage, name);
+        }
+        else if(user.getRoles().contains(roleService.findByRole("GESTOR"))){
+            return (name.isEmpty()) ?
+                    this.findPassengerByHealthCenter(currentPage, user.getHealthCenter()) :
+                    this.findPassengerByHealthCenterAndNameContainsIgnoreCase(
+                            currentPage,
+                            user.getHealthCenter(),
+                            name
+                    );
+        }
+
+        return null;
+    }
+
+    @Override
+    public Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(int currentPage, HealthCenter healthCenter, String name) {
+        return passengerDao.findPassengerByHealthCenterAndNameContainsIgnoreCase(
+                this.getPageable(currentPage),
+                healthCenter,
+                name
+        );
+    }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Passenger> findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(int currentPage, HealthCenter healthCenter, boolean isActive, String name) {
+        return passengerDao.findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(
+                this.getPageable(currentPage),
+                healthCenter,
+                isActive,
+                name
+        );
     }
 
 

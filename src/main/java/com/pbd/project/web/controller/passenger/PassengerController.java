@@ -46,6 +46,8 @@ public class PassengerController {
     @Autowired
     private LocationService locationService;
 
+
+
 //    @InitBinder
 //    public void initBinder(WebDataBinder binder) {
 //        binder.addValidators(this.passengerValidator);
@@ -61,24 +63,37 @@ public class PassengerController {
         String passengerName = name.orElse(null);
 
 
-        if (user.getStaff()) {
-            model.addAttribute("passengers", passengerService.findAll(currentPage));
-        } else {
+        Page<Passenger> passengers = null;
 
-            if (user.getRoles().contains(roleService.findByRole("GESTOR"))){
-                model.addAttribute("passengers", passengerService.findPassengerByHealthCenter(
-                        currentPage,
-                        user.getHealthCenter()));
-            } else{
-                model.addAttribute("passengers", passengerService.findPassengerByHealthCenterAndActive(currentPage, user.getHealthCenter(), true));
-            }
+        if (user.getStaff()){
+            passengers = passengerName == null ?
+                    passengerService.findAll(currentPage) :
+                    passengerService.findPassengerByName(currentPage, passengerName);
+        } else if (user.userIs("OPERADOR")) {
+            passengers = passengerName == null ?
+                    passengerService.findPassengerByHealthCenterAndActive(
+                            currentPage,
+                            user.getHealthCenter(),
+                            true) :
+                    passengerService.findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(currentPage,
+                            user.getHealthCenter(), true, passengerName);
+        } else if (user.userIs("GESTOR")){
+            passengers = passengerName == null ?
+                    passengerService.findPassengerByHealthCenter(currentPage, user.getHealthCenter()) :
+                    passengerService.findPassengerByHealthCenterAndNameContainsIgnoreCase(
+                            currentPage,
+                            user.getHealthCenter(),
+                            passengerName);
+
 
         }
 
 
+
+        model.addAttribute("passengers", passengers);
         model.addAttribute("passengerName", passengerName);
         model.addAttribute("isSearch", passengerName != null ? true : false);
-        model.addAttribute("queryIsEmpty", false);
+        model.addAttribute("queryIsEmpty", passengers.getTotalElements() == 0 ? true : false);
 
         return "passenger/list";
 

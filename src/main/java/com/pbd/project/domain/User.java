@@ -174,4 +174,15 @@ public class User extends AbstractEntity<Long> {
     }
 
 
+    public boolean userIs(String role){
+        for (Role r: this.roles) {
+            if (r.getRole().equals(role)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

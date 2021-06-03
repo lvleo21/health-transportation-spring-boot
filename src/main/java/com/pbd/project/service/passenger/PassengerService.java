@@ -28,6 +28,18 @@ public interface PassengerService {
     Page<Passenger> findPassengerByName(int currentPage, String name);
 
     Page<Passenger> findPassengerByHealthCenter(int currentPage, HealthCenter healthCenter);
-    Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage,HealthCenter healthCenter, boolean active);
+    Page<Passenger> findPassengerByHealthCenterAndActive(int currentPage, HealthCenter healthCenter, boolean active);
+    Page<Passenger> getPassengers(int currentPage, String name);
+
+    Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(
+            int currentPage,
+            HealthCenter healthCenter,
+            String name
+    );
+
+    Page<Passenger> findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(int currentPage,
+                                                                                  HealthCenter healthCenter,
+                                                                                  boolean isActive,
+                                                                                  String name);
 
 }

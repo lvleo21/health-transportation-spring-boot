@@ -6,6 +6,7 @@ import com.pbd.project.domain.Passenger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,12 @@ public interface PassengerDao extends JpaRepository<Passenger, Long> {
 
     Page<Passenger> findPassengerByHealthCenter(Pageable pageable, HealthCenter healthCenter);
     Page<Passenger> findPassengerByHealthCenterAndActive(Pageable pageable,HealthCenter healthCenter, boolean active);
+    Page<Passenger> findPassengerByHealthCenterAndNameContainsIgnoreCase(Pageable pageable,
+                                                                         HealthCenter healthCenter,
+                                                                         String name);
+
+    Page<Passenger> findPassengerByHealthCenterAndActiveAndNameContainsIgnoreCase(Pageable pageable,
+                                                                                  HealthCenter healthCenter,
+                                                                                  boolean isActive,
+                                                                                  String name);
 }
