@@ -170,7 +170,8 @@
                                 <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
                                 <!--                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"-->
                                 <a class="btn btn-primary btn-sm mr-1" title="Editar"
-                                   th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }">
+                                   th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }"
+                                th:classappend="${!passenger.active} ? 'disabled'">
                                     <i class="fas fa-pen text-light"></i>
                                 </a>
 
