@@ -10,12 +10,12 @@
 
     <div class="d-sm-flex align-items-center mb-4">
         <div class="col-md col-sm-12">
-            <h1 class="h3 mb-0 text-gray-800">Locações</h1>
+            <h1 class="h3 mb-0 text-gray-800">Viagem</h1>
         </div>
 
 
         <div class="col-md-1 col-sm-12 mt-1">
-            <a class="btn btn-primary btn-block" title="Adicionar passageiro"
+            <a class="btn btn-circle btn-primary btn-lg" title="Adicionar passageiro"
                th:href="@{/travels/{id}/locations/create (id=${travel.id}) }">
                 <i class="fas fa-user-plus text-light"></i>
             </a>
@@ -27,36 +27,42 @@
 
     <div class="row">
 
-        <!-- Earnings (Monthly) Card Example -->
+
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                Capacidade
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${#strings.concat(travel.getQntPassengers, '/', travel.vehicle.capacity)}"></div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Earnings (Annual)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                Status
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${travel.status.getDescription()}"></div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        <div class="col-auto" th:switch="${travel.status}">
+                            <i class="fas fa-spinner fa-2x text-gray-300" th:case="${travel.status.AGUARDANDO}"></i>
+                            <i class="fas fa-route fa-2x text-gray-300" th:case="${travel.status.EM_TRANSITO}"></i>
+                            <i class="fas fa-check fa-2x text-gray-300" th:case="${travel.status.CONCLUIDO}"></i>
                         </div>
                     </div>
                 </div>
@@ -69,23 +75,17 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Veículo
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar"
-                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                             aria-valuemax="100"></div>
-                                    </div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                         th:text="${travel.vehicle.name}"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            <i class="fas fa-bus-alt fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -99,11 +99,13 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pending Requests</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                Destino
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            <i class="fas fa-map-marker-alt fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
