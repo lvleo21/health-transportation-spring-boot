@@ -125,12 +125,24 @@
                     </div>
 
 
+                    <div>
+                        <input list="passengers-data-list" class="form-control"/>
+
+                        <datalist id="passengers-data-list" data-list-focus="true" >
+                            <option th:each="passenger : ${passengers}"
+                                    th:value="${passenger.sus}"
+                                    th:text="${passenger.name}"></option>
+
+                        </datalist>
+                    </div>
+
                     <input type="hidden" th:field="*{id}">
 
                     <br>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary font-weight-bold" th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
+                        <button type="submit" class="btn btn-primary font-weight-bold"
+                                th:text="${createView} ? 'CADASTRAR' : 'SALVAR'">
                             <b>CADASTRAR</b>
                         </button>
                     </div>
