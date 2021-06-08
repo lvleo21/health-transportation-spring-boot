@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
@@ -15,30 +18,37 @@ import java.util.function.Consumer;
 public class DBAutoBackupController {
 
     // 0/20 * * * * ? - A cada 20s
-    // 1:30 da manhã, todo dia
-    @Scheduled(cron = "0/20 * * * * ?")
+    // 0 30 1 * * ? - 1:30 A.M
+    @Scheduled(cron = "0 30 1 * * ?")
     public void scheduleDbBackup() {
-        String path = "/home/leonardo/Git/PBD_20-1_Leonardo-Veras/backup/backup-health-transportation-" + LocalDateTime.now() + ".sql";
 
 
-//        System.out.println(System.getProperty("os.name").equalsIgnoreCase("Linux"));
-//        System.out.println(System.getProperty("user.home"));
-//        System.out.println(path);
 
-//
         try {
+            String path = "/home/leonardo/Git/PBD_20-1_Leonardo-Veras/backup/backup-health-transportation-" + LocalDateTime.now() + ".sql";
+
+            Properties props = getProperties();
+            String datasourceUrl = props.getProperty("spring.datasource.url");
+            List<String> tempUrl = Arrays.asList(datasourceUrl.split("/"));
+
+            String database = tempUrl.get(tempUrl.size()-1);
+            String user = props.getProperty("spring.datasource.username");
+            String password = props.getProperty("spring.datasource.password");
 
             ProcessBuilder pb = null;
             Process p;
             BufferedReader br = null;
+
             if (System.getProperty("os.name").equalsIgnoreCase("Linux")) {
                 pb = new ProcessBuilder("/usr/bin/pg_dump", "--file", path, "--host", "localhost", "--port", "5432",
-                        "--username", "postgres", "--no-password", "--verbose", "--format=t", "--blobs", "pbd");
-            } else if (System.getProperty("os.name").equalsIgnoreCase("Windows"))
+                        "--username", user, "--no-password", "--verbose", "--format=t", "--blobs", database);
+            }
+
+            else if (System.getProperty("os.name").equalsIgnoreCase("Windows"))
                 pb = new ProcessBuilder("C:\\Program Files\\PostgreSQL\\10\\bin\\pg_dump.exe", "-i", "-h", "localhost",
                         "-p", "5432", "-U", "postgres", "-F", "c", "-b", "-v", "-f", path, "Veiculos Pajeu");
 
-            pb.environment().put("PGPASSWORD", "1027210916");
+            pb.environment().put("PGPASSWORD", password);
             pb.redirectErrorStream(true);
             p = pb.start();
 
@@ -60,6 +70,13 @@ public class DBAutoBackupController {
         }
 //
 
+    }
+
+    private static Properties getProperties() throws IOException {
+        Properties prop = new Properties();
+        String path = "src/main/resources/application.properties";
+        prop.load(DBAutoBackupController.class.getClassLoader().getResourceAsStream("application.properties"));
+        return prop;
     }
 
 
