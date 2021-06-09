@@ -14,18 +14,25 @@
         </div>
 
 
-        <div class="col-md-1 col-sm-12 mt-1 d-flex justify-content-between">
+        <div class="col-md-1 col-sm-12">
+            <div class="dropdown no-arrow">
+                <button class="btn btn-primary dropdown-toggle" type="button" title="Menu"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false"
+                        aria-expanded="false">
+                    <i class="fas fa-bars text-light"></i>
+                </button>
 
-            <a class="btn btn-primary" title="Adicionar passageiro"
-               th:href="@{/travels/{id}/locations/create (id=${travel.id}) }">
-                <i class="fas fa-user-plus text-light"></i>
-            </a>
-
-            <button class="btn btn-primary" title="Exportar para PDF" id="buttonExportPdf"
-               type="button">
-                <i class="fas fa-file-pdf text-light"></i>
-            </button>
-
+                <div class="dropdown-menu dropdown-menu-left mt-2 mr-3" aria-labelledby="dropdownMenuButton" >
+                    <a class="dropdown-item" th:href="@{/travels/{id}/locations/create (id=${travel.id})}">
+                        <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-danger-400"></i>
+                        Adicionar Passageiro
+                    </a>
+                    <button class="dropdown-item" type="button"  id="buttonExportPdf" th:classappend="${travel.status.AGUARDANDO} ? 'disabled'">
+                        <i class="fas fas fa-file-pdf fa-sm fa-fw mr-2 text-danger-400"></i>
+                        Esportar (PDF)
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
