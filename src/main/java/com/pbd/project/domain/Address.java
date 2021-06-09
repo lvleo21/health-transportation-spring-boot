@@ -124,4 +124,8 @@ public class Address extends AbstractEntity<Long> {
         return builder.toString();
 
     }
+
+    public String getAddressToPdf(){
+        return this.publicPlace + ", "  + this.number + ", " + this.neighborhood;
+    }
 }

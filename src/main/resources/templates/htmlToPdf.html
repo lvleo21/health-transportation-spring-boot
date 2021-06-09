@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Data to pdf</title>
+
+
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0.9cm;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        table {
+            border-color: black;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="m-1">
+
+    <div class="row">
+        <div class="col d-flex justify-content-start d-flex align-items-end">
+            <b>ATENDIMENTO HOSPITALAR | AFOGADOS DA INGAZEIRA - RECIFE</b>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <div class="text-right">
+                <h2>SECRETARIA DE SAÚDE</h2>
+                <h5>FUNDO MUNICIPAL DE SAÚDE</h5>
+                <b>DATA: 23/03/2021</b>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <table class="table table-bordered table-sm" style="font-size: 12px">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center align-middle p-0">#</th>
+            <th scope="col" class="text-center align-middle p-0">NOME</th>
+            <th scope="col" class="text-center align-middle p-0">P/A</th>
+            <th scope="col" class="text-center align-middle p-0">DN</th>
+            <th scope="col" class="text-center align-middle p-0">RG</th>
+            <th scope="col" class="text-center align-middle p-0">SUS</th>
+            <th scope="col" class="text-center align-middle p-0">ENDERECO <br>(Logradouro, Número, Bairro)</th>
+            <th scope="col" class="text-center align-middle p-0">TRANSIÇÃO</th>
+            <th scope="col" class="text-center align-middle p-0">HOSPITAL / ESPECIALIDADE</th>
+            <th scope="col" class="text-center align-middle p-0">TELEFONE</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <th:block th:each="location, i: ${locations}">
+            <tr class="p-0">
+                <th scope="row" class="text-center align-middle p-0" th:text="${i.index + 1}"></th>
+                <td class="text-center align-middle p-0 text-truncate p-0"
+                    th:text="${location.passenger.getShortName()}"></td>
+                <td class="text-center align-middle p-0" th:text="${location.getCategory()}"></td>
+                <td class="text-center align-middle p-0"
+                    th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
+                <td class="text-center align-middle p-0" th:text="${location.passenger.getRg()}"></td>
+                <td class="text-center align-middle p-0 text-truncate" th:text="${location.passenger.getSus()}"></td>
+                <td class="text-center align-middle p-0"
+                    th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
+                <td class="text-center align-middle p-0" th:text="${location.getTransition()}"></td>
+                <td class="text-center align-middle p-0" th:text="${location.getDestinationHospital()}"></td>
+                <td class="text-center align-middle p-0 text-truncate"
+                    th:text="${location.passenger.getCellPhone()}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <h6>
+            https://afogadosdaingazeira.pe.gov.br/ | contato@afogadosdaingazeira.pe.gov.br <br>
+            Praça Monsenhor Alfredo de Arruda Câmara, 205, Centro <br>
+            Afogados da Ingazeira - PE | CEP: 56800-000 | CNPJ: 123.123.12/1232.4
+        </h6>
+    </div>
+
+</div>
+
+
+</body>
+</html>

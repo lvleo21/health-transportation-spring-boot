@@ -14,20 +14,27 @@
         </div>
 
 
-        <div class="col-md-1 col-sm-12 mt-1">
+        <div class="col-md-1 col-sm-12 mt-1 d-flex justify-content-between">
+
             <a class="btn btn-primary" title="Adicionar passageiro"
                th:href="@{/travels/{id}/locations/create (id=${travel.id}) }">
                 <i class="fas fa-user-plus text-light"></i>
             </a>
+
+            <button class="btn btn-primary" title="Exportar para PDF" id="buttonExportPdf"
+               type="button">
+                <i class="fas fa-file-pdf text-light"></i>
+            </button>
+
         </div>
     </div>
 
     <div th:replace="fragments/alert"></div>
 
 
+    <input type="hidden" th:value="${travel.id}" id="travelId">
+
     <div class="row">
-
-
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -133,6 +140,7 @@
 
             </div>
         </div>
+
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -209,7 +217,22 @@
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>
+
+
+
+    <div class="modal fade" id="modalSpinner" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+            <div class="spinner-grow text-light" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+
+
 
 
 </body>

@@ -173,6 +173,43 @@
     }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    $("#buttonExportPdf").click(function () {
+
+        $("#modalSpinner").modal('show');
+        $('#modalSpinner').modal('toggle')
+
+        let travelId = document.getElementById("travelId");
+        const URL = `/travels/${travelId.value}/locations/export`;
+
+        axios({
+            url: URL,
+            method: 'GET',
+            responseType: 'blob'
+        })
+            .then((response) => {
+                let path = response.headers['content-disposition'].split("=")[1];
+
+                const url = window.URL
+                    .createObjectURL(new Blob([response.data]));
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', path);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+
+                setTimeout(function(){
+                    $('#modalSpinner').modal('hide')
+                }, 2000)
+            })
+    });
+</script>
+
 </body>
 
 </html>

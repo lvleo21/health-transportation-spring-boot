@@ -17,13 +17,10 @@ import java.util.function.Consumer;
 @EnableScheduling
 public class DBAutoBackupController {
 
-    // 0/20 * * * * ? - A cada 20s
-    // 0 30 1 * * ? - 1:30 A.M
+    //! "0/20 * * * * ?" - Para backup a cada 20s;
+    //! "0 30 1 * * ?" - Para backup agendado para 1:30 A.M;
     @Scheduled(cron = "0 30 1 * * ?")
     public void scheduleDbBackup() {
-
-
-
         try {
             String path = "/home/leonardo/Git/PBD_20-1_Leonardo-Veras/backup/backup-health-transportation-" + LocalDateTime.now() + ".sql";
 
