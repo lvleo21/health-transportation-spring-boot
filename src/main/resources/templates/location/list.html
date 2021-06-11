@@ -22,12 +22,12 @@
                     <i class="fas fa-bars text-light"></i>
                 </button>
 
-                <div class="dropdown-menu dropdown-menu-left mt-2 mr-3" aria-labelledby="dropdownMenuButton" >
+                <div class="dropdown-menu dropdown-menu-left mt-2 mr-3" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" th:href="@{/travels/{id}/locations/create (id=${travel.id})}">
                         <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-danger-400"></i>
                         Adicionar Passageiro
                     </a>
-                    <button class="dropdown-item" type="button"  id="buttonExportPdf" th:classappend="${travel.status.AGUARDANDO} ? 'disabled'">
+                    <button class="dropdown-item" type="button" id="buttonExportPdf">
                         <i class="fas fas fa-file-pdf fa-sm fa-fw mr-2 text-danger-400"></i>
                         Esportar (PDF)
                     </button>
@@ -226,20 +226,16 @@
     <div th:replace="fragments/modal :: modal"></div>
 
 
-
     <div class="modal fade" id="modalSpinner" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
-            <div class="spinner-grow text-light" style="width: 3rem; height: 3rem;" role="status">
+
+            <div class="spinner-grow text-light" style="width: 5rem; height: 5rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
 
 </div>
-
-
-
-
 
 
 </body>
