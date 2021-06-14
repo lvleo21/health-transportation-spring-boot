@@ -62,12 +62,21 @@ public class LocationController {
         return "location/list";
     }
 
+    @GetMapping("/locations/teste")
+    public String getTeste(@PathVariable("idTravel") Long idTravel, ModelMap model){
+        Travel travel = travelService.findById(idTravel);
+        model.addAttribute("location", travel.getLocations());
+        return "htmlToPdf";
+
+    }
+
     @GetMapping("/locations/export")
     public ResponseEntity<?> getPDF(@PathVariable("idTravel") Long idTravel, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Travel travel = travelService.findById(idTravel);
 
         WebContext context = new WebContext(request, response, servletContext);
         context.setVariable("locations", travel.getLocations());
+
         String orderHtml = templateEngine.process("htmlToPdf", context);
 
         //! Setup Source and target I/O streams
