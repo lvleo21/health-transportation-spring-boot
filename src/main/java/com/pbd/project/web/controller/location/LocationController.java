@@ -1,7 +1,6 @@
 package com.pbd.project.web.controller.location;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
+import com.lowagie.text.DocumentException;
 import com.pbd.project.domain.Location;
 import com.pbd.project.domain.Passenger;
 import com.pbd.project.domain.Travel;
@@ -10,6 +9,7 @@ import com.pbd.project.domain.enums.PassengerCategory;
 import com.pbd.project.domain.enums.PassengerTransition;
 import com.pbd.project.service.location.LocationService;
 import com.pbd.project.service.passenger.PassengerService;
+import com.pbd.project.service.pdfService.PdfService;
 import com.pbd.project.service.travel.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -52,6 +55,9 @@ public class LocationController {
     @Autowired
     TemplateEngine templateEngine;
 
+    @Autowired
+    private PdfService pdfService;
+
     @GetMapping("/locations")
     public String locationListView(@PathVariable("idTravel") Long idTravel, ModelMap model){
 
@@ -65,42 +71,31 @@ public class LocationController {
     @GetMapping("/locations/teste")
     public String getTeste(@PathVariable("idTravel") Long idTravel, ModelMap model){
         Travel travel = travelService.findById(idTravel);
-        model.addAttribute("location", travel.getLocations());
+        model.addAttribute("locations", travel.getLocations());
         return "htmlToPdf";
 
     }
 
-    @GetMapping("/locations/export")
-    public ResponseEntity<?> getPDF(@PathVariable("idTravel") Long idTravel, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Travel travel = travelService.findById(idTravel);
-
-        WebContext context = new WebContext(request, response, servletContext);
-        context.setVariable("locations", travel.getLocations());
-
-        String orderHtml = templateEngine.process("htmlToPdf", context);
-
-        //! Setup Source and target I/O streams
-        ByteArrayOutputStream target = new ByteArrayOutputStream();
-        ConverterProperties converterProperties = new ConverterProperties();
-        converterProperties.setBaseUri("/");
-
-        //! Call convert method
-        HtmlConverter.convertToPdf(orderHtml, target, converterProperties);
-
-        //! extract output as bytes
-        byte[] bytes = target.toByteArray();
-
-
-        String departureDate = travel.getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String path = "(" + travel.getHealthCenter().getPrefecture().getCityAndState()+ ")_" +
-                departureDate + ".pdf";
-
-        //! Send the response as downloadable PDF
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+path)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
+    @GetMapping("/locations/download-pdf")
+    public void downloadPDFResource(HttpServletResponse response) {
+        try {
+            Path file = Paths.get(pdfService.generatePdf().getAbsolutePath());
+            if (Files.exists(file)) {
+                response.setContentType("application/pdf");
+                response.addHeader("Content-Disposition",
+                        "attachment; filename=" + file.getFileName());
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            }
+        } catch (IOException | DocumentException ex) {
+            ex.printStackTrace();
+        }
     }
+
+//    @GetMapping("/locations/export")
+//    public ResponseEntity<?> getPDF(@PathVariable("idTravel") Long idTravel, HttpServletRequest request, HttpServletResponse response) throws IOException {
+//
+//    }
 
     @GetMapping("/locations/create")
     public String locationCreateView(@PathVariable("idTravel") Long idTravel, Location location, ModelMap model) {

@@ -8,10 +8,10 @@
     <title>Data to pdf</title>
 
 
+
     <style>
         @page {
             size: A4 landscape;
-            margin: 0.9cm;
         }
 
         .footer {
@@ -21,67 +21,91 @@
         }
 
         table {
-            border-color: black;
+            font-size: 12px;
+            text-align: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 1rem;
         }
 
-    </style>
+        table, th, td {
+            border: 1px solid black;
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        .container {
+            display: inline-grid;
+            grid-template-columns: auto auto;
+            width: 100%;
+        }
+        .container-first-text{
+            text-align: start;
+            align-self: end;
+        }
+        .container-second-text{
+            text-align: end;
+            align-self: baseline;
+        }
+
+        body{
+            margin: 1px;
+        }
+    </style>
 
 
 </head>
 <body>
 
-<div class="m-1">
+<div>
 
-    <div class="row">
-        <div class="col d-flex justify-content-start d-flex align-items-end">
+    <div class="container">
+
+        <div class="container-first-text">
             <b>ATENDIMENTO HOSPITALAR | AFOGADOS DA INGAZEIRA - RECIFE</b>
         </div>
-        <div class="col d-flex justify-content-end">
-            <div class="text-right">
-                <h2>SECRETARIA DE SAÚDE</h2>
-                <h5>FUNDO MUNICIPAL DE SAÚDE</h5>
-                <b>DATA: 23/03/2021</b>
-            </div>
+
+        <div class="container-second-text">
+            <h2>SECRETARIA DE SAÚDE</h2>
+            <h5>FUNDO MUNICIPAL DE SAÚDE</h5>
+            <b>DATA: 23/03/2021</b>
         </div>
+
     </div>
 
     <br>
 
-    <table class="table table-bordered table-sm" style="font-size: 12px">
+    <table>
         <thead>
         <tr>
-            <th scope="col" class="text-center align-middle p-0">#</th>
-            <th scope="col" class="text-center align-middle p-0">NOME</th>
-            <th scope="col" class="text-center align-middle p-0">P/A</th>
-            <th scope="col" class="text-center align-middle p-0">DN</th>
-            <th scope="col" class="text-center align-middle p-0">RG</th>
-            <th scope="col" class="text-center align-middle p-0">SUS</th>
-            <th scope="col" class="text-center align-middle p-0">ENDERECO <br>(Logradouro, Número, Bairro)</th>
-            <th scope="col" class="text-center align-middle p-0">TRANSIÇÃO</th>
-            <th scope="col" class="text-center align-middle p-0">HOSPITAL / ESPECIALIDADE</th>
-            <th scope="col" class="text-center align-middle p-0">TELEFONE</th>
+            <th>#</th>
+            <th>NOME</th>
+            <th>P/A</th>
+            <th>DN</th>
+            <th>RG</th>
+            <th>SUS</th>
+            <th>ENDERECO <br>(Logradouro, Número, Bairro)</th>
+            <th>TRANSIÇÃO</th>
+            <th>HOSPITAL / ESPECIALIDADE</th>
+            <th>TELEFONE</th>
         </tr>
         </thead>
         <tbody>
 
         <th:block th:each="location, i: ${locations}">
-            <tr class="p-0">
-                <th scope="row" class="text-center align-middle p-0" th:text="${i.index + 1}"></th>
-                <td class="text-center align-middle p-0 text-truncate p-0"
-                    th:text="${location.passenger.getShortName()}"></td>
-                <td class="text-center align-middle p-0" th:text="${location.getCategory()}"></td>
-                <td class="text-center align-middle p-0"
-                    th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
-                <td class="text-center align-middle p-0" th:text="${location.passenger.getRg()}"></td>
-                <td class="text-center align-middle p-0 text-truncate" th:text="${location.passenger.getSus()}"></td>
-                <td class="text-center align-middle p-0"
-                    th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
-                <td class="text-center align-middle p-0" th:text="${location.getTransition()}"></td>
-                <td class="text-center align-middle p-0" th:text="${location.getDestinationHospital()}"></td>
-                <td class="text-center align-middle p-0 text-truncate"
-                    th:text="${location.passenger.getCellPhone()}"></td>
+            <tr style="padding: 0">
+                <th th:text="${i.index + 1}"></th>
+                <td
+                        th:text="${location.passenger.getShortName()}"></td>
+                <td th:text="${location.getCategory()}"></td>
+                <td
+                        th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
+                <td th:text="${location.passenger.getRg()}"></td>
+                <td th:text="${location.passenger.getSus()}"></td>
+                <td
+                        th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
+                <td th:text="${location.getTransition()}"></td>
+                <td th:text="${location.getDestinationHospital()}"></td>
+                <td
+                        th:text="${location.passenger.getCellPhone()}"></td>
             </tr>
         </th:block>
         </tbody>
@@ -95,10 +119,10 @@
         </h6>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-
 
 </div>
+
+
 
 
 </body>

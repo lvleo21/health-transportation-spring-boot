@@ -71,7 +71,6 @@ public class DBAutoBackupController {
 
     private static Properties getProperties() throws IOException {
         Properties prop = new Properties();
-        String path = "src/main/resources/application.properties";
         prop.load(DBAutoBackupController.class.getClassLoader().getResourceAsStream("application.properties"));
         return prop;
     }
