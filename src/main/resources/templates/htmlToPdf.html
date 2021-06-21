@@ -8,122 +8,94 @@
     <title>Data to pdf</title>
 
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <style>
         @page {
             size: A4 landscape;
         }
 
         .footer {
-            position: absolute;
+            position: fixed;
+            left: 0;
             bottom: 0;
             width: 100%;
-        }
-
-        table {
-            font-size: 12px;
             text-align: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-
-        .container {
-            display: inline-grid;
-            grid-template-columns: auto auto;
-            width: 100%;
-        }
-        .container-first-text{
-            text-align: start;
-            align-self: end;
-        }
-        .container-second-text{
-            text-align: end;
-            align-self: baseline;
-        }
-
-        body{
-            margin: 1px;
         }
     </style>
 
-
 </head>
-<body>
+<body class="m-1">
 
 <div>
 
-    <div class="container">
-
-        <div class="container-first-text">
-            <b>ATENDIMENTO HOSPITALAR | AFOGADOS DA INGAZEIRA - RECIFE</b>
+    <div class="row">
+        <div class="col d-flex align-self-center ">
+            <h6 class="font-weight-bold">ATENDIMENTO HOSPITALAR | AFOGADOS DA INGAZEIRA - RECIFE</h6>
         </div>
 
-        <div class="container-second-text">
+        <div class="col text-right">
             <h2>SECRETARIA DE SAÚDE</h2>
             <h5>FUNDO MUNICIPAL DE SAÚDE</h5>
             <b>DATA: 23/03/2021</b>
         </div>
-
     </div>
 
     <br>
 
-    <table>
-        <thead>
+    <table class="table table-bordered" style="font-size: 12px">
+        <thead class="text-center align-middle">
         <tr>
-            <th>#</th>
-            <th>NOME</th>
-            <th>P/A</th>
-            <th>DN</th>
-            <th>RG</th>
-            <th>SUS</th>
-            <th>ENDERECO <br>(Logradouro, Número, Bairro)</th>
-            <th>TRANSIÇÃO</th>
-            <th>HOSPITAL / ESPECIALIDADE</th>
-            <th>TELEFONE</th>
+            <th class="p-0 text-center align-middle text-truncate">#</th>
+            <th class="p-0 text-center align-middle text-truncate">NOME</th>
+            <th class="p-0 text-center align-middle text-truncate">P/A</th>
+            <th class="p-0 text-center align-middle text-truncate">DN</th>
+            <th class="p-0 text-center align-middle text-truncate">RG</th>
+            <th class="p-0 text-center align-middle text-truncate">SUS</th>
+            <th class="p-0 text-center align-middle text-truncate">ENDERECO <br>(Logradouro, Número, Bairro)</th>
+            <th class="p-0 text-center align-middle text-truncate">TRANSIÇÃO</th>
+            <th class="p-0 text-center align-middle text-truncate" >HOSPITAL / ESPECIALIDADE</th>
+            <th class="p-0 text-center align-middle text-truncate">TELEFONE</th>
         </tr>
         </thead>
         <tbody>
 
         <th:block th:each="location, i: ${locations}">
-            <tr style="padding: 0">
-                <th th:text="${i.index + 1}"></th>
-                <td
-                        th:text="${location.passenger.getShortName()}"></td>
-                <td th:text="${location.getCategory()}"></td>
-                <td
-                        th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
-                <td th:text="${location.passenger.getRg()}"></td>
-                <td th:text="${location.passenger.getSus()}"></td>
-                <td
-                        th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
-                <td th:text="${location.getTransition()}"></td>
-                <td th:text="${location.getDestinationHospital()}"></td>
-                <td
-                        th:text="${location.passenger.getCellPhone()}"></td>
+
+            <th:block th:each="x: ${#numbers.sequence(1, 50)}">
+
+            <tr>
+                <th class="p-0 text-center align-middle text-truncate" th:text="${i.index + 1}"></th>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getShortName()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getCategory()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getRg()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getSus()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getTransition()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getDestinationHospital()}"></td>
+                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getCellPhone()}"></td>
             </tr>
+
+            </th:block>
         </th:block>
         </tbody>
     </table>
 
-    <footer class="footer">
-        <h6>
+    <footer>
+        <div class="font-weight-bold">
             https://afogadosdaingazeira.pe.gov.br/ | contato@afogadosdaingazeira.pe.gov.br <br>
             Praça Monsenhor Alfredo de Arruda Câmara, 205, Centro <br>
             Afogados da Ingazeira - PE | CEP: 56800-000 | CNPJ: 123.123.12/1232.4
-        </h6>
+        </div>
     </footer>
 
 
 </div>
 
-
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
 </body>
 </html>
+
+

@@ -1,0 +1,62 @@
+@page {
+    size: A4 landscape;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 20px;
+}
+
+table {
+    font-size: 12px;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 10%;
+}
+.container-first-text{
+    width: 50%;
+    height: 5%;
+    text-align: start;
+    align-self: end;
+}
+.container-second-text{
+    width: 50%;
+    height: 5%;
+    text-align: end;
+    align-self: baseline;
+}
+
+
+
+
+.item {
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    padding: 5px;
+}
+
+.container-flex{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    border: 1px solid black;
+    background: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

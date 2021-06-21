@@ -1,24 +1,24 @@
 package com.pbd.project.web.controller.location;
 
-import com.lowagie.text.DocumentException;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.pbd.project.domain.Location;
 import com.pbd.project.domain.Passenger;
 import com.pbd.project.domain.Travel;
-import com.pbd.project.domain.User;
 import com.pbd.project.domain.enums.PassengerCategory;
 import com.pbd.project.domain.enums.PassengerTransition;
 import com.pbd.project.service.location.LocationService;
 import com.pbd.project.service.passenger.PassengerService;
-import com.pbd.project.service.pdfService.PdfService;
 import com.pbd.project.service.travel.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -29,11 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -50,13 +45,11 @@ public class LocationController {
     private PassengerService passengerService;
 
     @Autowired
-    ServletContext servletContext;
+    private ServletContext servletContext;
 
     @Autowired
-    TemplateEngine templateEngine;
+    private TemplateEngine templateEngine;
 
-    @Autowired
-    private PdfService pdfService;
 
     @GetMapping("/locations")
     public String locationListView(@PathVariable("idTravel") Long idTravel, ModelMap model){
@@ -76,26 +69,49 @@ public class LocationController {
 
     }
 
-    @GetMapping("/locations/download-pdf")
-    public void downloadPDFResource(HttpServletResponse response) {
-        try {
-            Path file = Paths.get(pdfService.generatePdf().getAbsolutePath());
-            if (Files.exists(file)) {
-                response.setContentType("application/pdf");
-                response.addHeader("Content-Disposition",
-                        "attachment; filename=" + file.getFileName());
-                Files.copy(file, response.getOutputStream());
-                response.getOutputStream().flush();
-            }
-        } catch (IOException | DocumentException ex) {
-            ex.printStackTrace();
-        }
-    }
+    @GetMapping("/locations/pdf")
+    public ResponseEntity<?> getPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-//    @GetMapping("/locations/export")
-//    public ResponseEntity<?> getPDF(@PathVariable("idTravel") Long idTravel, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//
-//    }
+        /* Do Business Logic*/
+
+        Travel travel = travelService.findById(Long.parseLong("17"));
+
+        /* Create HTML using Thymeleaf template Engine */
+
+        WebContext context = new WebContext(request, response, servletContext);
+        context.setVariable("locations", travel.getLocations());
+        String orderHtml = templateEngine.process("htmlToPdf", context);
+
+        /* Setup Source and target I/O streams */
+
+        ByteArrayOutputStream target = new ByteArrayOutputStream();
+
+
+        /* Get a baseURI */
+
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest req = sra.getRequest();
+        String baseURI = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
+
+        System.out.println(baseURI);
+
+        /*Setup converter properties. */
+        ConverterProperties converterProperties = new ConverterProperties();
+        converterProperties.setBaseUri(baseURI);
+
+        /* Call convert method */
+        HtmlConverter.convertToPdf(orderHtml, target, converterProperties);
+
+        /* extract output as bytes */
+        byte[] bytes = target.toByteArray();
+
+
+        /* Send the response as downloadable PDF */
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(bytes);
+    }
 
     @GetMapping("/locations/create")
     public String locationCreateView(@PathVariable("idTravel") Long idTravel, Location location, ModelMap model) {
