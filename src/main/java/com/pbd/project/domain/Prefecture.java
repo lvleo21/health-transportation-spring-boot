@@ -84,4 +84,14 @@ public class Prefecture extends AbstractEntity<Long> {
     public String getCityAndState(){
         return this.address.getCity() + " - " + this.address.getState();
     }
+
+    public String getFormatedAddress(){
+        // Ex.: Praça Monsenhor Alfredo de Arruda Câmara, 205, Centro
+        return this.address.getPublicPlace() + ", " + this.address.getNumber() + ", " + this.getAddress().getNeighborhood();
+    }
+
+    public String getFormatedInfo(){
+        // Ex.: Afogados da Ingazeira - PE | CNPJ: 123.123.12/1232.4
+        return this.getCityAndState() + " | " + "CNPJ: " + this.getCnpj();
+    }
 }

@@ -5,95 +5,139 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data to pdf</title>
+    <title><th:block th:text="${travel.getDestinyUppercase}"> </th:block></title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Benne&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/icon/ambulance.ico}">
+
     <style>
         @page {
             size: A4 landscape;
         }
 
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
+        body {
+            font-family: Ubuntu;
         }
+
+        @media print {
+            footer {
+                page-break-inside: avoid;
+            }
+        }
+
+        }
+
+
     </style>
 
+
 </head>
-<body class="m-1">
+<body class="m-0 vw-100 vh-100">
 
-<div>
-
-    <div class="row">
-        <div class="col d-flex align-self-center ">
-            <h6 class="font-weight-bold">ATENDIMENTO HOSPITALAR | AFOGADOS DA INGAZEIRA - RECIFE</h6>
+<div class="row">
+    <div class="col text-right d-flex align-items-end">
+        <div class="">
+            <b class="font-weight-bold">
+                <th:block th:text="${travel.getDestinyUppercase}"></th:block>
+            </b>
         </div>
 
-        <div class="col text-right">
-            <h2>SECRETARIA DE SAÚDE</h2>
-            <h5>FUNDO MUNICIPAL DE SAÚDE</h5>
-            <b>DATA: 23/03/2021</b>
-        </div>
     </div>
 
-    <br>
-
-    <table class="table table-bordered" style="font-size: 12px">
-        <thead class="text-center align-middle">
-        <tr>
-            <th class="p-0 text-center align-middle text-truncate">#</th>
-            <th class="p-0 text-center align-middle text-truncate">NOME</th>
-            <th class="p-0 text-center align-middle text-truncate">P/A</th>
-            <th class="p-0 text-center align-middle text-truncate">DN</th>
-            <th class="p-0 text-center align-middle text-truncate">RG</th>
-            <th class="p-0 text-center align-middle text-truncate">SUS</th>
-            <th class="p-0 text-center align-middle text-truncate">ENDERECO <br>(Logradouro, Número, Bairro)</th>
-            <th class="p-0 text-center align-middle text-truncate">TRANSIÇÃO</th>
-            <th class="p-0 text-center align-middle text-truncate" >HOSPITAL / ESPECIALIDADE</th>
-            <th class="p-0 text-center align-middle text-truncate">TELEFONE</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <th:block th:each="location, i: ${locations}">
-
-            <th:block th:each="x: ${#numbers.sequence(1, 50)}">
-
-            <tr>
-                <th class="p-0 text-center align-middle text-truncate" th:text="${i.index + 1}"></th>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getShortName()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getCategory()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getRg()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getSus()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getTransition()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.getDestinationHospital()}"></td>
-                <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getCellPhone()}"></td>
-            </tr>
-
-            </th:block>
-        </th:block>
-        </tbody>
-    </table>
-
-    <footer>
-        <div class="font-weight-bold">
-            https://afogadosdaingazeira.pe.gov.br/ | contato@afogadosdaingazeira.pe.gov.br <br>
-            Praça Monsenhor Alfredo de Arruda Câmara, 205, Centro <br>
-            Afogados da Ingazeira - PE | CEP: 56800-000 | CNPJ: 123.123.12/1232.4
+    <div class="col d-flex justify-content-end d-flex align-items-end">
+        <div class="text-right">
+            <h1>SECRETARIA DE SAÚDE</h1>
+            <b>DATA:
+                <th:block th:text="${travel.getDepartureDate()}"></th:block>
+            </b>
         </div>
-    </footer>
-
-
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<table class="table table-bordered" style="font-size: 13px;">
+    <thead class="text-center align-middle">
+    <tr>
+        <th class="p-0 text-center align-middle text-truncate">#</th>
+        <th class="p-0 text-center align-middle text-truncate">NOME</th>
+        <th class="p-0 text-center align-middle text-truncate">P/A</th>
+        <th class="p-0 text-center align-middle text-truncate">DN</th>
+        <th class="p-0 text-center align-middle text-truncate">RG</th>
+        <th class="p-0 text-center align-middle text-truncate">SUS</th>
+        <th class="p-0 text-center align-middle text-truncate">ENDERECO <br>(Logradouro, Número, Bairro)</th>
+        <th class="p-0 text-center align-middle text-truncate">TRANSIÇÃO</th>
+        <th class="p-0 text-center align-middle text-truncate">HOSPITAL / ESPECIALIDADE</th>
+        <th class="p-0 text-center align-middle text-truncate">TELEFONE</th>
+    </tr>
+    </thead>
+    <tbody th:each="location, i: ${travel.getLocations}">
+
+    <tr>
+        <th class="p-0 text-center align-middle text-truncate" th:text="${x}"></th>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${location.passenger.getShortName()}"></td>
+        <td class="p-0 text-center align-middle text-truncate" th:text="${location.getCategory()}"></td>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${#temporals.format(location.passenger.getDateOfBirth(), 'dd/MM/yyyy')}"></td>
+        <td class="p-0 text-center align-middle text-truncate" th:text="${location.passenger.getRg()}"></td>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${location.passenger.getSus()}"></td>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${location.passenger.getAddress().getAddressToPdf()}"></td>
+        <td class="p-0 text-center align-middle text-truncate" th:text="${location.getTransition()}"></td>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${location.getDestinationHospital()}"></td>
+        <td class="p-0 text-center align-middle text-truncate"
+            th:text="${location.passenger.getCellPhone()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<footer>
+    <p>
+        <th:block th:text="${prefecture.getSite()}"></th:block>
+        |
+        <th:block th:text="${prefecture.getEmail()}"></th:block>
+        <br>
+        <th:block th:text="${prefecture.getFormatedAddress()}"></th:block>
+        <br>
+        <th:block th:text="${prefecture.getFormatedInfo()}"></th:block>
+    </p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+
+
+<script>
+    window.onload = () => {
+        window.print();
+    }
+
+
+    const interval = setInterval(() => {
+        let result = confirm("Deseja salvar este documento PDF ? [OK = SIM ou CANCELAR = NÃO]");
+
+        if (result) {
+            window.print();
+        } else {
+            breakInterval();
+        }
+    }, 5000);
+
+    function breakInterval() {
+        clearInterval(interval);
+    }
+
+</script>
 
 </body>
 </html>

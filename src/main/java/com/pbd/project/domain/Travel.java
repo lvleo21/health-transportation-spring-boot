@@ -157,6 +157,9 @@ public class Travel extends AbstractEntity<Long> {
     public String getDestiny() {
         return this.destinyCity + " - " + this.destinyState;
     }
+    public String getDestinyUppercase() {
+        return  this.healthCenter.getPrefecture().getAddress().getCity().toUpperCase() + " - " + this.destinyCity.toUpperCase();
+    }
 
     public List<Location> getLocations() {
         return locations;

@@ -61,56 +61,12 @@ public class LocationController {
         return "location/list";
     }
 
-    @GetMapping("/locations/teste")
+    @GetMapping("/locations/export")
     public String getTeste(@PathVariable("idTravel") Long idTravel, ModelMap model){
         Travel travel = travelService.findById(idTravel);
-        model.addAttribute("locations", travel.getLocations());
+        model.addAttribute("travel", travel);
+        model.addAttribute("prefecture", travel.getHealthCenter().getPrefecture());
         return "htmlToPdf";
-
-    }
-
-    @GetMapping("/locations/pdf")
-    public ResponseEntity<?> getPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        /* Do Business Logic*/
-
-        Travel travel = travelService.findById(Long.parseLong("17"));
-
-        /* Create HTML using Thymeleaf template Engine */
-
-        WebContext context = new WebContext(request, response, servletContext);
-        context.setVariable("locations", travel.getLocations());
-        String orderHtml = templateEngine.process("htmlToPdf", context);
-
-        /* Setup Source and target I/O streams */
-
-        ByteArrayOutputStream target = new ByteArrayOutputStream();
-
-
-        /* Get a baseURI */
-
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest req = sra.getRequest();
-        String baseURI = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
-
-        System.out.println(baseURI);
-
-        /*Setup converter properties. */
-        ConverterProperties converterProperties = new ConverterProperties();
-        converterProperties.setBaseUri(baseURI);
-
-        /* Call convert method */
-        HtmlConverter.convertToPdf(orderHtml, target, converterProperties);
-
-        /* extract output as bytes */
-        byte[] bytes = target.toByteArray();
-
-
-        /* Send the response as downloadable PDF */
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
     }
 
     @GetMapping("/locations/create")
