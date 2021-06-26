@@ -19,10 +19,11 @@ public class DBAutoBackupController {
 
     //! "0/20 * * * * ?" - Para backup a cada 20s;
     //! "0 30 1 * * ?" - Para backup agendado para 1:30 A.M;
-    @Scheduled(cron = "0 30 1 * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     public void scheduleDbBackup() {
         try {
-            String path = "/home/leonardo/Git/PBD_20-1_Leonardo-Veras/backup/backup-health-transportation-" + LocalDateTime.now() + ".sql";
+            String path = "/backup/backup-health-transportation-" + LocalDateTime.now() + ".sql";
+            path = System.getProperty("user.dir") + path;
 
             Properties props = getProperties();
             String datasourceUrl = props.getProperty("spring.datasource.url");
@@ -43,7 +44,7 @@ public class DBAutoBackupController {
 
             else if (System.getProperty("os.name").equalsIgnoreCase("Windows"))
                 pb = new ProcessBuilder("C:\\Program Files\\PostgreSQL\\10\\bin\\pg_dump.exe", "-i", "-h", "localhost",
-                        "-p", "5432", "-U", "postgres", "-F", "c", "-b", "-v", "-f", path, "Veiculos Pajeu");
+                        "-p", "5432", "-U", "postgres", "-F", "c", "-b", "-v", "-f", path, database);
 
             pb.environment().put("PGPASSWORD", password);
             pb.redirectErrorStream(true);
