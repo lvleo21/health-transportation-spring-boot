@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "PREFECTURES")
-public class Prefecture extends AbstractEntity<Long> {
+public class Prefecture  extends Auditable<String> {
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL)
