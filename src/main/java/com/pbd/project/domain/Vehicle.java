@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "VEHICLES")
-public class Vehicle extends AbstractEntity<Long>{
+public class Vehicle extends Auditable<String>{
 
     @NotEmpty(message = "{NotEmpty.name}")
     private String name;
