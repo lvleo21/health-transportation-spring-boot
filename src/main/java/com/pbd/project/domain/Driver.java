@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name="DRIVERS")
-public class Driver  extends Auditable<String> {
+public class Driver  extends AbstractEntity<Long> {
 
     @NotEmpty(message = "{NotEmpty.name}")
     private String name;

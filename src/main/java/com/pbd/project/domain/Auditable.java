@@ -1,14 +1,10 @@
 package com.pbd.project.domain;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 import java.util.Date;
 
@@ -32,6 +28,18 @@ public abstract class Auditable<U> extends AbstractEntity<Long>{
     @LastModifiedDate
     @Temporal(TIMESTAMP)
     protected Date lastModifiedDate;
+
+    @Column(columnDefinition = "TEXT")
+    private String operation;
+
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
 
     public U getCreatedBy() {
         return createdBy;

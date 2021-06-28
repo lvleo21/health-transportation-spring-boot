@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="PASSENGERS")
-public class Passenger  extends Auditable<String> {
+public class Passenger  extends AbstractEntity<Long> {
 
     @NotEmpty(message = "{NotNull.name}")
     @Column(nullable = false)

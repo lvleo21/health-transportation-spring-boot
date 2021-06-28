@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="ORDER_RESET_PASSWORDS")
-public class OrderResetPassword  extends Auditable<String> {
+public class OrderResetPassword  extends AbstractEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name="id_user_who_requested")//! ID do usuário que solicitou o reset;

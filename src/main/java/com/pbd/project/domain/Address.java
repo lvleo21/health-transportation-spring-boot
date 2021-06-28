@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ADRESSES")
-public class Address  extends Auditable<String> {
+public class Address  extends AbstractEntity<Long> {
 
 
     @NotBlank(message = "{notEmpty.publicPlace}")

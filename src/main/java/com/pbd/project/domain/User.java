@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
-public class User  extends Auditable<String> {
+public class User  extends AbstractEntity<Long> {
 
 
     @Column(nullable = false, unique = true)
