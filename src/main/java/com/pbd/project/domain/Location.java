@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "LOCATIONS")
-public class Location  extends AbstractEntity<Long> {
+public class Location extends Auditable<String> {
 
     @ManyToOne
     @NotNull(message = "{NotEmpty.passenger}")

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "TRAVELS")
-public class Travel  extends AbstractEntity<Long> {
+public class Travel extends Auditable<String> {
 
     @NotNull(message = "{NotEmpty.departureDate}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

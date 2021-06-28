@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name="HEALTH_CENTERS")
-public class HealthCenter  extends AbstractEntity<Long> {
+public class HealthCenter extends Auditable<String> {
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL)

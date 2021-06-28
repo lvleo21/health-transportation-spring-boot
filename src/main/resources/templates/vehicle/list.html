@@ -43,7 +43,7 @@
                         <span class="font-weight-bold" th:text="${#lists.size(vehicles)}"></span>
                     </caption>
                     <thead>
-                    <tr>
+                    <tr class="text-truncate">
                         <th class='text-center text-dark' scope="col">Nome</th>
                         <th class='text-center text-dark' scope="col">Capacidade</th>
                         <th class='text-center text-dark' scope="col">Centro de Saúde</th>
@@ -51,10 +51,16 @@
                         <th class='text-center text-dark' scope="col">Ativo</th>
                         <th class='text-center text-dark' scope="col">Disponível</th>
                         <th class='text-center text-dark' scope="col">Ações</th>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                            <th class='text-center text-dark' scope="col">Data da Operação</th>
+                        </th:block>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="vehicle : ${vehicles}">
+                    <tr th:each="vehicle : ${vehicles}" class="text-truncate">
 
                         <td class="text-center align-middle" th:text="*{vehicle.name}"></td>
                         <td class="text-center align-middle" th:text="*{vehicle.capacity}"></td>
@@ -85,6 +91,12 @@
                                 <i class="fas fa-trash text-light"></i>
                             </button>
                         </td>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <td class="text-center align-middle" th:text="*{vehicle.lastModifiedBy}"></td>
+                            <td class="text-center align-middle"
+                                th:text="*{#dates.format(vehicle.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        </th:block>
 
                     </tr>
 

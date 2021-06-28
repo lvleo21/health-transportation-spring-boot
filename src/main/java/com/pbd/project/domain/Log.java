@@ -18,13 +18,8 @@ import java.util.Locale;
 public class Log extends AbstractEntity<Long> {
 
 
-    @Autowired
-    @Transient
-    private UserService userService;
-
-    @ManyToOne
-    @JoinColumn(name="created_by")
-    private User createdBy;
+    @Column(name="created_by")
+    private String createdBy;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "created_at", columnDefinition = "DATE")
@@ -43,17 +38,11 @@ public class Log extends AbstractEntity<Long> {
     private String tableName;
 
 
-    @PrePersist
-    public void prePersist(){
-        System.out.println("ENTROU NO PRE PERSIST");
-        this.createdBy = userService.getUserAuthenticated();
-    }
-
-    public User getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
