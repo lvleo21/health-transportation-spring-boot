@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:fragment="title">Registro de Atividades - Health Transportation</title>
+</head>
+<body>
+
+<div class="container-fluid" layout:fragment="content">
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Registro de Atividades
+        </h1>
+    </div>
+
+    <div th:replace="fragments/alert"></div>
+
+    <div class="card shadow rounded mt-3">
+        <div class="card-header">
+            <div class="row">
+                <div class="ml-3 d-flex align-items-center">
+                    <i class="fas fa-caret-right mr-1"></i> Qnt. de registros encontrados:
+                    <span class="font-weight-bold ml-1"
+                          th:text="${queryIsEmpty} ? '0' : ${logs.getTotalElements()} "></span>
+                </div>
+
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/passengers}" method="get">
+                                <div class="input-group">
+                                    <input type="date" class="form-control border-1 small" aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="createdAt" th:max="${dateToday}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name" th:value="${passengerName}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/passengers}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive" th:switch="${queryIsEmpty}">
+                <th:block th:case="${false}">
+                    <table class="table table-hover mb-0">
+                        <caption>
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${!logs.hasPrevious()} ? 'disabled'">
+                                        <a class="page-link" th:href="@{logs(page=${logs.getNumber - 1})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                            <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
+                                        </a>
+                                    </li>
+
+                                    <th:block th:each="i: ${#numbers.sequence(0, logs.getTotalPages - 1)}">
+                                        <li class="page-item" th:classappend="${logs.getNumber == i} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="${passengerName == null } ? @{/logs(page=${i})} : @{/logs(page=${i}, name=${passengerName})}"
+                                               th:text="${i}"></a>
+                                        </li>
+                                    </th:block>
+
+                                    <li class="page-item" th:classappend="${!logs.hasNext()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${passengerName == null } ? @{/logs(page=${logs.getNumber + 1})} : @{/logs(page=${logs.getNumber + 1}, name=${passengerName})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </caption>
+                        <thead>
+                        <tr class="text-truncate text-center align-middle text-dark">
+                            <th scope="col">Autor</th>
+                            <th scope="col">Data da Operação</th>
+                            <th scope="col">Operação</th>
+                            <th scope="col">Antes da Operação</th>
+                            <th scope="col">Depois da Operação</th>
+                            <th scope="col">Tabela</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="log : ${logs}">
+                            <td class="text-center align-middle text-truncate font-weight-bold"
+                                th:text="*{log.createdBy == null or log.createdBy == '' ? '-' : log.createdBy}"></td>
+
+                            <td class="text-center align-middle text-truncate"
+                                th:text="*{#temporals.format(log.createdAt, 'dd/MM/yyyy')}"></td>
+
+                            <td class="text-center align-middle text-truncate" th:text="*{log.operation}"></td>
+
+                            <td class="text-center align-middle"  >
+                                <a tabindex="1"
+                                   class="btn btn-secondary btn-sm" th:classappend="${ log.beforeOperation == null }  ? 'disabled'"
+                                   role="button"
+                                   data-html="true"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   data-placement="left"
+                                   data-container="body"
+                                   title="<b>Antes da Operação</b>"
+                                   th:data-content="${log.beforeOperation}">
+                                    <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
+                                </a>
+                            </td>
+
+                            <td class="text-center align-middle">
+                                <a tabindex="1"
+                                   class="btn btn-secondary btn-sm"  th:classappend="${ log.afterOperation == null or log.afterOperation == ''}  ? 'disabled'"
+                                   role="button"
+                                   data-html="true"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   data-placement="left"
+                                   data-container="body"
+                                   title="<b>Depois da Operação</b>"
+                                   th:data-content="${log.afterOperation}">
+                                    <span class="fas fa-eye" title="Visualizar" aria-hidden="true"></span>
+                                </a>
+                            </td>
+
+                            <td class="text-center align-middle text-truncate text-uppercase" th:text="*{log.tableName}"></td>
+
+
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </th:block>
+
+                <th:block th:case="${true}">
+                    <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                         th:switch="${isSearch}">
+                        <div class="text-center" th:case="${true}">
+                            <i class="fas fa-search" style="font-size: 5rem"></i>
+                            <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                            <h4>Não encontramos nenhum passageiro relacionado com o nome <b class="text-danger"
+                                                                                            th:text='|"${passengerName}"|'></b>.
+                            </h4>
+                        </div>
+
+                        <div class="text-center" th:case="${false}">
+                            <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                            <i class="fas fa-fw fa-user"></i>
+                            <h3 class="mt-2 font-weight-bold">Não há passageiros cadastrados.</h3>
+                            <a class="btn btn-primary font-weight-bold mt-1"
+                               th:href="@{/passengers/create}">CADASTRAR</a>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

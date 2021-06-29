@@ -47,7 +47,7 @@
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a> -->
-                <a class="dropdown-item" href="#" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                <a class="dropdown-item" th:href="@{/logs}" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Regis. de atividade
                 </a>
