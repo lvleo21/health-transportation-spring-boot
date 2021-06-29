@@ -47,7 +47,8 @@
                                 <div class="input-group">
                                     <input type="search" class="form-control border-1 small"
                                            aria-label="Search"
-                                           aria-describedby="basic-addon2" th:name="date" th:value="${#temporals.format(dateSelected, 'dd/MM/yyyy')}"
+                                           aria-describedby="basic-addon2" th:name="date"
+                                           th:value="${#temporals.format(dateSelected, 'dd/MM/yyyy')}"
                                            disabled>
                                     <div class="input-group-append">
                                         <a class="btn btn-danger" type="button" th:href="@{/logs}" title="Voltar">
@@ -79,17 +80,19 @@
                                         </a>
                                     </li>
 
+                                    <!-- For de páginas -->
                                     <th:block th:each="i: ${#numbers.sequence(0, logs.getTotalPages - 1)}">
                                         <li class="page-item" th:classappend="${logs.getNumber == i} ? 'active'">
                                             <a class="page-link"
-                                               th:href="${passengerName == null } ? @{/logs(page=${i})} : @{/logs(page=${i}, name=${passengerName})}"
+                                               th:href="${dateSelected == null } ? @{/logs(page=${i})} : @{/logs(page=${i}, date=${dateSelected})}"
                                                th:text="${i}"></a>
                                         </li>
                                     </th:block>
+                                    <!-- EndFor de páginas -->
 
                                     <li class="page-item" th:classappend="${!logs.hasNext()} ? 'disabled'">
                                         <a class="page-link"
-                                           th:href="${passengerName == null } ? @{/logs(page=${logs.getNumber + 1})} : @{/logs(page=${logs.getNumber + 1}, name=${passengerName})}"
+                                           th:href="${dateSelected == null } ? @{/logs(page=${logs.getNumber + 1})} : @{/logs(page=${logs.getNumber + 1}, date=${dateSelected})}"
                                            tabindex="-1"
                                            aria-disabled="true">
                                 <span aria-hidden="true" class="font-weight-bold"><i
@@ -119,9 +122,10 @@
 
                             <td class="text-center align-middle text-truncate" th:text="*{log.operation}"></td>
 
-                            <td class="text-center align-middle"  >
+                            <td class="text-center align-middle">
                                 <a tabindex="1"
-                                   class="btn btn-secondary btn-sm" th:classappend="${ log.beforeOperation == null }  ? 'disabled'"
+                                   class="btn btn-secondary btn-sm"
+                                   th:classappend="${ log.beforeOperation == null }  ? 'disabled'"
                                    role="button"
                                    data-html="true"
                                    data-toggle="popover"
@@ -136,7 +140,8 @@
 
                             <td class="text-center align-middle">
                                 <a tabindex="1"
-                                   class="btn btn-secondary btn-sm"  th:classappend="${ log.afterOperation == null or log.afterOperation == ''}  ? 'disabled'"
+                                   class="btn btn-secondary btn-sm"
+                                   th:classappend="${ log.afterOperation == null or log.afterOperation == ''}  ? 'disabled'"
                                    role="button"
                                    data-html="true"
                                    data-toggle="popover"
@@ -149,8 +154,8 @@
                                 </a>
                             </td>
 
-                            <td class="text-center align-middle text-truncate text-uppercase" th:text="*{log.tableName}"></td>
-
+                            <td class="text-center align-middle text-truncate text-uppercase"
+                                th:text="*{log.tableName}"></td>
 
 
                         </tr>
