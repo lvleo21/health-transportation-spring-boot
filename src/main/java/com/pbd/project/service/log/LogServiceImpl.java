@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 
 @Service
 @Transactional
@@ -22,6 +24,12 @@ public class LogServiceImpl implements LogService{
     @Transactional(readOnly = true)
     public Page<Log> findAll(int currentPage) {
         return logDao.findAll(this.getPageable(currentPage));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Log> findCreatedAt(int currentPage, LocalDate createdAt) {
+        return logDao.findByCreatedAt(this.getPageable(currentPage), createdAt);
     }
 
     public Pageable getPageable(int currentPage){

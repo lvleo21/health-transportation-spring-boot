@@ -26,12 +26,13 @@
 
                 <div class="col-md col-sm-12 d-flex justify-content-end">
                     <th:block th:switch="${isSearch}">
+
                         <th:block th:case="${false}">
                             <!-- Topbar Search -->
-                            <form class="form-inline navbar-search" th:action="@{/passengers}" method="get">
+                            <form class="form-inline navbar-search" th:action="@{/logs}" method="get">
                                 <div class="input-group">
                                     <input type="date" class="form-control border-1 small" aria-label="Search"
-                                           aria-describedby="basic-addon2" th:name="createdAt" th:max="${dateToday}">
+                                           aria-describedby="basic-addon2" th:name="date" th:max="${dateToday}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="fas fa-search fa-sm"></i>
@@ -46,10 +47,10 @@
                                 <div class="input-group">
                                     <input type="search" class="form-control border-1 small"
                                            aria-label="Search"
-                                           aria-describedby="basic-addon2" th:name="name" th:value="${passengerName}"
+                                           aria-describedby="basic-addon2" th:name="date" th:value="${#temporals.format(dateSelected, 'dd/MM/yyyy')}"
                                            disabled>
                                     <div class="input-group-append">
-                                        <a class="btn btn-danger" type="button" th:href="@{/passengers}" title="Voltar">
+                                        <a class="btn btn-danger" type="button" th:href="@{/logs}" title="Voltar">
                                             <i class="fas fa-times fa-sm"></i>
                                         </a>
                                     </div>
@@ -164,17 +165,15 @@
                         <div class="text-center" th:case="${true}">
                             <i class="fas fa-search" style="font-size: 5rem"></i>
                             <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
-                            <h4>Não encontramos nenhum passageiro relacionado com o nome <b class="text-danger"
-                                                                                            th:text='|"${passengerName}"|'></b>.
+                            <h4>Não encontramos nenhum registro relacionado a data
+                                <b class="text-danger" th:text="${#temporals.format(dateSelected, 'dd/MM/yyyy')}"></b>.
                             </h4>
                         </div>
 
                         <div class="text-center" th:case="${false}">
                             <i class="fas fa-hospital" style="font-size: 5rem"></i>
                             <i class="fas fa-fw fa-user"></i>
-                            <h3 class="mt-2 font-weight-bold">Não há passageiros cadastrados.</h3>
-                            <a class="btn btn-primary font-weight-bold mt-1"
-                               th:href="@{/passengers/create}">CADASTRAR</a>
+                            <h3 class="mt-2 font-weight-bold">Nenhum registro foi encontrado.</h3>
                         </div>
                     </div>
                 </th:block>
