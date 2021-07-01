@@ -33,6 +33,6 @@ public class LogServiceImpl implements LogService{
     }
 
     public Pageable getPageable(int currentPage){
-        return PageRequest.of(currentPage, 1, Sort.by("id").descending());
+        return PageRequest.of(currentPage, 15, Sort.by("id").descending());
     }
 }

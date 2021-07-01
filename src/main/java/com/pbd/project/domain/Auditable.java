@@ -2,6 +2,8 @@ package com.pbd.project.domain;
 
 import org.springframework.data.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -21,6 +23,12 @@ public abstract class Auditable<U> extends AbstractEntity<Long>{
     @LastModifiedDate
     @Temporal(TIMESTAMP)
     protected Date lastModifiedDate;
+
+    @PreRemove
+    public void preRemove(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        this.setLastModifiedBy((U) auth.getName());
+    }
 
     public U getLastModifiedBy() {
         return lastModifiedBy;

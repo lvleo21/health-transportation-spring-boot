@@ -8,16 +8,20 @@ SELECT 'ADMIN' WHERE 'ADMIN' NOT IN (SELECT role FROM roles);
 
 --
 CREATE OR REPLACE FUNCTION insert_log()
-RETURNS TRIGGER
-AS'
-BEGIN
-INSERT INTO log (after_operation, before_operation, created_at, operation, table_name, created_by)
-
-VALUES (NEW, OLD, now(), TG_OP, TG_RELNAME, NEW.last_modified_By);
-
-RETURN NEW;
-END '
+RETURNS trigger AS
+'BEGIN IF (TG_OP = ''DELETE'') THEN
+	INSERT INTO log (after_operation, before_operation, created_at, operation, table_name, created_by)
+	VALUES (NEW, OLD, now(), TG_OP, TG_RELNAME, OLD.last_modified_By);
+    RETURN NEW;
+ELSIF (TG_OP = ''UPDATE'' or TG_OP = ''INSERT'') THEN
+	INSERT INTO log (after_operation, before_operation, created_at, operation, table_name, created_by)
+	VALUES (NEW, OLD, now(), TG_OP, TG_RELNAME, NEW.last_modified_By);
+    RETURN NEW;
+END IF;
+RETURN NULL;
+END;'
 LANGUAGE plpgsql;
+---
 
 -- DROP TRIGGERS
 DROP TRIGGER IF EXISTS trigger_create_log_vehicle ON vehicles;
