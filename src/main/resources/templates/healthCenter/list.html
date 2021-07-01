@@ -63,6 +63,11 @@
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">Ativo ?</th>
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">Ações</th>
 
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
+
 
                         </tr>
                         </thead>
@@ -112,6 +117,11 @@
                                 </button>
                             </td>
 
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{healthCenter.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(healthCenter.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>

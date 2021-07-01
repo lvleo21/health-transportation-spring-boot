@@ -17,5 +17,6 @@ public interface VehicleService {
     List<Vehicle> findByHealthcenter(HealthCenter healthCenter);
     List<Vehicle> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive);
 
+    void changeActive(Vehicle vehicle);
     void changeAvailable(Vehicle vehicle);
 }

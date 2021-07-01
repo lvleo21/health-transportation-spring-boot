@@ -5,6 +5,10 @@
     <title layout:fragment="title">Prefeituras - Health Transportation</title>
 </head>
 <body>
+<caption class="ml-4">
+    <i class="fas fa-caret-right"></i> Qnt. de prefeituras encontradas:
+    <span class="font-weight-bold" th:text="${#lists.size(prefectures)}"></span>
+</caption>
 
 <div class="container-fluid" layout:fragment="content">
 
@@ -15,95 +19,132 @@
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+        <div class="card-header">
 
+            <div class="row">
+                <div class="ml-3 d-flex align-items-center">
+                    <i class="fas fa-caret-right mr-1"></i> Qnt. de prefeituras encontradas:
+                    <span class="font-weight-bold ml-1"
+                          th:text="${queryIsEmpty} ? '0' : ${prefectures.size()} "></span>
+                </div>
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por cidade ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
 
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/prefecture/list}" method="get">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small" aria-label="Search" placeholder="Buscar por cidade ..."
+                                           aria-describedby="basic-addon2" th:name="city">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name"
+                                           placeholder="Buscar por cidade ..."
+                                           th:value="${city}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/prefecture/list}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de prefeituras encontradas:
-                        <span class="font-weight-bold" th:text="${#lists.size(prefectures)}"></span>
-                    </caption>
-                    <thead>
-                    <tr  class="text-truncate">
-                        <th class='text-center text-dark' scope="col">Cidade</th>
-                        <th class='text-center text-dark' scope="col">Estado</th>
-                        <th class='text-center text-dark' scope="col">Email</th>
-                        <th class='text-center text-dark' scope="col">Site</th>
-                        <th class='text-center text-dark' scope="col">CNPJ</th>
-                        <th class='text-center text-dark' scope="col">Ativa</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
+        <div class="card-body p-0" th:switch="${queryIsEmpty}">
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                        <h4>Não encontramos nenhum prefeitura com a cidade <b class="text-danger"
+                                                                                       th:text='|"${city}"|'></b>.
+                        </h4>
+                    </div>
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-user"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há prefeituras cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/prefecture/register}">CADASTRAR</a>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr class="text-truncate">
+                            <th class='text-center text-dark' scope="col">Cidade</th>
+                            <th class='text-center text-dark' scope="col">Estado</th>
+                            <th class='text-center text-dark' scope="col">Email</th>
+                            <th class='text-center text-dark' scope="col">Site</th>
+                            <th class='text-center text-dark' scope="col">CNPJ</th>
+                            <th class='text-center text-dark' scope="col">Ativa</th>
+                            <th class='text-center text-dark' scope="col">Ações</th>
 
-                            <th class='text-center text-dark' scope="col">Criado por</th>
-                            <th class='text-center text-dark' scope="col">Dat. de criação</th>
-                            <th class='text-center text-dark' scope="col">Última modificação por</th>
-                            <th class='text-center text-dark' scope="col">Dat. da última modificação</th>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
 
-                        </th:block>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="prefecture : ${prefectures}" class="text-truncate">
 
+                            <td class="text-center align-middle" th:text="*{prefecture.address.city}"></td>
+                            <td class="text-center align-middle" th:text="*{prefecture.address.state}"></td>
+                            <td class="text-center align-middle" th:text="*{prefecture.email}"></td>
+                            <td class="text-center align-middle" th:text="*{prefecture.site}"></td>
+                            <td class="text-center align-middle" th:text="*{prefecture.cnpj}"></td>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="prefecture : ${prefectures}" class="text-truncate">
+                            <td class="text-center align-middle" th:switch="*{prefecture.active}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
 
-                        <td class="text-center align-middle" th:text="*{prefecture.address.city}"></td>
-                        <td class="text-center align-middle" th:text="*{prefecture.address.state}"></td>
-                        <td class="text-center align-middle" th:text="*{prefecture.email}"></td>
-                        <td class="text-center align-middle" th:text="*{prefecture.site}"></td>
-                        <td class="text-center align-middle" th:text="*{prefecture.cnpj}"></td>
+                            <td class="text-center align-middle nowrap">
+                                <a class="btn btn-primary btn-sm"
+                                   th:href="@{/prefecture/update/{id} (id=${prefecture.id}) }">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
 
-                        <td class="text-center align-middle" th:switch="*{prefecture.active}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                                <button th:id="${#strings.concat('btn_prefecture/delete/', prefecture.id)}" type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </td>
 
-                        <td class="text-center align-middle nowrap">
-                            <a class="btn btn-primary btn-sm"
-                               th:href="@{/prefecture/update/{id} (id=${prefecture.id}) }">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{prefecture.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(prefecture.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
+                        </tr>
+                        </tbody>
+                    </table>
+            </th:block>
 
-                            <button th:id="${#strings.concat('btn_prefecture/delete/', prefecture.id)}" type="button"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
-                        </td>
-
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-
-
-
-                            <td class="text-center align-middle" th:text="*{prefecture.createdBy}"></td>
-                            <td class="text-center align-middle" th:text="*{#dates.format(prefecture.createdDate, 'dd/MM/yyyy')}"></td>
-                            <td class="text-center align-middle" th:text="*{prefecture.lastModifiedBy}"></td>
-                            <td class="text-center align-middle" th:text="*{#dates.format(prefecture.lastModifiedDate, 'dd/MM/yyyy')}"></td>
-
-                        </th:block>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

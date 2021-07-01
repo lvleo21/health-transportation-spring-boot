@@ -154,6 +154,7 @@ public class User extends Auditable<String> {
     }
 
     public String showRoles() {
+        System.out.println("ENTROU NO SHOW ROLES");
         String text = "";
 
         for (Role role : this.roles) {

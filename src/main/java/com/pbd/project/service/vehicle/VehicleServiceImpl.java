@@ -62,6 +62,12 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
+    public void changeActive(Vehicle vehicle) {
+        vehicle.setActive(!vehicle.isActive());
+        this.save(vehicle);
+    }
+
+    @Override
     public void changeAvailable(Vehicle vehicle) {
         vehicle.setAvailable(vehicle.isAvailable() ? false : true);
         this.save(vehicle);

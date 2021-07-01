@@ -43,7 +43,7 @@
             <span class="font-weight-bold" th:text="${#lists.size(travels)}"></span>
           </caption>
           <thead>
-          <tr>
+          <tr class="text-truncate">
             <th class='text-center text-dark' scope="col">Saída</th>
             <th class='text-center text-dark' scope="col">Retorno</th>
             <th class='text-center text-dark' scope="col">Destino</th>
@@ -53,10 +53,15 @@
             <th class='text-center text-dark' scope="col">Status</th>
             <th class='text-center text-dark' scope="col">Ativo</th>
             <th class='text-center text-dark' scope="col">Ações</th>
+
+            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+              <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+              <th class='text-center text-dark' scope="col">Data da Operação</th>
+            </th:block>
           </tr>
           </thead>
           <tbody>
-          <tr th:each="travel : ${travels}">
+          <tr th:each="travel : ${travels}" class="text-truncate">
 
             <td class="text-center align-middle" th:text="*{#temporals.format(travel.departureDate, 'dd/MM/yyyy')}"></td>
             <td class="text-center align-middle" th:text="${travel.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>
@@ -92,6 +97,12 @@
                 <i class="fas fa-trash text-light"></i>
               </button>
             </td>
+
+            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+              <td class="text-center align-middle" th:text="*{travel.lastModifiedBy}"></td>
+              <td class="text-center align-middle"
+                  th:text="*{#dates.format(travel.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            </th:block>
 
           </tr>
 

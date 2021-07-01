@@ -3,6 +3,7 @@ package com.pbd.project.web.controller.prefecture;
 import com.pbd.project.domain.Prefecture;
 import com.pbd.project.domain.enums.UF;
 import com.pbd.project.service.prefecture.PrefectureService;
+import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/prefecture")
@@ -19,13 +22,28 @@ public class PrefectureController {
     @Autowired
     private PrefectureService prefectureService;
 
+    @Autowired
+    private UserService userService;
 
 
 
     @GetMapping("/list")
-    public String getPrefectures(ModelMap modelMap) {
+    public String getPrefectures(ModelMap modelMap, @RequestParam("city") Optional<String> name) {
 
-        modelMap.addAttribute("prefectures", prefectureService.findAll());
+        List<Prefecture> prefectures = null;
+        String nameQueryParam = name.orElse(null);
+
+        if (nameQueryParam != null){
+            prefectures = prefectureService.
+                    findPrefectureByAddress_City(nameQueryParam);
+        } else {
+             prefectures = prefectureService.findAll();
+        }
+
+        modelMap.addAttribute("city", nameQueryParam);
+        modelMap.addAttribute("prefectures", prefectures);
+        modelMap.addAttribute("queryIsEmpty", prefectures.size() == 0 ? true : false);
+        modelMap.addAttribute("isSearch", nameQueryParam == null ? false : true);
 
         return "prefecture/list";
     }

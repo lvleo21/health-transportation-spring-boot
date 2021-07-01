@@ -1,6 +1,7 @@
 package com.pbd.project.service.prefecture;
 
 import com.pbd.project.dao.prefecture.PrefectureDao;
+import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Prefecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class PrefectureServiceImpl implements PrefectureService {
     @Override
     public List<Prefecture> findAll() {
         return dao.findAll();
+    }
+
+    @Override
+    public List<Prefecture> findPrefectureByAddress_City(String city) {
+        return dao.findPrefectureByCity(city);
     }
 
     @Override

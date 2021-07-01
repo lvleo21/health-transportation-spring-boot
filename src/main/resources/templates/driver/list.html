@@ -17,38 +17,12 @@
     <div class="card shadow rounded mt-3">
         <div class="card-header">
             <div class="row">
-                <nav class="col-md col-sm-12">
-                    <ul class="pagination m-0">
-                        <li class="page-item" th:classappend="${drivers.isFirst()} ? 'disabled'">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-                               th:href="@{drivers(page=${0})}" th:text="'0º'"></a>
-                        </li>
-                        <li class="page-item" th:classappend="${!drivers.hasPrevious()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getNumber - 1})}" tabindex="-1"
-                               aria-disabled="true">
-                                <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
-                            </a>
-                        </li>
 
-                        <li class="page-item">
-                            <span class="page-link"
-                                  th:text="${queryIsEmpty} ? '0' : |${drivers.getNumber} de ${drivers.getTotalPages - 1}|"></span>
-                        </li>
-
-                        <li class="page-item" th:classappend="${!drivers.hasNext()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getNumber + 1})}" tabindex="-1"
-                               aria-disabled="true">
-                                <span aria-hidden="true" class="font-weight-bold"><i
-                                        class="fas fa-chevron-right"></i></i></span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:classappend="${drivers.isLast()} ? 'disabled'">
-                            <a class="page-link" th:href="@{drivers(page=${drivers.getTotalPages - 1})}"
-                               tabindex="-1"
-                               aria-disabled="true" th:text="${queryIsEmpty} ? '0º' : |${drivers.getTotalPages - 1}ª|"></a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="ml-3 d-flex align-items-center">
+                    <i class="fas fa-caret-right mr-1"></i> Qnt. de motoristas encontrados:
+                    <span class="font-weight-bold ml-1"
+                          th:text="${queryIsEmpty} ? '0' : ${drivers.getTotalElements()} "></span>
+                </div>
 
                 <div class="col-md col-sm-12 d-flex justify-content-end">
                     <th:block th:switch="${isSearch}">
@@ -73,7 +47,8 @@
                                 <div class="input-group">
                                     <input type="search" class="form-control border-1 small"
                                            aria-label="Search"
-                                           aria-describedby="basic-addon2" th:name="name" th:value="${driverName}" disabled>
+                                           aria-describedby="basic-addon2" th:name="name" th:value="${driverName}"
+                                           disabled>
                                     <div class="input-group-append">
                                         <a class="btn btn-danger" type="button" th:href="@{/drivers}" title="Voltar">
                                             <i class="fas fa-times fa-sm"></i>
@@ -92,10 +67,46 @@
             <th:block th:case="${false}">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
-                        <caption class="ml-3">
-                            <i class="fas fa-caret-right"></i> Qnt. de motoristas encontrados:
-                            <span class="font-weight-bold" th:text="${drivers.getTotalElements()}"></span>
+                        <!--                        <caption class="ml-3">-->
+                        <!--                            <i class="fas fa-caret-right"></i> Qnt. de motoristas encontrados:-->
+                        <!--                            <span class="font-weight-bold" th:text="${drivers.getTotalElements()}"></span>-->
+                        <!--                        </caption>-->
+
+                        <caption>
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${!drivers.hasPrevious()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${driverName == null } ? @{/drivers(page=${drivers.getNumber - 1})} : @{/drivers(page=${drivers.getNumber - 1}, name=${driverName})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                            <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
+                                        </a>
+                                    </li>
+
+                                    <!-- For de páginas -->
+                                    <th:block th:each="i: ${#numbers.sequence(0, drivers.getTotalPages - 1)}">
+                                        <li class="page-item" th:classappend="${drivers.getNumber == i} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="${driverName == null } ? @{/drivers(page=${i})} : @{/drivers(page=${i}, name=${driverName})}"
+                                               th:text="${i}"></a>
+                                        </li>
+                                    </th:block>
+                                    <!-- EndFor de páginas -->
+
+                                    <li class="page-item" th:classappend="${!drivers.hasNext()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${driverName == null } ? @{/drivers(page=${drivers.getNumber + 1})} : @{/drivers(page=${drivers.getNumber + 1}, name=${driverName})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </caption>
+
                         <thead>
                         <tr>
                             <th class='text-center text-dark text-truncate' scope="col">Nome</th>
@@ -103,12 +114,18 @@
                             <th class='text-center text-dark' scope="col">Ativo</th>
                             <th class='text-center text-dark' scope="col">Disponível</th>
                             <th class='text-center text-dark' scope="col">Ações</th>
+
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="driver : ${drivers}">
 
-                            <td class="text-center align-middle text-truncate font-weight-bold" th:text="*{driver.name}"></td>
+                            <td class="text-center align-middle text-truncate font-weight-bold"
+                                th:text="*{driver.name}"></td>
                             <td class="text-center align-middle text-truncate"
                                 th:text="*{driver.healthCenter.address.formatedAddress}"></td>
 
@@ -119,7 +136,7 @@
                                            class="custom-control-input"
                                            th:id="|switch_drivers/${driver.id}/change-status/|"
                                            th:checked="*{driver.active}"
-                                    th:disabled="${!driver.available}">
+                                           th:disabled="${!driver.available}">
                                     <label class="custom-control-label"
                                            th:for="|switch_drivers/${driver.id}/change-status/|"></label>
                                 </div>
@@ -145,6 +162,12 @@
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
                             </td>
+
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{driver.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(driver.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
 
                         </tr>
 

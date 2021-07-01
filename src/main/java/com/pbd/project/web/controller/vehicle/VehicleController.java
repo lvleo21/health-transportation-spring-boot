@@ -1,5 +1,6 @@
 package com.pbd.project.web.controller.vehicle;
 
+import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.User;
 import com.pbd.project.domain.Vehicle;
@@ -115,6 +116,27 @@ public class VehicleController {
         vehicleService.delete(id);
         attr.addFlashAttribute("success", "Veículo deletado com sucesso.");
         return  "redirect:/vehicles";
+    }
+
+
+
+    @GetMapping("/{id}/change-status")
+    public String changeVehicleStatus(@PathVariable("id") Long id, RedirectAttributes attr){
+        Vehicle vehicle = vehicleService.findById(id);
+
+        if (this.hasPermission(vehicle.getHealthCenter().getId())) {
+            vehicleService.changeActive(vehicle);
+            attr.addFlashAttribute("success", "Veículo <b>"+ vehicle.getName() + "</b> modificado(a) com sucesso.");
+        } else {
+            attr.addFlashAttribute("error", "Você não tem permissões para modificar este veículo.");
+        }
+
+        return "redirect:/vehicles";
+    }
+
+    public boolean hasPermission(Long idDriverHealthCenter) {
+        User user = userService.getUserAuthenticated();
+        return (user.getStaff() || (user.getHealthCenter().getId().equals(idDriverHealthCenter))) ? true : false;
     }
 
     @ModelAttribute("healthCenters")

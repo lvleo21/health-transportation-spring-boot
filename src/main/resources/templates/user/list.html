@@ -43,7 +43,7 @@
                         <span class="font-weight-bold" th:text="${#lists.size(users)}"></span>
                     </caption>
                     <thead>
-                    <tr>
+                    <tr class="text-truncate">
                         <th class='text-center align-middle text-dark' scope="col">Username</th>
                         <th class='text-center align-middle text-dark' scope="col">Email</th>
                         <th class='text-center align-middle text-dark' scope="col">Centro de saúde</th>
@@ -53,17 +53,23 @@
                         <th class='text-center align-middle text-dark' scope="col">Ativo</th>
                         <th class='text-center align-middle text-dark' scope="col">Editar</th>
                         <th class='text-center align-middle text-dark' scope="col" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">Remover</th>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                            <th class='text-center text-dark' scope="col">Data da Operação</th>
+                        </th:block>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="user : ${users}">
+                    <tr th:each="user : ${users}" class="text-truncate">
 
                         <td class="text-center align-middle" th:text="*{user.username}"></td>
                         <td class="text-center align-middle" th:text="*{user.email}"></td>
                         <td class="text-center align-middle" th:text="*{user.healthCenter.address.formatedAddress}"></td>
                         <td class="text-center align-middle" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
 
-                        <td class="text-center align-middle" th:utext="*{user.ShowRoles}"></td>
+                        <td class="text-center align-middle" th:utext="*{user.showRoles}"></td>
                         <td class="text-center align-middle" th:utext="*{user.enrollment}"></td>
 
                         <td class="text-center align-middle" th:switch="*{user.active}">
@@ -88,6 +94,12 @@
                                 <i class="fas fa-trash text-light"></i>
                             </button>
                         </td>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <td class="text-center align-middle" th:text="*{user.lastModifiedBy}"></td>
+                            <td class="text-center align-middle"
+                                th:text="*{#dates.format(user.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        </th:block>
 
                     </tr>
 

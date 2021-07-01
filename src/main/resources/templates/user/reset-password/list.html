@@ -54,10 +54,15 @@
                         <th class='text-center align-middle text-dark' scope="col">Resetar</th>
                         <th class='text-center align-middle text-dark' scope="col">Rejeitar</th>
 
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                            <th class='text-center text-dark' scope="col">Data da Operação</th>
+                        </th:block>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="orp : ${orps}">
+                    <tr th:each="orp : ${orps}" class="text-truncate">
 
                         <td class="text-center align-middle"
                             th:text="${#temporals.format(orp.requestOn, 'dd/MM/yyyy')}"></td>
@@ -98,6 +103,13 @@
                                 <i class="fas fa-times text-light"></i>
                             </a>
                         </td>
+
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <td class="text-center align-middle" th:text="*{orp.lastModifiedBy}"></td>
+                            <td class="text-center align-middle"
+                                th:text="*{#dates.format(orp.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        </th:block>
 
                     </tr>
 

@@ -99,7 +99,7 @@
                             </nav>
                         </caption>
                         <thead>
-                        <tr>
+                        <tr class="text-truncate">
                             <th class='text-center text-dark' scope="col">Nome</th>
                             <th class='text-center text-dark' scope="col">SUS</th>
                             <th class='text-center text-dark' scope="col">Gênero</th>
@@ -110,10 +110,16 @@
                             <th class='text-center text-dark text-truncate' scope="col"
                                 th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">Ativo ?</th>
                             <th class='text-center text-dark' scope="col">Editar</th>
+
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
+
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="passenger : ${passengers}">
+                        <tr th:each="passenger : ${passengers}" class="text-truncate">
                             <td class="text-center align-middle text-truncate font-weight-bold"
                                 th:text="*{passenger.getShortName}"></td>
 
@@ -196,6 +202,12 @@
 
 
                             </td>
+
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{passenger.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(passenger.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
 
                         </tr>
 

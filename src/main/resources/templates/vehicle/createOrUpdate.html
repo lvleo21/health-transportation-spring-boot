@@ -81,31 +81,6 @@
 
                     </div>
 
-                    <div class="row">
-
-                        <div class="col-md col-sm-12 d-flex align-items-center">
-                            <div class="form-group mt-4">
-
-                                <input type="checkbox" id="active" th:field="*{active}">
-                                <label th:for="${#ids.next('active')}">Ativo</label>
-                                <br>
-                                <small>Indica que este veículo está ativo ou não no sistema.</small>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md col-sm-12 d-flex align-items-center">
-                            <div class="form-group mt-4">
-
-                                <input type="checkbox" id="available" th:field="*{available}">
-                                <label th:for="${#ids.next('available')}">Disponível</label>
-                                <br>
-                                <small>Indica que este veículo está disponível para viagem.</small>
-
-                            </div>
-                        </div>
-                    </div>
-
                     <input type="hidden" id="id" th:field="*{id}"/>
 
                     <br>

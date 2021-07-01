@@ -77,6 +77,8 @@
                             <i class="fas fa-spinner fa-2x text-gray-300" th:case="${travel.status.AGUARDANDO}"></i>
                             <i class="fas fa-route fa-2x text-gray-300" th:case="${travel.status.EM_TRANSITO}"></i>
                             <i class="fas fa-check fa-2x text-gray-300" th:case="${travel.status.CONCLUIDO}"></i>
+
+
                         </div>
                     </div>
                 </div>
@@ -156,7 +158,7 @@
                         <span class="font-weight-bold" th:text="${#lists.size(locations)}"></span>
                     </caption>
                     <thead>
-                    <tr>
+                    <tr  class="text-truncate">
                         <th class='text-center text-dark' scope="col">Nome</th>
                         <th class='text-center text-dark' scope="col">SUS</th>
                         <th class='text-center text-dark' scope="col">Gênero</th>
@@ -165,10 +167,15 @@
                         <th class='text-center text-dark' scope="col">Preferencial ?</th>
                         <th class='text-center text-dark' scope="col">Hospit/Especialidade</th>
                         <th class='text-center text-dark' scope="col">Ações</th>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                            <th class='text-center text-dark' scope="col">Data da Operação</th>
+                        </th:block>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="location : ${locations}">
+                    <tr th:each="location : ${locations}" class="text-truncate">
 
                         <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
                         <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
@@ -203,6 +210,8 @@
                                 <i class="fas fa-trash text-light"></i>
                             </button>
 
+
+
                             <!--                            <th:block th:switch="${passenger.active}">-->
                             <!--                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
                             <!--                                        type="button" title="Desativar"-->
@@ -215,6 +224,12 @@
 
                             <!--                            </th:block>-->
                         </td>
+
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <td class="text-center align-middle" th:text="*{location.lastModifiedBy}"></td>
+                            <td class="text-center align-middle"
+                                th:text="*{#dates.format(location.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        </th:block>
 
                     </tr>
 
