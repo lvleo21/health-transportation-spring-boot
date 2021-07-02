@@ -27,7 +27,9 @@
                         <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-danger-400"></i>
                         Adicionar Passageiro
                     </a>
-                    <a class="dropdown-item" th:href="@{/travels/{id}/locations/export (id=${travel.id})}" target="_blank">
+                    <a class="dropdown-item"
+                       th:classappend="${travel.getQntPassengers == 0 ?  'disabled' : '' }"
+                       th:href="@{/travels/{id}/locations/export (id=${travel.id})}" target="_blank">
                         <i class="fas fas fa-file-pdf fa-sm fa-fw mr-2 text-danger-400"></i>
                         Exportar (PDF)
                     </a>
@@ -130,112 +132,160 @@
     </div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+        <div class="card-header">
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por nome ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+            <div class="row">
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
 
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search"
+                                  th:action="@{/travels/{idTravel}/locations (idTravel=${travel.id})}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small" aria-label="Search"
+                                           placeholder="Buscar por nome ..."
+                                           aria-describedby="basic-addon2" th:name="name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name"
+                                           placeholder="Buscar por nome ..."
+                                           th:value="${name}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button"
+                                           th:href="@{/travels/{idTravel}/locations (idTravel=${travel.id})}"
+                                           title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
             </div>
         </div>
 
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(locations)}"></span>
-                    </caption>
-                    <thead>
-                    <tr  class="text-truncate">
-                        <th class='text-center text-dark' scope="col">Nome</th>
-                        <th class='text-center text-dark' scope="col">SUS</th>
-                        <th class='text-center text-dark' scope="col">Gênero</th>
-                        <th class='text-center text-dark' scope="col">Categoria</th>
-                        <th class='text-center text-dark' scope="col">Transição</th>
-                        <th class='text-center text-dark' scope="col">Preferencial ?</th>
-                        <th class='text-center text-dark' scope="col">Hospit/Especialidade</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
+        <div class="card-body p-0" th:switch="${queryIsEmpty}">
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                        <h4>Não encontramos nenhuma locação com o passageiro de nome <br><b class="text-danger"
+                                                                                            th:text='|"${name}"|'></b>.
+                        </h4>
+                    </div>
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
-                            <th class='text-center text-dark' scope="col">Data da Operação</th>
-                        </th:block>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="location : ${locations}" class="text-truncate">
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-user"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há locações cadastradas.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/travels/{id}/locations/create (id=${travel.id})}">CADASTRAR</a>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <caption class="ml-4">
+                            <i class="fas fa-caret-right"></i> Qnt. de Passageiros encontrados:
+                            <span class="font-weight-bold" th:text="${#lists.size(locations)}"></span>
+                        </caption>
+                        <thead>
+                        <tr class="text-truncate">
+                            <th class='text-center text-dark' scope="col">Nome</th>
+                            <th class='text-center text-dark' scope="col">SUS</th>
+                            <th class='text-center text-dark' scope="col">Gênero</th>
+                            <th class='text-center text-dark' scope="col">Categoria</th>
+                            <th class='text-center text-dark' scope="col">Transição</th>
+                            <th class='text-center text-dark' scope="col">Preferencial ?</th>
+                            <th class='text-center text-dark' scope="col">Hospit/Especialidade</th>
+                            <th class='text-center text-dark' scope="col">Ações</th>
 
-                        <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
-                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
-                        <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
-                        <td class="text-center align-middle text-truncate font-weight-bold">
-                            <a th:text="*{location.passenger.name}"
-                               th:href="@{/passengers/update/{rg} (rg=${location.passenger.rg}) }"></a>
-                        </td>
-                        <td class="text-center align-middle text-truncate" th:text="*{location.passenger.sus}"></td>
-                        <td class="text-center align-middle" th:text="*{location.passenger.gender.initials}"></td>
-                        <td class="text-center align-middle" th:text="*{location.category}"></td>
-                        <td class="text-center align-middle" th:text="*{location.transition}"></td>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="location : ${locations}" class="text-truncate">
 
-                        <td class="text-center align-middle text-truncate" th:switch="*{location.isPreferential}">
-                            <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
-                            <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
-                        </td>
+                            <!--            <td class="text-center align-middle" th:text="${passenger.returnDate != null ? #temporals.format(travel.returnDate, 'dd/MM/yyyy') : '- - -'}"></td>-->
+                            <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.destinyCity, ' - ', travel.destinyState)}"></td>-->
+                            <!--            <td class="text-center align-middle" th:text="${#strings.concat(travel.registeredPassengers, '/', travel.vehicle.capacity)}"></td>-->
+                            <td class="text-center align-middle text-truncate font-weight-bold">
+                                <a th:text="*{location.passenger.name}"
+                                   th:href="@{/passengers/update/{rg} (rg=${location.passenger.rg}) }"></a>
+                            </td>
+                            <td class="text-center align-middle text-truncate" th:text="*{location.passenger.sus}"></td>
+                            <td class="text-center align-middle" th:text="*{location.passenger.gender.initials}"></td>
+                            <td class="text-center align-middle" th:text="*{location.category}"></td>
+                            <td class="text-center align-middle" th:text="*{location.transition}"></td>
 
-                        <td class="text-center align-middle" th:text="*{location.destinationHospital}"></td>
+                            <td class="text-center align-middle text-truncate" th:switch="*{location.isPreferential}">
+                                <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
+                                <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
+                            </td>
 
-                        <td class="text-center align-middle text-truncate">
-                            <a class="btn btn-primary btn-sm" title="Editar"
+                            <td class="text-center align-middle" th:text="*{location.destinationHospital}"></td>
 
-                               th:href="@{/travels/{idTravel}/locations/{idLocation}/update (idTravel=${travel.id}, idLocation=${location.id})}">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            <td class="text-center align-middle text-truncate">
+                                <a class="btn btn-primary btn-sm" title="Editar"
 
-                            <button th:id="${#strings.concat('btn_travels/', travel.id,'/locations/', location.id ,'/delete')}"
-                                    type="button" title="Deletar locação"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
+                                   th:href="@{/travels/{idTravel}/locations/{idLocation}/update (idTravel=${travel.id}, idLocation=${location.id})}">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
 
-
-
-                            <!--                            <th:block th:switch="${passenger.active}">-->
-                            <!--                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
-                            <!--                                        type="button" title="Desativar"-->
-                            <!--                                        class="btn btn-danger btn-sm"-->
-                            <!--                                        data-toggle="modal" data-target="#myModal"-->
-                            <!--                                        th:case="true">-->
-                            <!--                                    <i class="fas fa-trash text-light"></i>-->
-                            <!--                                </button>-->
+                                <button th:id="${#strings.concat('btn_travels/', travel.id,'/locations/', location.id ,'/delete')}"
+                                        type="button" title="Deletar locação"
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
 
 
-                            <!--                            </th:block>-->
-                        </td>
+                                <!--                            <th:block th:switch="${passenger.active}">-->
+                                <!--                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
+                                <!--                                        type="button" title="Desativar"-->
+                                <!--                                        class="btn btn-danger btn-sm"-->
+                                <!--                                        data-toggle="modal" data-target="#myModal"-->
+                                <!--                                        th:case="true">-->
+                                <!--                                    <i class="fas fa-trash text-light"></i>-->
+                                <!--                                </button>-->
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <td class="text-center align-middle" th:text="*{location.lastModifiedBy}"></td>
-                            <td class="text-center align-middle"
-                                th:text="*{#dates.format(location.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
-                        </th:block>
 
-                    </tr>
+                                <!--                            </th:block>-->
+                            </td>
 
-                    </tbody>
-                </table>
-            </div>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{location.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(location.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>

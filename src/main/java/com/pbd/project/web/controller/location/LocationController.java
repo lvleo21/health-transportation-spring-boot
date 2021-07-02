@@ -30,6 +30,7 @@ import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/travels/{idTravel}")
@@ -52,11 +53,26 @@ public class LocationController {
 
 
     @GetMapping("/locations")
-    public String locationListView(@PathVariable("idTravel") Long idTravel, ModelMap model){
+    public String locationListView(@PathVariable("idTravel") Long idTravel,
+                                   ModelMap model,
+                                   @RequestParam("name") Optional<String> name){
 
-        Travel travel = travelService.findById(idTravel);
+        String nameQueryParam = name.orElse(null);
+        Travel travel  = travelService.findById(idTravel);
+        List<Location> locations;
+
+        locations = (nameQueryParam == null)
+                ? travel.getLocations()
+                : locationService.findLocationByPassengerName(idTravel, nameQueryParam);
+
+        System.out.println(nameQueryParam);
+        System.out.println(locations);
+
+        model.addAttribute("queryIsEmpty", locations.size() == 0 ? true : false);
+        model.addAttribute("isSearch", nameQueryParam == null ? false : true);
+        model.addAttribute("name", nameQueryParam);
         model.addAttribute("travel", travel);
-        model.addAttribute("locations", travel.getLocations());
+        model.addAttribute("locations", locations);
 
         return "location/list";
     }

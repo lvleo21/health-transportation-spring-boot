@@ -28,10 +28,10 @@ public class PrefectureController {
 
 
     @GetMapping("/list")
-    public String getPrefectures(ModelMap modelMap, @RequestParam("city") Optional<String> name) {
+    public String getPrefectures(ModelMap modelMap, @RequestParam("city") Optional<String> city) {
 
         List<Prefecture> prefectures = null;
-        String nameQueryParam = name.orElse(null);
+        String nameQueryParam = city.orElse(null);
 
         if (nameQueryParam != null){
             prefectures = prefectureService.

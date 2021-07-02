@@ -15,4 +15,5 @@ public interface LocationService {
     List<Location> findByTravel(Travel travel);
     List<Location> findAll();
     List<Location> findLocationByPassengerAndTravelStatus(Long idPassenger, String travelStatus);
+    List<Location> findLocationByPassengerName(Long travelId, String name);
 }

@@ -17,26 +17,6 @@
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
-
-
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por usuário ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -45,7 +25,7 @@
                         <span class="font-weight-bold" th:text="${#lists.size(orps)}"></span>
                     </caption>
                     <thead>
-                    <tr>
+                    <tr class="text-truncate">
                         <th class='text-center align-middle text-dark' scope="col">Pedido em</th>
                         <th class='text-center align-middle text-dark' scope="col">Completado em</th>
                         <th class='text-center align-middle text-dark' scope="col">Foi rejeitado ?</th>

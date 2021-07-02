@@ -51,6 +51,12 @@ public class LocationServiceImpl implements LocationService{
 
     @Override
     @Transactional(readOnly = true)
+    public List<Location> findLocationByPassengerName(Long travelId, String name) {
+        return locationDao.findLocationByPassengerName(travelId, name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Location findById(Long id) {
         return locationDao.findById(id).get();
     }
