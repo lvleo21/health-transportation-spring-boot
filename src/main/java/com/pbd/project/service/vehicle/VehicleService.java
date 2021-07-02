@@ -14,6 +14,8 @@ public interface VehicleService {
 
 //    boolean findRelatedTravels(Long id);
     List<Vehicle> findAll();
+    List<Vehicle> findVehicleByName(String name);
+    List<Vehicle> findVehicleByHealthCenterAndName(HealthCenter healthCenter, String name);
     List<Vehicle> findByHealthcenter(HealthCenter healthCenter);
     List<Vehicle> findAvailable(Long idHealthCenter, boolean isAvailable, boolean isActive);
 

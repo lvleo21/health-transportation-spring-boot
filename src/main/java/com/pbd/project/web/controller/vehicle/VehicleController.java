@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/vehicles")
@@ -42,16 +43,29 @@ public class VehicleController {
     }
 
     @GetMapping("")
-    public String vehiclesListView(ModelMap model){
+    public String vehiclesListView(ModelMap model, @RequestParam("name") Optional<String> name){
 
         User user = userService.getUserAuthenticated();
+        List<Vehicle> vehicles = null;
+        String nameQueryParam = name.orElse(null);
 
         if(user.getStaff()){
-            model.addAttribute("vehicles", vehicleService.findAll());
+            vehicles = (nameQueryParam == null)
+                    ? vehicleService.findAll()
+                    : vehicleService.findVehicleByName(nameQueryParam);
         } else {
-            model.addAttribute("vehicles", vehicleService.findByHealthcenter(user.getHealthCenter()));
+            vehicles = (nameQueryParam == null)
+                    ? vehicleService.findByHealthcenter(user.getHealthCenter())
+                    : vehicleService.findVehicleByHealthCenterAndName(
+                            user.getHealthCenter(), nameQueryParam);
+
         }
 
+
+        model.addAttribute("name", nameQueryParam);
+        model.addAttribute("vehicles", vehicles);
+        model.addAttribute("queryIsEmpty", vehicles.size() == 0 ? true : false);
+        model.addAttribute("isSearch", nameQueryParam == null ? false : true);
 
         return "vehicle/list";
     }

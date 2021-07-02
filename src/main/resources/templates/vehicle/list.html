@@ -15,101 +15,151 @@
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
+        <div class="card-header">
 
+            <div class="row">
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por veículo ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search"
+                                  th:action="@{/vehicles}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small" aria-label="Search"
+                                           placeholder="Buscar por nome ..."
+                                           aria-describedby="basic-addon2" th:name="name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
 
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="name"
+                                           placeholder="Buscar por nome ..."
+                                           th:value="${name}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button"
+                                           th:href="@{/vehicles}"
+                                           title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de veículos encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(vehicles)}"></span>
-                    </caption>
-                    <thead>
-                    <tr class="text-truncate">
-                        <th class='text-center text-dark' scope="col">Nome</th>
-                        <th class='text-center text-dark' scope="col">Capacidade</th>
-                        <th class='text-center text-dark' scope="col">Centro de Saúde</th>
-                        <th class='text-center text-dark' scope="col">Placa</th>
-                        <th class='text-center text-dark' scope="col">Ativo</th>
-                        <th class='text-center text-dark' scope="col">Disponível</th>
-                        <th class='text-center text-dark' scope="col">Ações</th>
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
-                            <th class='text-center text-dark' scope="col">Data da Operação</th>
-                        </th:block>
+        <div class="card-body p-0" th:switch="${queryIsEmpty}">
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                        <h4>Não encontramos nenhum veículo com o nome <b class="text-danger"
+                                                                                            th:text='|"${name}"|'></b>.
+                        </h4>
+                    </div>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="vehicle : ${vehicles}" class="text-truncate">
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-user"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há veículos cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/vehicles/create}">CADASTRAR</a>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <caption class="ml-4">
+                            <i class="fas fa-caret-right"></i> Qnt. de veículos encontrados:
+                            <span class="font-weight-bold" th:text="${#lists.size(vehicles)}"></span>
+                        </caption>
+                        <thead>
+                        <tr class="text-truncate">
+                            <th class='text-center text-dark' scope="col">Nome</th>
+                            <th class='text-center text-dark' scope="col">Capacidade</th>
+                            <th class='text-center text-dark' scope="col">Centro de Saúde</th>
+                            <th class='text-center text-dark' scope="col">Placa</th>
+                            <th class='text-center text-dark' scope="col">Ativo</th>
+                            <th class='text-center text-dark' scope="col">Disponível</th>
+                            <th class='text-center text-dark' scope="col">Ações</th>
 
-                        <td class="text-center align-middle" th:text="*{vehicle.name}"></td>
-                        <td class="text-center align-middle" th:text="*{vehicle.capacity}"></td>
-                        <td class="text-center align-middle" th:text="*{vehicle.healthCenter.address.formatedAddress}"></td>
-                        <td class="text-center align-middle" th:text="*{vehicle.plaque}"></td>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
 
-                        <td class="text-center align-middle">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox"
-                                       class="custom-control-input"
-                                       th:id="|switch_vehicles/${vehicle.id}/change-status/|"
-                                       th:checked="*{vehicle.active}"
-                                       th:disabled="${!vehicle.available}">
-                                <label class="custom-control-label"
-                                       th:for="|switch_vehicles/${vehicle.id}/change-status/|"></label>
-                            </div>
-                        </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="vehicle : ${vehicles}" class="text-truncate">
 
-                        <td class="text-center align-middle" th:switch="*{vehicle.available}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                            <td class="text-center align-middle" th:text="*{vehicle.name}"></td>
+                            <td class="text-center align-middle" th:text="*{vehicle.capacity}"></td>
+                            <td class="text-center align-middle" th:text="*{vehicle.healthCenter.address.formatedAddress}"></td>
+                            <td class="text-center align-middle" th:text="*{vehicle.plaque}"></td>
 
-                        <td class="text-center align-middle nowrap">
-                            <a class="btn btn-primary btn-sm" title="Editar" th:classappend="${!vehicle.available} ? 'disabled'"
-                               th:href="@{/vehicles/update/{plaque} (plaque=${vehicle.plaque}) }">
-                                <i class="fas fa-pen text-light"></i>
-                            </a>
+                            <td class="text-center align-middle">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           th:id="|switch_vehicles/${vehicle.id}/change-status/|"
+                                           th:checked="*{vehicle.active}"
+                                           th:disabled="${!vehicle.available}">
+                                    <label class="custom-control-label"
+                                           th:for="|switch_vehicles/${vehicle.id}/change-status/|"></label>
+                                </div>
+                            </td>
 
-                            <button th:id="${#strings.concat('btn_vehicles/delete/', vehicle.id)}"
-                                    th:disabled="${vehicle.available} ? false : true"
-                                    type="button" title="Remover"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
-                        </td>
+                            <td class="text-center align-middle" th:switch="*{vehicle.available}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <td class="text-center align-middle" th:text="*{vehicle.lastModifiedBy}"></td>
-                            <td class="text-center align-middle"
-                                th:text="*{#dates.format(vehicle.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
-                        </th:block>
+                            <td class="text-center align-middle nowrap">
+                                <a class="btn btn-primary btn-sm" title="Editar" th:classappend="${!vehicle.available} ? 'disabled'"
+                                   th:href="@{/vehicles/update/{plaque} (plaque=${vehicle.plaque}) }">
+                                    <i class="fas fa-pen text-light"></i>
+                                </a>
 
-                    </tr>
+                                <button th:id="${#strings.concat('btn_vehicles/delete/', vehicle.id)}"
+                                        th:disabled="${vehicle.available} ? false : true"
+                                        type="button" title="Remover"
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </td>
 
-                    </tbody>
-                </table>
-            </div>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{vehicle.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(vehicle.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
+
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>

@@ -22,4 +22,7 @@ public interface VehicleDao extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> findVehicleByHealthCenter(HealthCenter healthCenter);
     Vehicle findVehicleByPlaque(String plaque);
+
+    List<Vehicle> findVehicleByNameContainsIgnoreCase(String name);
+    List<Vehicle> findVehicleByHealthCenterAndNameContainsIgnoreCase(HealthCenter healthCenter, String name);
 }

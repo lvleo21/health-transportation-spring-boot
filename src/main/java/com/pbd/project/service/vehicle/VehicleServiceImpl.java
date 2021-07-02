@@ -51,6 +51,18 @@ public class VehicleServiceImpl implements VehicleService{
 
     @Override
     @Transactional(readOnly = true)
+    public List<Vehicle> findVehicleByName(String name) {
+        return vehicleDao.findVehicleByNameContainsIgnoreCase(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Vehicle> findVehicleByHealthCenterAndName(HealthCenter healthCenter, String name) {
+        return vehicleDao.findVehicleByHealthCenterAndNameContainsIgnoreCase(healthCenter, name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Vehicle> findByHealthcenter(HealthCenter healthCenter) {
         return vehicleDao.findVehicleByHealthCenter(healthCenter);
     }
