@@ -37,9 +37,9 @@ public class VehicleController {
     @Autowired
     private VehicleValidator vehicleValidator;
 
-    @InitBinder()
+    @InitBinder("vehicle")
     public void initialBinder(WebDataBinder binder) {
-        binder.setValidator(this.vehicleValidator);
+        binder.addValidators(this.vehicleValidator);
     }
 
     @GetMapping("")

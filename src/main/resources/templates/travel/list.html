@@ -71,8 +71,8 @@
                     <div class="text-center" th:case="${true}">
                         <i class="fas fa-search" style="font-size: 5rem"></i>
                         <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
-                        <h4>Não encontramos nenhuma viagem com a data de saída  <b class="text-danger"
-                                                                              th:text="${#temporals.format(date, 'dd/MM/yyyy')}"></b>.
+                        <h4>Não encontramos nenhuma viagem com a data de saída <b class="text-danger"
+                                                                                  th:text="${#temporals.format(date, 'dd/MM/yyyy')}"></b>.
                         </h4>
                     </div>
 
@@ -191,6 +191,7 @@
 
                         </tbody>
                     </table>
+                </div>
             </th:block>
 
 

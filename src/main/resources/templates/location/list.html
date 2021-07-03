@@ -7,23 +7,24 @@
 <body>
 
 <div class="container-fluid" layout:fragment="content">
-
-    <div class="d-sm-flex align-items-center mb-4">
-        <div class="col-md col-sm-12">
+<!--    d-sm-flex align-items-center mb-4-->
+    <div class="row mb-3">
+        <div class="col-md col-sm-12 d-flex justify-content-start">
             <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Viagem</h1>
         </div>
 
 
-        <div class="col-md-1 col-sm-12">
+        <div class="col-md-1 col-sm-12  d-flex justify-content-end">
             <div class="dropdown no-arrow">
                 <button class="btn btn-primary dropdown-toggle" type="button" title="Menu"
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false"
                         aria-expanded="false">
-                    <i class="fas fa-bars text-light"></i>
+                    <i class="fas fa-cog text-light"></i>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-left mt-2 mr-3" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" th:href="@{/travels/{id}/locations/create (id=${travel.id})}">
+                    <a class="dropdown-item" th:href="@{/travels/{id}/locations/create (id=${travel.id})}"
+                    th:classappend="${travel.itsFull()} ? 'disabled'">
                         <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-danger-400"></i>
                         Adicionar Passageiro
                     </a>
@@ -33,6 +34,13 @@
                         <i class="fas fas fa-file-pdf fa-sm fa-fw mr-2 text-danger-400"></i>
                         Exportar (PDF)
                     </a>
+
+                    <a class="dropdown-item"
+                       th:href="@{/travels/update/{id} (id=${travel.id})}">
+                        <i class="fas fas fa-edit fa-sm fa-fw mr-2 text-danger-400"></i>
+                        Editar viagem
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -192,8 +200,7 @@
                     </div>
 
                     <div class="text-center" th:case="${false}">
-                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
-                        <i class="fas fa-fw fa-user"></i>
+                        <i class="fas fa-user" style="font-size: 5rem"></i>
                         <h3 class="mt-2 font-weight-bold">Não há locações cadastradas.</h3>
                         <a class="btn btn-primary font-weight-bold mt-1"
                            th:href="@{/travels/{id}/locations/create (id=${travel.id})}">CADASTRAR</a>

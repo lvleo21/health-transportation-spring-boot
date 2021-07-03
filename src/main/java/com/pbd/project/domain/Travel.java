@@ -172,4 +172,8 @@ public class Travel extends Auditable<String> {
     public int getQntPassengers() {
         return this.getLocations().size();
     }
+
+    public boolean itsFull(){
+        return (this.getQntPassengers() == this.vehicle.getCapacity()) ? true : false;
+    }
 }

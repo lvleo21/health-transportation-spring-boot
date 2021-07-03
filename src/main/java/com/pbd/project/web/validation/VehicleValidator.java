@@ -17,7 +17,7 @@ public class VehicleValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> c) {
-        return Vehicle.class.equals(c);
+        return Vehicle.class.isAssignableFrom(c);
     }
 
     @Override
