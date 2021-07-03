@@ -17,6 +17,8 @@ public interface TravelService {
     List<Travel> findByHealthCenter(HealthCenter healthCenter);
     List<Travel> findTravelByDriver(Driver driver);
 
+    boolean changeTravelStatus(Long id);
+
     Page<Travel> findAll(int currentPage);
     Page<Travel> findTravelByHealthCenter(int currentPage, HealthCenter healthCenter);
     Page<Travel> findTravelByDepartureDate(int currentPage, LocalDate departureDate);

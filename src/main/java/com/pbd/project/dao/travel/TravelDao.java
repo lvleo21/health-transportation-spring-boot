@@ -31,6 +31,4 @@ public interface TravelDao extends JpaRepository<Travel, Long> {
                                                           HealthCenter healthCenter,
                                                           LocalDate localDate);
 
-
-
 }

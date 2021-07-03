@@ -92,6 +92,25 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    public boolean changeTravelStatus(Long id) {
+        Travel travel = this.findById(id);
+
+        switch (travel.getStatus()){
+            case AGUARDANDO:
+                travel.setStatus(TravelStatus.EM_TRANSITO);
+                break;
+            case EM_TRANSITO:
+                travel.setStatus(TravelStatus.CONCLUIDO);
+                break;
+            case CONCLUIDO:
+                return false;
+        }
+
+        this.travelDao.save(travel);
+        return true;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<Travel> findAll(int currentPage) {
         return travelDao.findAll(this.getPageable(currentPage));

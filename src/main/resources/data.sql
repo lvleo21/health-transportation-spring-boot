@@ -6,7 +6,7 @@ INSERT into roles (role)
 SELECT 'ADMIN' WHERE 'ADMIN' NOT IN (SELECT role FROM roles);
 
 
---
+-- PROCEDURES
 CREATE OR REPLACE FUNCTION insert_log()
 RETURNS trigger AS
 'BEGIN IF (TG_OP = ''DELETE'') THEN
@@ -21,6 +21,28 @@ END IF;
 RETURN NULL;
 END;'
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION set_passenger_in_travel()
+RETURNS trigger AS
+'BEGIN
+
+	IF (TG_OP = ''DELETE'') THEN
+		UPDATE passengers
+		SET in_travel = ( CASE WHEN in_travel = true then false else true END)
+		WHERE id = OLD.passenger_id;
+		RETURN NEW;
+	ELSIF (TG_OP = ''INSERT'') THEN
+		UPDATE passengers
+		SET in_travel = ( CASE WHEN in_travel = true then false else true END)
+		WHERE id = NEW.passenger_id;
+		RETURN NEW;
+	END IF;
+	RETURN NEW;
+
+END;'
+LANGUAGE plpgsql;
+
+
 ---
 
 -- DROP TRIGGERS
@@ -34,6 +56,7 @@ DROP TRIGGER IF EXISTS trigger_create_log_order_reset_password ON order_reset_pa
 DROP TRIGGER IF EXISTS trigger_create_log_location ON locations;
 DROP TRIGGER IF EXISTS trigger_create_log_health_center ON health_centers;
 DROP TRIGGER IF EXISTS trigger_create_log_address ON adresses;
+DROP TRIGGER IF EXISTS trigger_set_passenger_in_travel ON locations;
 -- END DROP TRIGGERS
 
 -- TRIGGERS
@@ -116,4 +139,10 @@ DELETE
 ON adresses
     FOR EACH ROW
     EXECUTE PROCEDURE insert_log();
+
+CREATE TRIGGER trigger_set_passenger_in_travel
+    AFTER INSERT OR DELETE
+ON locations
+    FOR EACH ROW
+    EXECUTE PROCEDURE set_passenger_in_travel();
 -- END TRIGGERS

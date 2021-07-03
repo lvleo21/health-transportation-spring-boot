@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{base}">
+<html layout:decorate="~{base}" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <title layout:fragment="title">Locações - Health Transportation</title>
@@ -41,6 +41,16 @@
                         Editar viagem
                     </a>
 
+                    <th:block th:if = "${permissionForChangeTravelStatus}">
+                        <button th:id="${#strings.concat('btn_travels/', travel.id,'/locations/change-status')}"
+                                type="button" title="Mudar o status da viagem"
+                                class="dropdown-item"
+                                th:classappend="${travel.getQntPassengers == 0 ?  'disabled' : '' }"
+                                data-toggle="modal" data-target="#myModal">
+                            <i class="fas fas fa-edit fa-sm fa-fw mr-2 text-danger-400"></i>
+                            Trocar para <span class="text-uppercase font-weight-bold" th:text="${nextStatus}"></span>
+                        </button>
+                    </th:block>
                 </div>
             </div>
         </div>

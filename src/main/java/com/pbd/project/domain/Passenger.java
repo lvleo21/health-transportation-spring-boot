@@ -60,6 +60,8 @@ public class Passenger extends Auditable<String> {
     private List<Location> locações;
 
 
+
+
     @Column(name="is_active")
     private Boolean active = true;
 

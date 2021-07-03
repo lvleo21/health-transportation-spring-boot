@@ -1,34 +1,26 @@
 package com.pbd.project.web.controller.location;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
 import com.pbd.project.domain.Location;
 import com.pbd.project.domain.Passenger;
 import com.pbd.project.domain.Travel;
 import com.pbd.project.domain.enums.PassengerCategory;
 import com.pbd.project.domain.enums.PassengerTransition;
+import com.pbd.project.domain.enums.TravelStatus;
 import com.pbd.project.service.location.LocationService;
 import com.pbd.project.service.passenger.PassengerService;
 import com.pbd.project.service.travel.TravelService;
+
+import java.util.ArrayList;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-
-import javax.servlet.ServletContext;
+import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,11 +37,9 @@ public class LocationController {
     @Autowired
     private PassengerService passengerService;
 
-    @Autowired
-    private ServletContext servletContext;
 
     @Autowired
-    private TemplateEngine templateEngine;
+    private HttpServletRequest request;
 
 
     @GetMapping("/locations")
@@ -65,8 +55,6 @@ public class LocationController {
                 ? travel.getLocations()
                 : locationService.findLocationByPassengerName(idTravel, nameQueryParam);
 
-        System.out.println(nameQueryParam);
-        System.out.println(locations);
 
         model.addAttribute("queryIsEmpty", locations.size() == 0 ? true : false);
         model.addAttribute("isSearch", nameQueryParam == null ? false : true);
@@ -74,7 +62,35 @@ public class LocationController {
         model.addAttribute("travel", travel);
         model.addAttribute("locations", locations);
 
+        boolean permissionForChangeTravelStatus = false;
+        String nextStatus = "";
+
+        switch (travel.getStatus()){
+            case AGUARDANDO:
+                permissionForChangeTravelStatus = true;
+                nextStatus = "EM TRÂNSITO";
+                break;
+            case EM_TRANSITO:
+                permissionForChangeTravelStatus = true;
+                nextStatus = "CONCLUÍDO";
+                break;
+        }
+
+        model.addAttribute("permissionForChangeTravelStatus", permissionForChangeTravelStatus);
+        model.addAttribute("nextStatus", nextStatus);
+
         return "location/list";
+    }
+
+    @GetMapping("/locations/change-status")
+    public String changeTravelStatus(@PathVariable("idTravel") Long idTravel, RedirectAttributes attr){
+        if (this.travelService.changeTravelStatus(idTravel)){
+            attr.addFlashAttribute("success", "Status da viagem alterado com sucesso.");
+        } else{
+            attr.addFlashAttribute("error", "Ocorreu um erro ao tentar alterar o status da viagem, tente novamente.");
+        }
+
+        return "redirect:/travels/" + idTravel + "/locations";
     }
 
     @GetMapping("/locations/export")
@@ -172,7 +188,24 @@ public class LocationController {
 
     @ModelAttribute("passengers")
     public List<Passenger> passengers() {
-        return passengerService.getModelAttribute();
+        Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        String path = request.getRequestURI();
+
+        Long id = null;
+        if (pathVariables.get("idLocation") != null){
+            id = Long.parseLong((String) pathVariables.get("idLocation"));
+        }
+
+
+
+        if (path.contains("/locations/" + id +"/update")) {
+            List<Passenger> passengers = new ArrayList<>();
+            passengers.add(locationService.findById(id).getPassenger());
+            return passengers;
+        } else {
+            return passengerService.getModelAttribute();
+        }
     }
+
 
 }

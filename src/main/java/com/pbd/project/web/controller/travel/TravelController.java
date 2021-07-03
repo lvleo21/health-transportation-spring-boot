@@ -91,6 +91,7 @@ public class TravelController {
         model.addAttribute("dateToday", LocalDate.now());
         model.addAttribute("date", selectedDate);
 
+
         return "travel/list";
     }
 

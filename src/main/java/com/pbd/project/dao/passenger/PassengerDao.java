@@ -30,4 +30,9 @@ public interface PassengerDao extends JpaRepository<Passenger, Long> {
                                                                                   HealthCenter healthCenter,
                                                                                   boolean isActive,
                                                                                   String name);
+
+
+    List<Passenger> findPassengerByInTravel(boolean inTravel);
+    List<Passenger> findPassengerByInTravelAndHealthCenter(boolean inTravel, HealthCenter healthCenter);
+
 }
