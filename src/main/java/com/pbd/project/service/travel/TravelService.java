@@ -3,7 +3,9 @@ package com.pbd.project.service.travel;
 import com.pbd.project.domain.Driver;
 import com.pbd.project.domain.HealthCenter;
 import com.pbd.project.domain.Travel;
+import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TravelService {
@@ -14,4 +16,12 @@ public interface TravelService {
     List<Travel> findAll();
     List<Travel> findByHealthCenter(HealthCenter healthCenter);
     List<Travel> findTravelByDriver(Driver driver);
+
+    Page<Travel> findAll(int currentPage);
+    Page<Travel> findTravelByHealthCenter(int currentPage, HealthCenter healthCenter);
+    Page<Travel> findTravelByDepartureDate(int currentPage, LocalDate departureDate);
+    Page<Travel> findTravelByHealthCenterAndDepartureDate(int currentPage,
+                                                          HealthCenter healthCenter,
+                                                          LocalDate departureDate);
 }
+

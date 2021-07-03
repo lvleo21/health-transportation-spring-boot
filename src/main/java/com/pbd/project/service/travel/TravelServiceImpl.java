@@ -8,6 +8,10 @@ import com.pbd.project.domain.enums.TravelStatus;
 import com.pbd.project.service.driver.DriverService;
 import com.pbd.project.service.vehicle.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,9 +91,43 @@ public class TravelServiceImpl implements TravelService {
         return travelDao.findTravelByDriver(driver);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Travel> findAll(int currentPage) {
+        return travelDao.findAll(this.getPageable(currentPage));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Travel> findTravelByHealthCenter(int currentPage, HealthCenter healthCenter) {
+        return travelDao.findTravelByHealthCenter(this.getPageable(currentPage), healthCenter);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Travel> findTravelByDepartureDate(int currentPage, LocalDate departureDate) {
+        return travelDao.findTravelByDepartureDate(this.getPageable(currentPage), departureDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Travel> findTravelByHealthCenterAndDepartureDate(int currentPage, HealthCenter healthCenter, LocalDate departureDate) {
+        return travelDao.findTravelByHealthCenterAndDepartureDate(
+                this.getPageable(currentPage),
+                healthCenter,
+                departureDate
+        );
+    }
+
 
     public void changeDriverAndVehicleStatus(Travel travel){
         driverService.changeAvailable(travel.getDriver());
         vehicleService.changeAvailable(travel.getVehicle());
     }
+
+
+    public Pageable getPageable(int currentPage){
+        return PageRequest.of(currentPage, 15, Sort.by("departureDate").descending());
+    }
+
 }

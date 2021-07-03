@@ -66,35 +66,30 @@ public class TravelController {
 
 
         int currentPage = page.orElse(0);
-        String tempSelectedDate = date.orElse(null);
-        LocalDate selectedDate = tempSelectedDate != null
-                ? LocalDate.parse(tempSelectedDate, DateTimeFormatter.ISO_DATE)
-                : null;
+        String tempSelectedDate = date.orElse("");
+        LocalDate selectedDate = tempSelectedDate == "" ? null : LocalDate.parse(tempSelectedDate, DateTimeFormatter.ISO_DATE);
+
 
         User user = userService.getUserAuthenticated();
-        Page<User> travels = null;
+        Page<Travel> travels = null;
 
-        if (selectedDate == null) {
+        if (selectedDate != null) {
+            travels = (user.getStaff())
+                    ? this.travelService.findTravelByDepartureDate(currentPage, selectedDate)
+                    : this.travelService.findTravelByHealthCenterAndDepartureDate(currentPage, user.getHealthCenter(),selectedDate);
 
         } else {
-
+            travels = (user.getStaff())
+                    ? this.travelService.findAll(currentPage)
+                    : this.travelService.findTravelByHealthCenter(currentPage, user.getHealthCenter());
         }
 
 
-
-
-//        if (user.getStaff()) {
-//            model.addAttribute("travels", travelService.findAll());
-//        } else {
-//            model.addAttribute("travels", travelService.findByHealthCenter(user.getHealthCenter()));
-//        }
-
-
-        model.addAttribute("users", travels);
+        model.addAttribute("travels", travels);
         model.addAttribute("isSearch", selectedDate == null ? false : true);
         model.addAttribute("queryIsEmpty", travels.getTotalElements() == 0 ? true : false);
         model.addAttribute("dateToday", LocalDate.now());
-        model.addAttribute("dateSelected", selectedDate);
+        model.addAttribute("date", selectedDate);
 
         return "travel/list";
     }
