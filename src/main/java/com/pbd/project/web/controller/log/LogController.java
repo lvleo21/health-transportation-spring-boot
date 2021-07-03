@@ -39,7 +39,6 @@ public class LogController {
         }
 
         model.addAttribute("logs", logs);
-        //model.addAttribute("passengerName", passengerName);
         model.addAttribute("isSearch", selectedDate == null ? false : true);
         model.addAttribute("queryIsEmpty", logs.getTotalElements() == 0 ? true : false);
         model.addAttribute("dateToday", LocalDate.now());

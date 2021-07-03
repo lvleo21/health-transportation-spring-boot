@@ -15,97 +15,186 @@
     <div th:replace="fragments/alert"></div>
 
     <div class="card shadow rounded mt-3">
-        <div class="card-header d-flex align-items-center d-flex justify-content-end">
 
+        <div class="card-header">
+            <div class="row">
+                <div class="ml-3 d-flex align-items-center">
+                    <i class="fas fa-caret-right mr-1"></i> Qnt. de usuários encontrados:
+                    <span class="font-weight-bold ml-1"
+                          th:text="${queryIsEmpty} ? '0' : ${users.getTotalElements()} "></span>
+                </div>
 
-            <div>
-                <!-- Topbar Search -->
-                <form class="form-inline navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-1 small"
-                               placeholder="Buscar por matrícula ..." aria-label="Search"
-                               aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                <div class="col-md col-sm-12 d-flex justify-content-end">
+                    <th:block th:switch="${isSearch}">
 
+                        <th:block th:case="${false}">
+                            <!-- Topbar Search -->
+                            <form class="form-inline navbar-search" th:action="@{/users}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-1 small" aria-label="Search"
+                                           id="enrollment" placeholder="Buscar por matrícula ..."
+                                           aria-describedby="basic-addon2" th:name="enrollment">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+
+                        <th:block th:case="${true}">
+                            <div class="form-inline navbar-search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control border-1 small"
+                                           aria-label="Search"
+                                           aria-describedby="basic-addon2" th:name="enrollment"
+                                           th:value="${enrollment}"
+                                           disabled>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-danger" type="button" th:href="@{/users}" title="Voltar">
+                                            <i class="fas fa-times fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <caption class="ml-4">
-                        <i class="fas fa-caret-right"></i> Qnt. de usuários encontrados:
-                        <span class="font-weight-bold" th:text="${#lists.size(users)}"></span>
-                    </caption>
-                    <thead>
-                    <tr class="text-truncate">
-                        <th class='text-center align-middle text-dark' scope="col">Username</th>
-                        <th class='text-center align-middle text-dark' scope="col">Email</th>
-                        <th class='text-center align-middle text-dark' scope="col">Centro de saúde</th>
-                        <th class='text-center align-middle text-dark' scope="col">Criado em</th>
-                        <th class='text-center align-middle text-dark' scope="col">Função</th>
-                        <th class='text-center align-middle text-dark' scope="col">Matrícula</th>
-                        <th class='text-center align-middle text-dark' scope="col">Ativo</th>
-                        <th class='text-center align-middle text-dark' scope="col">Editar</th>
-                        <th class='text-center align-middle text-dark' scope="col" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">Remover</th>
 
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
-                            <th class='text-center text-dark' scope="col">Data da Operação</th>
-                        </th:block>
+        <div class="card-body p-0" th:switch="${queryIsEmpty}">
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user : ${users}" class="text-truncate">
+            <th:block th:case="${true}">
+                <div class="w-100 h-100 p-5 d-flex justify-content-center d-flex align-items-center"
+                     th:switch="${isSearch}">
+                    <div class="text-center" th:case="${true}">
+                        <i class="fas fa-search" style="font-size: 5rem"></i>
+                        <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
+                        <h4>Não encontramos nenhum usuário com a matrícula <b class="text-danger"
+                                                                              th:text="${enrollment}"></b>.
+                        </h4>
+                    </div>
 
-                        <td class="text-center align-middle" th:text="*{user.username}"></td>
-                        <td class="text-center align-middle" th:text="*{user.email}"></td>
-                        <td class="text-center align-middle" th:text="*{user.healthCenter.address.formatedAddress}"></td>
-                        <td class="text-center align-middle" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
+                    <div class="text-center" th:case="${false}">
+                        <i class="fas fa-hospital" style="font-size: 5rem"></i>
+                        <i class="fas fa-fw fa-user"></i>
+                        <h3 class="mt-2 font-weight-bold">Não há usuários cadastrados.</h3>
+                        <a class="btn btn-primary font-weight-bold mt-1"
+                           th:href="@{/users/create}">CADASTRAR</a>
+                    </div>
+                </div>
+            </th:block>
 
-                        <td class="text-center align-middle" th:utext="*{user.showRoles}"></td>
-                        <td class="text-center align-middle" th:utext="*{user.enrollment}"></td>
+            <th:block th:case="${false}">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <caption>
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${!users.hasPrevious()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${enrollment == null } ? @{/users(page=${users.getNumber - 1})} : @{/users(page=${users.getNumber - 1}, enrollment=${enrollment})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                            <span aria-hidden="true"><i class="fas fa-chevron-left"></i></i></span>
+                                        </a>
+                                    </li>
 
-                        <td class="text-center align-middle" th:switch="*{user.active}">
-                            <i class="fas fa-check text-success" th:case="true"></i>
-                            <i class="fas fa-times text-danger" th:case="false"></i>
-                        </td>
+                                    <!-- For de páginas -->
+                                    <th:block th:each="i: ${#numbers.sequence(0, users.getTotalPages - 1)}">
+                                        <li class="page-item" th:classappend="${users.getNumber == i} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="${enrollment == null } ? @{/users(page=${i})} : @{/users(page=${i}, enrollment=${enrollment})}"
+                                               th:text="${i}"></a>
+                                        </li>
+                                    </th:block>
+                                    <!-- EndFor de páginas -->
 
+                                    <li class="page-item" th:classappend="${!users.hasNext()} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="${enrollment == null } ? @{/users(page=${users.getNumber + 1})} : @{/users(page=${users.getNumber + 1}, enrollment=${enrollment})}"
+                                           tabindex="-1"
+                                           aria-disabled="true">
+                                <span aria-hidden="true" class="font-weight-bold"><i
+                                        class="fas fa-chevron-right"></i></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </caption>
+                        <thead>
+                        <tr class="text-truncate">
+                            <th class='text-center align-middle text-dark' scope="col">Username</th>
+                            <th class='text-center align-middle text-dark' scope="col">Email</th>
+                            <th class='text-center align-middle text-dark' scope="col">Centro de saúde</th>
+                            <th class='text-center align-middle text-dark' scope="col">Criado em</th>
+                            <th class='text-center align-middle text-dark' scope="col">Função</th>
+                            <th class='text-center align-middle text-dark' scope="col">Matrícula</th>
+                            <th class='text-center align-middle text-dark' scope="col">Ativo</th>
+                            <th class='text-center align-middle text-dark' scope="col">Editar</th>
+                            <th class='text-center align-middle text-dark' scope="col"
+                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">Remover
+                            </th>
 
-                        <td class="text-center align-middle">
-                            <a class="btn btn-primary btn-sm"
-                               th:href="@{/users/update/{username} (username=${user.username}) }">
-                                <i class="fas fa-pen text-light"></i>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
+                                <th class='text-center text-dark' scope="col">Data da Operação</th>
+                            </th:block>
 
-                            </a>
-                        </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}" class="text-truncate">
 
-                        <td  class="text-center align-middle" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <button th:id="${#strings.concat('btn_users/delete/', user.id)}"
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-trash text-light"></i>
-                            </button>
-                        </td>
-
-                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                            <td class="text-center align-middle" th:text="*{user.lastModifiedBy}"></td>
+                            <td class="text-center align-middle" th:text="*{user.username}"></td>
+                            <td class="text-center align-middle" th:text="*{user.email}"></td>
                             <td class="text-center align-middle"
-                                th:text="*{#dates.format(user.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
-                        </th:block>
+                                th:text="*{user.healthCenter.address.formatedAddress}"></td>
+                            <td class="text-center align-middle"
+                                th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
 
-                    </tr>
+                            <td class="text-center align-middle" th:utext="*{user.showRoles}"></td>
+                            <td class="text-center align-middle" th:utext="*{user.enrollment}"></td>
 
-                    </tbody>
-                </table>
-            </div>
+                            <td class="text-center align-middle" th:switch="*{user.active}">
+                                <i class="fas fa-check text-success" th:case="true"></i>
+                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            </td>
+
+
+                            <td class="text-center align-middle">
+                                <a class="btn btn-primary btn-sm"
+                                   th:href="@{/users/update/{username} (username=${user.username}) }">
+                                    <i class="fas fa-pen text-light"></i>
+
+                                </a>
+                            </td>
+
+                            <td class="text-center align-middle"
+                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <button th:id="${#strings.concat('btn_users/delete/', user.id)}"
+                                        type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal" data-target="#myModal">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
+                            </td>
+
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <td class="text-center align-middle" th:text="*{user.lastModifiedBy}"></td>
+                                <td class="text-center align-middle"
+                                    th:text="*{#dates.format(user.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            </th:block>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
+
         </div>
     </div>
     <div th:replace="fragments/modal :: modal"></div>

@@ -7,6 +7,10 @@ import com.pbd.project.domain.OrderResetPassword;
 import com.pbd.project.dto.ChangePassword;
 import com.pbd.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -114,6 +118,41 @@ public class UserServiceImpl implements UserService {
         return newPassword;
     }
 
+    @Override
+    public Page<User> getAll(int currentPage) {
+        Pageable pageable = this.getPageable(currentPage);
+        Long userId = this.getUserAuthenticated().getId();
+
+        return userDao.findAllUsers(pageable, userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> getAllByEnrollment(int currentPage, String enrollment) {
+        Pageable pageable = this.getPageable(currentPage);
+        Long userId = this.getUserAuthenticated().getId();
+
+        return userDao.findAllUsersByEnrollment(pageable, userId, enrollment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> getAllByHealthCenter(int currentPage, HealthCenter healthCenter) {
+        Pageable pageable = this.getPageable(currentPage);
+        Long userId = this.getUserAuthenticated().getId();
+
+        return userDao.findUsersByHealthCenter(pageable, healthCenter.getId(), userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> getAllByHealthCenterAndEnrollment(int currentPage, HealthCenter healthCenter, String enrollment) {
+        Pageable pageable = this.getPageable(currentPage);
+        Long userId = this.getUserAuthenticated().getId();
+
+        return userDao.findUsersByHealthCenterAndEnrollment(pageable, healthCenter.getId(), userId, enrollment);
+    }
+
     public String generatePassword() {
         int len = 11;
         char[] chart = {
@@ -151,5 +190,7 @@ public class UserServiceImpl implements UserService {
         return bCryptPasswordEncoder.encode(password);
     }
 
-
+    public Pageable getPageable(int currentPage){
+        return PageRequest.of(currentPage, 15, Sort.by("username").ascending());
+    }
 }

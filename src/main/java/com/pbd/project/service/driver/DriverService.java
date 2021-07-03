@@ -23,8 +23,5 @@ public interface DriverService {
     Page<Driver> getDriversByHealthCenter(int currentPage, HealthCenter healthCenter);
     Page<Driver> findDriversByNameAndHealthCenter(int currentPage, HealthCenter healthCenter, String name);
     Page<Driver> findDriversByName(int currentPage, String name);
-
-
     Page<Driver> getDrivers(int currentPage, String name, boolean isStaff, HealthCenter healthCenter);
-
 }

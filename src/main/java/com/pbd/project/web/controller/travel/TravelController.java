@@ -13,6 +13,7 @@ import com.pbd.project.service.travel.TravelService;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.service.vehicle.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,9 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/travels")
@@ -55,15 +59,42 @@ public class TravelController {
     private HttpServletRequest request;
 
     @GetMapping("")
-    public String travelsListView(ModelMap model) {
+    public String travelsListView(ModelMap model,
+                                  @RequestParam("page") Optional<Integer> page,
+                                  @RequestParam("date") Optional<String> date) {
+
+
+
+        int currentPage = page.orElse(0);
+        String tempSelectedDate = date.orElse(null);
+        LocalDate selectedDate = tempSelectedDate != null
+                ? LocalDate.parse(tempSelectedDate, DateTimeFormatter.ISO_DATE)
+                : null;
 
         User user = userService.getUserAuthenticated();
+        Page<User> travels = null;
 
-        if (user.getStaff()) {
-            model.addAttribute("travels", travelService.findAll());
+        if (selectedDate == null) {
+
         } else {
-            model.addAttribute("travels", travelService.findByHealthCenter(user.getHealthCenter()));
+
         }
+
+
+
+
+//        if (user.getStaff()) {
+//            model.addAttribute("travels", travelService.findAll());
+//        } else {
+//            model.addAttribute("travels", travelService.findByHealthCenter(user.getHealthCenter()));
+//        }
+
+
+        model.addAttribute("users", travels);
+        model.addAttribute("isSearch", selectedDate == null ? false : true);
+        model.addAttribute("queryIsEmpty", travels.getTotalElements() == 0 ? true : false);
+        model.addAttribute("dateToday", LocalDate.now());
+        model.addAttribute("dateSelected", selectedDate);
 
         return "travel/list";
     }

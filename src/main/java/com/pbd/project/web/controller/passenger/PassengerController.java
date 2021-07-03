@@ -37,8 +37,8 @@ public class PassengerController {
     @Autowired
     private HealthCenterService healthCenterService;
 
-//    @Autowired
-//    private PassengerValidator passengerValidator;
+    @Autowired
+    private PassengerValidator passengerValidator;
 
     @Autowired
     private RoleService roleService;
@@ -47,11 +47,10 @@ public class PassengerController {
     private LocationService locationService;
 
 
-
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        binder.addValidators(this.passengerValidator);
-//    }
+    @InitBinder("passenger")
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(this.passengerValidator);
+    }
 
     @GetMapping("")
     public String passengersListView(ModelMap model,
@@ -63,6 +62,7 @@ public class PassengerController {
         String passengerName = name.orElse(null);
 
         Page<Passenger> passengers = null;
+
 
         if (user.getStaff()){
             passengers = passengerName == null ?

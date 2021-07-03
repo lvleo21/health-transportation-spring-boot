@@ -19,15 +19,9 @@ public class PassengerValidator implements Validator {
     private HttpServletRequest request;
 
 
-    public PassengerValidator(PassengerService passengerService, HttpServletRequest request) {
-        this.passengerService = passengerService;
-        this.request = request;
-    }
-
     @Override
     public boolean supports(Class<?> c) {
-        System.out.println("C -> " + c);
-        return Passenger.class.equals(c);
+        return Passenger.class.isAssignableFrom(c);
     }
 
     @Override

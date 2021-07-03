@@ -1,6 +1,7 @@
 package com.pbd.project.web.controller.user;
 
 import com.pbd.project.domain.HealthCenter;
+import com.pbd.project.domain.Log;
 import com.pbd.project.domain.Role;
 import com.pbd.project.domain.User;
 import com.pbd.project.service.user.UserService;
@@ -8,6 +9,7 @@ import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
 import com.pbd.project.web.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -39,15 +44,38 @@ public class UserController {
     private UserValidator userValidator;
 
 
-    @InitBinder
-    public void userInitBinder(WebDataBinder binder) {
+
+    @InitBinder("user")
+    public void initialBinder(WebDataBinder binder) {
         binder.addValidators(this.userValidator);
     }
 
-
     @GetMapping("")
-    public String usersListView(ModelMap model) {
-        model.addAttribute("users", userService.findAll());
+    public String usersListView(ModelMap model,
+                                @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("enrollment") Optional<String> enrollment){
+
+        int currentPage = page.orElse(0);
+        String tempEnrollment = enrollment.orElse(null);
+
+        Page<User> users = null;
+        User user = userService.getUserAuthenticated();
+
+        if (tempEnrollment != null) {
+            users = user.getStaff()
+                    ? userService.getAllByEnrollment(currentPage, tempEnrollment)
+                    : userService.getAllByHealthCenterAndEnrollment(currentPage, user.getHealthCenter(), tempEnrollment);
+        } else {
+            users = user.getStaff()
+                    ? userService.getAll(currentPage)
+                    : userService.getAllByHealthCenter(currentPage, user.getHealthCenter());
+        }
+
+        model.addAttribute("users", users);
+        model.addAttribute("isSearch", tempEnrollment == null ? false : true);
+        model.addAttribute("queryIsEmpty", users.getTotalElements() == 0 ? true : false);
+        model.addAttribute("enrollment", tempEnrollment);
+
         return "user/list";
     }
 
