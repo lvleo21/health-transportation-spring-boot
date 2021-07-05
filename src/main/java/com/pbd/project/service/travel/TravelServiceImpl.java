@@ -38,17 +38,14 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void update(Travel travel) {
-
+    public boolean update(Travel travel) {
         Travel travelInDatabase = this.findById(travel.getId());
 
-        if(travel.getStatus().equals(TravelStatus.CONCLUIDO)){
-            this.changeDriverAndVehicleStatus(travel);
-            travel.setReturnDate(LocalDate.now());
-        }
-
-
         if(travelInDatabase.getVehicle().getId() != travel.getVehicle().getId()){
+            if(travelInDatabase.getQntPassengers() > travel.getVehicle().getCapacity() ){
+                return false;
+            }
+
             vehicleService.changeAvailable(travelInDatabase.getVehicle());
             vehicleService.changeAvailable(travel.getVehicle());
         }
@@ -58,8 +55,8 @@ public class TravelServiceImpl implements TravelService {
             driverService.changeAvailable(travel.getDriver());
         }
 
-
         travelDao.save(travel);
+        return true;
     }
 
     @Override
@@ -101,12 +98,16 @@ public class TravelServiceImpl implements TravelService {
                 break;
             case EM_TRANSITO:
                 travel.setStatus(TravelStatus.CONCLUIDO);
+                this.changeDriverAndVehicleStatus(travel);
+                travel.setReturnDate(LocalDate.now());
+
                 break;
             case CONCLUIDO:
                 return false;
         }
 
         this.travelDao.save(travel);
+
         return true;
     }
 
@@ -146,7 +147,7 @@ public class TravelServiceImpl implements TravelService {
 
 
     public Pageable getPageable(int currentPage){
-        return PageRequest.of(currentPage, 15, Sort.by("departureDate").descending());
+        return PageRequest.of(currentPage, 50, Sort.by("departureDate").descending());
     }
 
 }

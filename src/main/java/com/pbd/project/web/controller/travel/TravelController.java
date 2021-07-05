@@ -134,16 +134,29 @@ public class TravelController {
     }
 
     @PostMapping("/update/{id}/save")
-    public String travelUpdateSave(@Valid Travel travel, BindingResult result, RedirectAttributes attr, ModelMap model) {
+    public String travelUpdateSave(@Valid Travel travel, BindingResult result,
+                                   RedirectAttributes attr, ModelMap model,
+                                   @PathVariable("id") Long id) {
 
         if (result.hasErrors()) {
             model.addAttribute("createView", false);
             return "travel/createOrUpdate";
         }
+        if (!travelService.update(travel)) {
 
-        travelService.update(travel);
+            int qntPassageiros = travelService.findById(id).getQntPassengers();
 
-        attr.addFlashAttribute("success", "Viagem atualizada com sucesso.");
+            model.addAttribute("error", "Veículo selecionado não comporta a atual " +
+                    "quantidade de passageiros cadastrados na viagem (Quantidade atual:</b> " + qntPassageiros + ")");
+
+            model.addAttribute("travel", travel);
+            model.addAttribute("createView", false);
+
+            return "travel/createOrUpdate";
+        } else {
+            attr.addFlashAttribute("success", "Viagem atualizada com sucesso.");
+        }
+
         return "redirect:/travels";
     }
 

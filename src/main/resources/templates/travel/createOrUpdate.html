@@ -10,17 +10,18 @@
 
 <div class="container-fluid" layout:fragment="content">
 
+
     <div class="d-sm-flex align-items-center d-flex justify-content-center text-center mb-2">
         <h1 class="h3 mb-0 text-gray-800" th:text="${#strings.concat(action,' Viagem')}"></h1>
     </div>
 
     <hr>
 
+    <div th:replace="fragments/alert"></div>
+
     <div class="d-flex justify-content-center">
         <div class="card shadow rounded mt-4">
             <div class="card-body">
-
-
                 <form class="user" autocomplete="off"
                       th:action="${createView} ?  @{/travels/create/save} : @{/travels/update/{id}/save (id=${travel.id})} "
                       th:object="${travel}" method="post">
@@ -50,20 +51,6 @@
                                        th:field="*{returnDate}"
                                        th:classappend="${#fields.hasErrors('returnDate')} ? 'is-invalid'" disabled>
                                 <small class="text-danger" th:errors="*{returnDate}"></small>
-                            </div>
-                        </div>
-
-                        <div class="col-md col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold">Status<small
-                                        class="text-secondary">(Obrigatório)</small></label>
-                                <select class="custom-select" id="status" th:field="*{status}" th:disabled="${createView} ? true : false">
-                                    <option value="">- - - -</option>
-                                    <option th:each="ts : ${travelStatus}" th:value="${ts}"
-                                            th:text="${ts.description}"></option>
-                                </select>
-                                <small class="text-danger" th:errors="*{status}"></small>
-
                             </div>
                         </div>
                     </div>

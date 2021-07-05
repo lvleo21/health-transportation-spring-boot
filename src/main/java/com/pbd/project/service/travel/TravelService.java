@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TravelService {
     void save(Travel travel);
-    void update(Travel travel);
+    boolean update(Travel travel);
     void delete(Travel travel);
     Travel findById(Long id);
     List<Travel> findAll();

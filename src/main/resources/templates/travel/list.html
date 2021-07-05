@@ -130,7 +130,6 @@
                             <th class='text-center text-dark' scope="col">Veículo</th>
                             <th class='text-center text-dark' scope="col">Locações</th>
                             <th class='text-center text-dark' scope="col">Status</th>
-                            <th class='text-center text-dark' scope="col">Ativo</th>
                             <th class='text-center text-dark' scope="col">Ações</th>
 
                             <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
@@ -153,15 +152,10 @@
                             <td class="text-center align-middle"
                                 th:text="${#strings.concat(travel.getQntPassengers, '/', travel.vehicle.capacity)}"></td>
                             <td class="text-center align-middle" th:text="*{travel.status.description}">
-                            <td class="text-center align-middle" th:switch="*{travel.active}">
-                                <i class="fas fa-check text-success" th:case="true"></i>
-                                <i class="fas fa-times text-danger" th:case="false"></i>
-                            </td>
-
                             <td class="text-center align-middle text-truncate">
                                 <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
                                 <a class="btn btn-primary btn-sm" title="Editar"
-                                   th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"
+                                   th:classappend="${travel.getStatus().description == 'Aguardando' } ? '' : 'disabled'"
                                    th:href="@{/travels/update/{id} (id=${travel.id}) }">
                                     <i class="fas fa-pen text-light"></i>
                                 </a>

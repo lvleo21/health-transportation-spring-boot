@@ -65,6 +65,8 @@ public class LocationController {
         boolean permissionForChangeTravelStatus = false;
         String nextStatus = "";
 
+
+
         switch (travel.getStatus()){
             case AGUARDANDO:
                 permissionForChangeTravelStatus = true;
@@ -75,7 +77,9 @@ public class LocationController {
                 nextStatus = "CONCLUÍDO";
                 break;
         }
+        boolean canEdit = (travel.getStatus() == TravelStatus.AGUARDANDO) ? true : false;
 
+        model.addAttribute("canEdit", canEdit);
         model.addAttribute("permissionForChangeTravelStatus", permissionForChangeTravelStatus);
         model.addAttribute("nextStatus", nextStatus);
 

@@ -42,7 +42,30 @@ RETURNS trigger AS
 END;'
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION change_all_passenger_in_travel()
+RETURNS trigger AS
+'BEGIN
 
+    IF (TG_OP = ''INSERT'') THEN
+        UPDATE passengers
+        SET in_travel = true
+        FROM (SELECT passenger_id, travel_id from locations where travel_id = NEW.id) AS subquery
+        WHERE id = subquery.passenger_id;
+        RETURN NEW;
+    ELSIF(TG_OP = ''UPDATE'' AND NEW.status = ''CONCLUIDO'') THEN
+        UPDATE passengers
+        SET in_travel = false
+        FROM (SELECT passenger_id,
+                     travel_id
+              from locations
+              where travel_id = NEW.id) AS subquery
+        WHERE id = subquery.passenger_id;
+        RETURN NEW;
+    END IF;
+    RETURN NEW;
+
+END;'
+LANGUAGE plpgsql;
 ---
 
 -- DROP TRIGGERS
@@ -50,13 +73,14 @@ DROP TRIGGER IF EXISTS trigger_create_log_vehicle ON vehicles;
 DROP TRIGGER IF EXISTS trigger_create_log_driver ON drivers;
 DROP TRIGGER IF EXISTS trigger_create_log_user ON users;
 DROP TRIGGER IF EXISTS trigger_create_log_travel ON travels;
+DROP TRIGGER IF EXISTS trigger_change_all_passenger_in_travel ON travels;
 DROP TRIGGER IF EXISTS trigger_create_log_prefecture ON prefectures;
 DROP TRIGGER IF EXISTS trigger_create_log_passenger ON passengers;
 DROP TRIGGER IF EXISTS trigger_create_log_order_reset_password ON order_reset_passwords;
 DROP TRIGGER IF EXISTS trigger_create_log_location ON locations;
+DROP TRIGGER IF EXISTS trigger_set_passenger_in_travel ON locations;
 DROP TRIGGER IF EXISTS trigger_create_log_health_center ON health_centers;
 DROP TRIGGER IF EXISTS trigger_create_log_address ON adresses;
-DROP TRIGGER IF EXISTS trigger_set_passenger_in_travel ON locations;
 -- END DROP TRIGGERS
 
 -- TRIGGERS
@@ -145,4 +169,10 @@ CREATE TRIGGER trigger_set_passenger_in_travel
 ON locations
     FOR EACH ROW
     EXECUTE PROCEDURE set_passenger_in_travel();
+
+CREATE TRIGGER trigger_change_all_passenger_in_travel
+    AFTER UPDATE OR DELETE
+ON travels
+    FOR EACH ROW
+    EXECUTE PROCEDURE change_all_passenger_in_travel();
 -- END TRIGGERS

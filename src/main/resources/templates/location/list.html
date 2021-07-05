@@ -24,7 +24,7 @@
 
                 <div class="dropdown-menu dropdown-menu-left mt-2 mr-3" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" th:href="@{/travels/{id}/locations/create (id=${travel.id})}"
-                    th:classappend="${travel.itsFull()} ? 'disabled'">
+                    th:classappend="${travel.itsFull() or !canEdit} ? 'disabled'">
                         <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-danger-400"></i>
                         Adicionar Passageiro
                     </a>
@@ -36,6 +36,7 @@
                     </a>
 
                     <a class="dropdown-item"
+                       th:classappend="${!canEdit} ? 'disabled'"
                        th:href="@{/travels/update/{id} (id=${travel.id})}">
                         <i class="fas fas fa-edit fa-sm fa-fw mr-2 text-danger-400"></i>
                         Editar viagem
@@ -265,7 +266,7 @@
 
                             <td class="text-center align-middle text-truncate">
                                 <a class="btn btn-primary btn-sm" title="Editar"
-
+                                   th:classappend="${!canEdit} ? 'disabled'"
                                    th:href="@{/travels/{idTravel}/locations/{idLocation}/update (idTravel=${travel.id}, idLocation=${location.id})}">
                                     <i class="fas fa-pen text-light"></i>
                                 </a>
@@ -273,22 +274,10 @@
                                 <button th:id="${#strings.concat('btn_travels/', travel.id,'/locations/', location.id ,'/delete')}"
                                         type="button" title="Deletar locação"
                                         class="btn btn-danger btn-sm"
+                                        th:classappend="${!canEdit} ? 'disabled'"
                                         data-toggle="modal" data-target="#myModal">
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
-
-
-                                <!--                            <th:block th:switch="${passenger.active}">-->
-                                <!--                                <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
-                                <!--                                        type="button" title="Desativar"-->
-                                <!--                                        class="btn btn-danger btn-sm"-->
-                                <!--                                        data-toggle="modal" data-target="#myModal"-->
-                                <!--                                        th:case="true">-->
-                                <!--                                    <i class="fas fa-trash text-light"></i>-->
-                                <!--                                </button>-->
-
-
-                                <!--                            </th:block>-->
                             </td>
 
                             <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
