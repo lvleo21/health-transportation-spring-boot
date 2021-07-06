@@ -125,14 +125,13 @@ public class DriverController {
         String tag, message;
 
         if (this.hasPermission(driver.getHealthCenter().getId())) {
-            if(travelService.findTravelByDriver(driver).isEmpty()){
-                driverService.delete(id);
+            if(driverService.delete(id)){
                 tag="success";
                 message="Motorista deletado com sucesso.";
 
             } else{
                 tag="error";
-                message="Este(a) motorista possui recursos atralados a ele(a).";
+                message="Este(a) motorista possui viagens relacionadas com ele.";
             }
 
         } else {

@@ -147,7 +147,7 @@ public class TravelServiceImpl implements TravelService {
 
 
     public Pageable getPageable(int currentPage){
-        return PageRequest.of(currentPage, 50, Sort.by("departureDate").descending());
+        return PageRequest.of(currentPage, 50, Sort.by("id").descending());
     }
 
 }

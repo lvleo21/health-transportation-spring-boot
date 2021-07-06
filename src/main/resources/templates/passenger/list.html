@@ -108,8 +108,10 @@
                             <th class='text-center text-dark' scope="col">Bloqueado</th>
                             <th class='text-center text-dark' scope="col">Endereço</th>
                             <th class='text-center text-dark text-truncate' scope="col"
-                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">Ativo ?</th>
-                            <th class='text-center text-dark' scope="col">Editar</th>
+                                th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
+                                Ativo ?
+                            </th>
+                            <th class='text-center text-dark' scope="col">Ações</th>
 
                             <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                                 <th class='text-center text-dark' scope="col">Oper. Realizada por</th>
@@ -162,7 +164,7 @@
                             <td class="text-center align-middle"
                                 th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox"
+                                    <input type="checkbox" th:disabled="${passenger.inTravel}"
                                            class="custom-control-input"
                                            th:id="|switch_passengers/${passenger.id}/change-status/|"
                                            th:checked="*{passenger.active}">
@@ -177,28 +179,37 @@
                                 <!--                 th:classappend="${travel.status.description == 'Concluído' ? 'disabled' : ''}"-->
                                 <a class="btn btn-primary btn-sm mr-1" title="Editar"
                                    th:href="@{/passengers/update/{rg} (rg=${passenger.rg}) }"
-                                th:classappend="${!passenger.active} ? 'disabled'">
+                                   th:classappend="${!passenger.active || passenger.inTravel} ? 'disabled'">
                                     <i class="fas fa-pen text-light"></i>
                                 </a>
 
 
-<!--                                <th:block th:switch="${passenger.active}">-->
-<!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
-<!--                                            type="button" title="Desativar"-->
-<!--                                            class="btn btn-danger btn-sm"-->
-<!--                                            data-toggle="modal" data-target="#myModal"-->
-<!--                                            th:case="true">-->
-<!--                                        <i class="fas fa-trash text-light"></i>-->
-<!--                                    </button>-->
+                                <button class="btn btn-danger btn-sm mr-1"
+                                        type="button" title="Remover"
+                                        data-toggle="modal" data-target="#myModal"
+                                        th:id="${#strings.concat('btn_passengers/', passenger.rg, '/delete')}"
+                                   th:disabled="${!passenger.active  || passenger.inTravel}">
+                                    <i class="fas fa-trash text-light"></i>
+                                </button>
 
-<!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/activate')}"-->
-<!--                                            type="button" title="Ativar"-->
-<!--                                            class="btn btn-success btn-sm"-->
-<!--                                            data-toggle="modal" data-target="#myModal"-->
-<!--                                            th:case="false">-->
-<!--                                        <i class="fas fa-trash text-light"></i>-->
-<!--                                    </button>-->
-<!--                                </th:block>-->
+
+                                <!--                                <th:block th:switch="${passenger.active}">-->
+                                <!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/deactivate')}"-->
+                                <!--                                            type="button" title="Desativar"-->
+                                <!--                                            class="btn btn-danger btn-sm"-->
+                                <!--                                            data-toggle="modal" data-target="#myModal"-->
+                                <!--                                            th:case="true">-->
+                                <!--                                        <i class="fas fa-trash text-light"></i>-->
+                                <!--                                    </button>-->
+
+                                <!--                                    <button th:id="${#strings.concat('btn_passengers/', passenger.rg,'/activate')}"-->
+                                <!--                                            type="button" title="Ativar"-->
+                                <!--                                            class="btn btn-success btn-sm"-->
+                                <!--                                            data-toggle="modal" data-target="#myModal"-->
+                                <!--                                            th:case="false">-->
+                                <!--                                        <i class="fas fa-trash text-light"></i>-->
+                                <!--                                    </button>-->
+                                <!--                                </th:block>-->
 
 
                             </td>
@@ -222,7 +233,7 @@
                             <i class="fas fa-search" style="font-size: 5rem"></i>
                             <h3 class="mt-2 font-weight-bold">NENHUM RESULTADO ENCONTRADO!!</h3>
                             <h4>Não encontramos nenhum passageiro relacionado com o nome <b class="text-danger"
-                                                                                           th:text='|"${passengerName}"|'></b>.
+                                                                                            th:text='|"${passengerName}"|'></b>.
                             </h4>
                         </div>
 

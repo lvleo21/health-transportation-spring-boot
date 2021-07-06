@@ -57,10 +57,7 @@ public class Passenger extends Auditable<String> {
     private HealthCenter healthCenter;
 
     @OneToMany(mappedBy = "passenger")
-    private List<Location> locações;
-
-
-
+    private List<Location> locations;
 
     @Column(name="is_active")
     private Boolean active = true;
@@ -182,11 +179,11 @@ public class Passenger extends Auditable<String> {
     }
 
     public List<Location> getLocações() {
-        return locações;
+        return locations;
     }
 
     public void setLocações(List<Location> locações) {
-        this.locações = locações;
+        this.locations = locações;
     }
 
     public String getShortName(){
@@ -220,4 +217,10 @@ public class Passenger extends Auditable<String> {
     public void setInTravel(Boolean inTravel) {
         this.inTravel = inTravel;
     }
+
+
+    public boolean canDelete(){
+        return  this.locations.isEmpty();
+    }
+
 }

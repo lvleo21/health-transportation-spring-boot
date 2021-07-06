@@ -1,9 +1,6 @@
 package com.pbd.project.web.controller.user;
 
-import com.pbd.project.domain.HealthCenter;
-import com.pbd.project.domain.Log;
-import com.pbd.project.domain.Role;
-import com.pbd.project.domain.User;
+import com.pbd.project.domain.*;
 import com.pbd.project.service.user.UserService;
 import com.pbd.project.service.healthCenter.HealthCenterService;
 import com.pbd.project.service.role.RoleService;
@@ -77,6 +74,26 @@ public class UserController {
         model.addAttribute("enrollment", tempEnrollment);
 
         return "user/list";
+    }
+
+    @GetMapping("/{id}/change-status")
+    public String changeUserStatus(@PathVariable("id") Long id, RedirectAttributes attr){
+        User user = userService.findById(id);
+
+        if (this.hasPermission(user.getHealthCenter().getId())) {
+            userService.changeStatus(user);
+            attr.addFlashAttribute("success", "Usuário <b>"+ user.getUsername() + "</b> modificado(a) com sucesso.");
+        } else {
+            attr.addFlashAttribute("error", "Você não tem permissões para modificar este usuário.");
+        }
+
+        return "redirect:/users";
+    }
+
+
+    public boolean hasPermission(Long idDriverHealthCenter) {
+        User user = userService.getUserAuthenticated();
+        return (user.getStaff() || (user.getHealthCenter().getId().equals(idDriverHealthCenter))) ? true : false;
     }
 
 

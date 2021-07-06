@@ -200,8 +200,6 @@ public class LocationController {
             id = Long.parseLong((String) pathVariables.get("idLocation"));
         }
 
-
-
         if (path.contains("/locations/" + id +"/update")) {
             List<Passenger> passengers = new ArrayList<>();
             passengers.add(locationService.findById(id).getPassenger());

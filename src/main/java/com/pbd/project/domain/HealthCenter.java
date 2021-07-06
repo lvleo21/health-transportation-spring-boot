@@ -113,4 +113,19 @@ public class HealthCenter extends Auditable<String> {
     public void setTravels(List<Travel> travels) {
         this.travels = travels;
     }
+
+
+    public boolean canDelete(){
+
+        if(this.getUsers().isEmpty()
+                && this.getPassengers().isEmpty()
+                && this.getDrivers().isEmpty()
+                && this.getVehicles().isEmpty()
+                && this.getTravels().isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

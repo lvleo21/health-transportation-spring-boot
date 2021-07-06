@@ -22,6 +22,7 @@ public interface PassengerService {
     void changePassengerStatus(Passenger passenger);
     List<Passenger> getModelAttribute();
 
+    void deletePassenger(Long id);
 
     //! Paginação
     Page<Passenger> findAll(int currentPage);

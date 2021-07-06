@@ -120,10 +120,15 @@ public class PassengerServiceImpl implements PassengerService{
         User user = userService.getUserAuthenticated();
 
         if (user.getStaff()) {
-            return this.passengerDao.findPassengerByInTravel(false);
+            return this.passengerDao.findPassengerByInTravelAndActive(false, true);
         } else {
-            return this.passengerDao.findPassengerByInTravelAndHealthCenter(false, user.getHealthCenter());
+            return this.passengerDao.findPassengerByInTravelAndActiveAndHealthCenter(false, true, user.getHealthCenter());
         }
+    }
+
+    @Override
+    public void deletePassenger(Long id) {
+        this.passengerDao.deleteById(id);
     }
 
     @Override

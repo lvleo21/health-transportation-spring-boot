@@ -59,6 +59,6 @@ public class PrefectureServiceImpl implements PrefectureService {
             return Arrays.asList(dao.findPrefectureByHealthCenterId(id));
         }
 
-        return dao.getPrefectureByHealthCenterIsNull();
+        return dao.getPrefectureByActiveAndHealthCenterIsNull(true);
     }
 }

@@ -93,4 +93,9 @@ public class Vehicle extends Auditable<String>{
     public String getFormatedString(){
         return "[" + this.getPlaque() + "] " + this.getName() + " - " + this.getCapacity();
     }
+
+    public boolean canDelete(){
+        return (this.getTravels().size() == 0) ? true : false;
+    }
+
 }

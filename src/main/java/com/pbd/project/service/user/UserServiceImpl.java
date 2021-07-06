@@ -119,6 +119,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changeStatus(User user) {
+        user.setActive(!user.getActive());
+        userDao.save(user);
+    }
+
+    @Override
     public Page<User> getAll(int currentPage) {
         Pageable pageable = this.getPageable(currentPage);
         Long userId = this.getUserAuthenticated().getId();

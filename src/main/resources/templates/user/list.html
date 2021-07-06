@@ -9,7 +9,7 @@
 <div class="container-fluid" layout:fragment="content">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Usuários</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold"><i class="fas fa-caret-right"></i> Usuários</h1>
     </div>
 
     <div th:replace="fragments/alert"></div>
@@ -157,9 +157,15 @@
                             <td class="text-center align-middle" th:utext="*{user.showRoles}"></td>
                             <td class="text-center align-middle" th:utext="*{user.enrollment}"></td>
 
-                            <td class="text-center align-middle" th:switch="*{user.active}">
-                                <i class="fas fa-check text-success" th:case="true"></i>
-                                <i class="fas fa-times text-danger" th:case="false"></i>
+                            <td class="text-center align-middle">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           th:id="|switch_users/${user.id}/change-status/|"
+                                           th:checked="*{user.active}">
+                                    <label class="custom-control-label"
+                                           th:for="|switch_users/${user.id}/change-status/|"></label>
+                                </div>
                             </td>
 
 

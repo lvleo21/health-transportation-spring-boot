@@ -22,6 +22,8 @@ public interface UserService {
     void delete(Long id);
     String resetPassword(User user);
 
+    void changeStatus(User user);
+
 
     Page<User> getAll(int currentPage);
     Page<User> getAllByEnrollment(int currentPage, String enrollment);

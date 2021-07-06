@@ -21,4 +21,7 @@ public interface VehicleService {
 
     void changeActive(Vehicle vehicle);
     void changeAvailable(Vehicle vehicle);
+
+
+    List<Vehicle> findVehicleByActiveAndAvailable(boolean active, boolean available);
 }

@@ -81,7 +81,13 @@ public class VehicleServiceImpl implements VehicleService{
 
     @Override
     public void changeAvailable(Vehicle vehicle) {
-        vehicle.setAvailable(vehicle.isAvailable() ? false : true);
+        vehicle.setAvailable(!vehicle.isAvailable());
         this.save(vehicle);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Vehicle> findVehicleByActiveAndAvailable(boolean active, boolean available) {
+        return vehicleDao.findVehicleByActiveAndAvailable(active, available);
     }
 }

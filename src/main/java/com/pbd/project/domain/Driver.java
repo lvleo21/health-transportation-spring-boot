@@ -65,4 +65,10 @@ public class Driver extends Auditable<String> {
     public void setTravels(List<Travel> travels) {
         this.travels = travels;
     }
+
+
+    // Se isEmpty == Pode deletar
+    public boolean canDelete(){
+        return this.travels.isEmpty();
+    }
 }

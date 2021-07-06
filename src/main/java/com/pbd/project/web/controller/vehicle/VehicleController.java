@@ -61,6 +61,7 @@ public class VehicleController {
 
         }
 
+        System.out.println(vehicleService.findByPlaque("ASD-1233").getTravels());
 
         model.addAttribute("name", nameQueryParam);
         model.addAttribute("vehicles", vehicles);
@@ -127,8 +128,20 @@ public class VehicleController {
     @GetMapping("delete/{id}")
     public String deleteVehicle(@PathVariable("id") Long id, RedirectAttributes attr){
 
-        vehicleService.delete(id);
-        attr.addFlashAttribute("success", "Veículo deletado com sucesso.");
+        Vehicle vehicle = vehicleService.findById(id);
+
+        if(vehicle.canDelete()){
+            vehicleService.delete(id);
+            attr.addFlashAttribute("success", "Veículo deletado com sucesso.");
+        } else {
+
+            String errorText = "<b>" + vehicle.getName() + "</b>" + " não pode ser deletado. O mesmo, possuí viagens" +
+                    " atrelados a ela.";
+
+            attr.addFlashAttribute("error", errorText);
+        }
+
+
         return  "redirect:/vehicles";
     }
 

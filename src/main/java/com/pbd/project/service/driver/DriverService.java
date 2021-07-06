@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface DriverService {
     Driver save(Driver driver);
-    void delete(Long id);
+    boolean delete(Long id);
     Driver findDriverById(Long id);
     List<Driver> getAllDrivers();
     List<Driver> getAllDriversByAvailableAndActive(Long idHealthCenter, boolean isAvailable, boolean isActive);
@@ -24,4 +24,8 @@ public interface DriverService {
     Page<Driver> findDriversByNameAndHealthCenter(int currentPage, HealthCenter healthCenter, String name);
     Page<Driver> findDriversByName(int currentPage, String name);
     Page<Driver> getDrivers(int currentPage, String name, boolean isStaff, HealthCenter healthCenter);
+
+
+    //! Para ADMIN no getModelAttributes
+    List<Driver> findDriverByActiveAndAvailable(boolean active, boolean available);
 }

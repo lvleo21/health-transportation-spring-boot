@@ -32,17 +32,10 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     public boolean deleteById(Long id) {
         HealthCenter healthCenter = this.findById(id);
 
-        if (healthCenter.getDrivers().isEmpty()
-                && healthCenter.getPassengers().isEmpty()
-                && healthCenter.getVehicles().isEmpty()
-                && healthCenter.getUsers().isEmpty()
-                && healthCenter.getTravels().isEmpty()){
-
+        if (healthCenter.canDelete()){
             dao.deleteById(id);
-
             return true;
         }
-
         return false;
     }
 

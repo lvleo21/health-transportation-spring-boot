@@ -29,8 +29,15 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public void delete(Long id) {
-        driverDao.deleteById(id);
+    public boolean delete(Long id) {
+        Driver driver = driverDao.findById(id).get();
+
+        if(driver.canDelete()){
+            driverDao.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -59,7 +66,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public void changeAvailable(Driver driver) {
-        driver.setAvailable(driver.isAvailable() ? false : true);
+        driver.setAvailable(!driver.isAvailable());
         this.save(driver);
     }
 
@@ -109,6 +116,11 @@ public class DriverServiceImpl implements DriverService {
                     this.findDriversByName(currentPage, name) :
                     this.findDriversByNameAndHealthCenter(currentPage, healthCenter, name);
         }
+    }
+
+    @Override
+    public List<Driver> findDriverByActiveAndAvailable(boolean active, boolean available) {
+        return driverDao.findDriverByActiveAndAvailable(active, available);
     }
 
     public Pageable getPageable(int currentPage){

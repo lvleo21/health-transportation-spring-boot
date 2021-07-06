@@ -31,8 +31,9 @@ public interface PassengerDao extends JpaRepository<Passenger, Long> {
                                                                                   boolean isActive,
                                                                                   String name);
 
+    void deleteById(Long id);
 
-    List<Passenger> findPassengerByInTravel(boolean inTravel);
-    List<Passenger> findPassengerByInTravelAndHealthCenter(boolean inTravel, HealthCenter healthCenter);
+    List<Passenger> findPassengerByInTravelAndActive(boolean inTravel, boolean active);
+    List<Passenger> findPassengerByInTravelAndActiveAndHealthCenter(boolean inTravel, boolean active, HealthCenter healthCenter);
 
 }

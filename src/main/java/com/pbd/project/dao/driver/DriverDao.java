@@ -20,6 +20,8 @@ public interface DriverDao extends JpaRepository<Driver, Long> {
     List<Driver> findDriverByHealthCenter (HealthCenter healthCenter);
     List<Driver> findAllByOrderByNameAsc();
 
+    List<Driver> findDriverByActiveAndAvailable(boolean active, boolean available);
+
     //! PARA GESTOR
     Page<Driver> findDriversByHealthCenter(Pageable pageable, HealthCenter healthCenter);
     //! PARA GESTOR

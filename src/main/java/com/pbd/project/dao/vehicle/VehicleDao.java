@@ -17,6 +17,9 @@ public interface VehicleDao extends JpaRepository<Vehicle, Long> {
     )
     List<Vehicle> findAvailables(Long idHealthCenter, boolean isAvailable, boolean isActive);
 
+
+    List<Vehicle> findVehicleByActiveAndAvailable(boolean active, boolean available);
+
 //    @Query(value="SELECT * FROM travels where vehicle_id = ?1", nativeQuery = true)
 //    List<Travel> findRelatedTravels(Long id);
 

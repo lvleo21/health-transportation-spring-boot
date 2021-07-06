@@ -131,7 +131,7 @@ public class PassengerController {
     }
 
     @PostMapping("/update/{rg}/save")
-    public String travelUpdateSave(@Valid Passenger passenger, BindingResult result, RedirectAttributes attr, ModelMap model) {
+    public String passengerUpdateSave(@Valid Passenger passenger, BindingResult result, RedirectAttributes attr, ModelMap model) {
 
         if (result.hasErrors()) {
             model.addAttribute("createView", false);
@@ -170,6 +170,22 @@ public class PassengerController {
             attr.addFlashAttribute("success", "<b>"+passenger.getName()+"</b> ativado(a) com sucesso.");
         } else{
             attr.addFlashAttribute("error", "Erro ao tentar ativar o passageiro, tente novamente.");
+        }
+
+        return "redirect:/passengers";
+    }
+
+    @GetMapping("/{rg}/delete")
+    public String deletePassenger(@PathVariable("rg") String rg, RedirectAttributes attr){
+        Passenger passenger = passengerService.findPassengerByRg(rg);
+        String tempName = passenger.getShortName();
+
+        if (passenger.canDelete()){
+            passengerService.deletePassenger(passenger.getId());
+            attr.addFlashAttribute("success", "<b>"+tempName+"</b> removido com sucesso.");
+        } else {
+            attr.addFlashAttribute("error", "<b>"+tempName+"</b> não pode ser removido(a)." +
+                    " Este(a) passageiro(a) possuí locações atraladas a ele(a).");
         }
 
         return "redirect:/passengers";

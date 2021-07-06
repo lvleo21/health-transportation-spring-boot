@@ -187,7 +187,7 @@ public class TravelController {
         String path = request.getRequestURI();
 
         if (user.getStaff()) {
-            return driverService.getAllDrivers();
+            return driverService.findDriverByActiveAndAvailable(true, true);
         } else {
             List<Driver> drivers = driverService.getAllDriversByAvailableAndActive(user.getHealthCenter().getId(), true, true);
 
@@ -204,7 +204,7 @@ public class TravelController {
         String path = request.getRequestURI();
 
         if (user.getStaff()) {
-            return vehicleService.findAll();
+            return vehicleService.findVehicleByActiveAndAvailable(true, true);
         } else {
             List<Vehicle> vehicles = vehicleService.findAvailable(user.getHealthCenter().getId(), true, true);
 

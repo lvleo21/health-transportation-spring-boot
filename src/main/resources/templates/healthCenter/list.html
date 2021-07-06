@@ -60,7 +60,6 @@
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">Endereço</th>
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">Prefeitura</th>
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">CNPJ</th>
-                            <th class='text-center align-middle  text-dark text-truncate' scope="col">Ativo ?</th>
                             <th class='text-center align-middle  text-dark text-truncate' scope="col">Ações</th>
 
                             <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
@@ -97,11 +96,6 @@
                             <td class="text-center align-middle text-truncate"
                                 th:text="*{healthCenter.prefecture.getCityAndState}"></td>
                             <td class="text-center align-middle text-truncate" th:text="*{healthCenter.cnpj}"></td>
-
-                            <td class="text-center align-middle  text-truncate" th:switch="*{healthCenter.active}">
-                                <i class="fas fa-check text-success" th:case="true"></i>
-                                <i class="fas fa-times text-danger" th:case="false"></i>
-                            </td>
 
                             <td class="text-center align-middle text-truncate">
                                 <a class="btn btn-primary btn-sm"
