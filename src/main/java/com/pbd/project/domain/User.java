@@ -16,7 +16,6 @@ import java.util.Set;
 @Table(name = "USERS")
 public class User extends Auditable<String> {
 
-
     @Column(nullable = false, unique = true)
     @Length(min = 5, message = "{Length.user.username}")
     @NotEmpty(message = "{NotEmpty.user.username}")

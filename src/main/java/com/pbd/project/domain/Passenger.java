@@ -62,14 +62,8 @@ public class Passenger extends Auditable<String> {
     @Column(name="is_active")
     private Boolean active = true;
 
-    @Column(name="is_blocked")
-    private Boolean blocked = false;
-
     @Column(name="in_travel")
     private Boolean inTravel = false;
-
-    @Column(name="warning_count")
-    private Integer warningCount = 0;
 
     @Column(columnDefinition = "TEXT")
     private String observation;
@@ -154,28 +148,12 @@ public class Passenger extends Auditable<String> {
         this.active = active;
     }
 
-    public Integer getWarningCount() {
-        return warningCount;
-    }
-
-    public void setWarningCount(Integer warningCount) {
-        this.warningCount = warningCount;
-    }
-
     public String getObservation() {
         return observation;
     }
 
     public void setObservation(String observation) {
         this.observation = observation;
-    }
-
-    public Boolean getBlocked() {
-        return blocked;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
     }
 
     public List<Location> getLocações() {

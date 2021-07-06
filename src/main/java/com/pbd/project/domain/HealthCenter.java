@@ -23,9 +23,6 @@ public class HealthCenter extends Auditable<String> {
     @Column(nullable = false, unique = true, length = 18)
     private String cnpj;
 
-    @Column(name="is_active")
-    private boolean active;
-
     @OneToMany(mappedBy = "healthCenter")
     private List<User> users;
 
@@ -64,14 +61,6 @@ public class HealthCenter extends Auditable<String> {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public List<User> getUsers() {

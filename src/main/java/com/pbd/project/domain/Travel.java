@@ -55,9 +55,6 @@ public class Travel extends Auditable<String> {
     @Column(columnDefinition = "TEXT")
     private String observation;
 
-    @Column(name = "is_active")
-    private boolean active = true;
-
     @NotNull(message = "{NotNull.registeredPassengers}")
     @Column(nullable = false, name = "registered_passengers")
     private Integer registeredPassengers = 0;
@@ -137,14 +134,6 @@ public class Travel extends Auditable<String> {
         this.observation = observation;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public Integer getRegisteredPassengers() {
         return registeredPassengers;
     }
@@ -152,7 +141,6 @@ public class Travel extends Auditable<String> {
     public void setRegisteredPassengers(Integer registeredPassengers) {
         this.registeredPassengers = registeredPassengers;
     }
-
 
     public String getDestiny() {
         return this.destinyCity + " - " + this.destinyState;
