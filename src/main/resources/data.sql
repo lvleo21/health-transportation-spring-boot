@@ -1,3 +1,4 @@
+-- INSERT ROLES
 INSERT into roles (role)
 SELECT 'OPERADOR' WHERE 'OPERADOR' NOT IN (SELECT role FROM roles);
 INSERT into roles (role)
@@ -176,3 +177,39 @@ ON travels
     FOR EACH ROW
     EXECUTE PROCEDURE change_all_passenger_in_travel();
 -- END TRIGGERS
+
+
+-- DROP VIEWS
+DROP VIEW IF EXISTS ExportLocationsView;
+DROP VIEW IF EXISTS TravelsPerMonthByCurrentYear;
+-- END DROP VIEWS
+
+-- VIEWS
+
+-- GET A LIST OF LOCATIONS
+CREATE OR REPLACE VIEW ExportLocationsView as
+
+SELECT
+    t.id AS travel_id, p.name, l.category, p.date_of_birth, p.rg, p.sus,
+    CONCAT (a.public_place, ', ', a.number, ', ',a.neighborhood) as address, l.transition,
+    l.destination_hospital, p.cell_phone
+FROM
+    locations l
+INNER JOIN passengers p ON l.passenger_id = p.id
+INNER JOIN adresses a ON p.address_id = a.id
+INNER JOIN travels t ON l.travel_id  = t.id;
+
+-- GET A QUANTITY OF TRAVELS PER MONTH IN CURRENT YEAR
+CREATE OR REPLACE VIEW TravelsPerMonthByCurrentYear AS
+
+SELECT
+    COUNT(EXTRACT(MONTH FROM departure_date)),
+    EXTRACT(MONTH FROM departure_date) as month,
+    (SELECT date_part('year', (SELECT current_timestamp)) as current_year)
+FROM
+    travels t
+WHERE
+    EXTRACT(YEAR FROM departure_date) = (SELECT date_part('year', (SELECT current_timestamp)))
+GROUP BY
+    EXTRACT(MONTH FROM departure_date);
+-- ENDVIEWS

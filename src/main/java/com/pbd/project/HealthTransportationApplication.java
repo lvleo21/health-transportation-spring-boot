@@ -1,6 +1,7 @@
 package com.pbd.project;
 
 import com.pbd.project.configuration.SpringSecurityAuditorAware;
+import com.pbd.project.dao.exportLocation.ExportLocationsDao;
 import com.pbd.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

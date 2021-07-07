@@ -6,6 +6,8 @@ import com.pbd.project.domain.Travel;
 import com.pbd.project.domain.enums.PassengerCategory;
 import com.pbd.project.domain.enums.PassengerTransition;
 import com.pbd.project.domain.enums.TravelStatus;
+import com.pbd.project.domain.views.ExportLocationViews;
+import com.pbd.project.service.exportLocation.ExportLocationsService;
 import com.pbd.project.service.location.LocationService;
 import com.pbd.project.service.passenger.PassengerService;
 import com.pbd.project.service.travel.TravelService;
@@ -37,6 +39,8 @@ public class LocationController {
     @Autowired
     private PassengerService passengerService;
 
+    @Autowired
+    private ExportLocationsService exportLocationsService;
 
     @Autowired
     private HttpServletRequest request;
@@ -100,8 +104,15 @@ public class LocationController {
     @GetMapping("/locations/export")
     public String getTeste(@PathVariable("idTravel") Long idTravel, ModelMap model){
         Travel travel = travelService.findById(idTravel);
+
+
         model.addAttribute("travel", travel);
         model.addAttribute("prefecture", travel.getHealthCenter().getPrefecture());
+
+
+        List<ExportLocationViews> teste = exportLocationsService.findByTravelId(idTravel);
+        System.out.println(teste);
+
         return "htmlToPdf";
     }
 
