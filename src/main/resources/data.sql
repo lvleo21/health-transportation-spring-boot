@@ -182,6 +182,7 @@ ON travels
 -- DROP VIEWS
 DROP VIEW IF EXISTS ExportLocationsView;
 DROP VIEW IF EXISTS TravelsPerMonthByCurrentYear;
+DROP VIEW IF EXISTS LocationsPerNeighborhood;
 -- END DROP VIEWS
 
 -- VIEWS
@@ -212,4 +213,17 @@ WHERE
     EXTRACT(YEAR FROM departure_date) = (SELECT date_part('year', (SELECT current_timestamp)))
 GROUP BY
     EXTRACT(MONTH FROM departure_date);
+
+-- GET LOCATIONS PER HEALTHCENTER AND NEIGHBORHOOD
+CREATE OR REPLACE VIEW LocationsPerNeighborhood AS
+
+SELECT
+    COUNT(a.neighborhood), a.neighborhood, hc.id AS health_center_id
+FROM
+    locations l , travels t, passengers p, adresses a, health_centers hc
+WHERE
+    t.status = 'CONCLUIDO' AND l.travel_id  = t.id AND l.passenger_id = p.id AND p.address_id = a.id
+    AND t.health_center_id = hc.id
+GROUP BY
+    a.neighborhood, hc.id;
 -- ENDVIEWS
