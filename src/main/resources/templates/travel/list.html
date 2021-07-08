@@ -165,14 +165,15 @@
                                     <i class="fas fa-users text-light"></i>
                                 </a>
 
-                                <!--              th:classappend="${!vehicle.available} ? 'disabled'"-->
+
                                 <button th:id="${#strings.concat('btn_travels/delete/', travel.id)}"
-                                        th:disabled="${travel.status.description != 'Aguardando' ? true : false}"
+                                        th:disabled="${travel.status.description != 'Aguardando'} ? true"
                                         type="button" title="Remover"
                                         class="btn btn-danger btn-sm"
                                         data-toggle="modal" data-target="#myModal">
                                     <i class="fas fa-trash text-light"></i>
                                 </button>
+
                             </td>
 
                             <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
@@ -191,10 +192,8 @@
 
         </div>
     </div>
+    <div th:replace="fragments/modal :: modal"></div>
 </div>
-<div th:replace="fragments/modal :: modal"></div>
-</div>
-
 
 </body>
 </html>

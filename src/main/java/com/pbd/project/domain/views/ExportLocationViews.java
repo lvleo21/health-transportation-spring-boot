@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Immutable
-@Table(name="TravelsPerMonthByCurrentYear")
+@Table(name="ExportLocationsView")
 public class ExportLocationViews implements Serializable {
     @Id
     @Column(name="travel_id")

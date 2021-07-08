@@ -37,7 +37,9 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Data de Saída <small
                                         class="text-secondary">(Obrigatório)</small></label>
-                                <input type="date" class="form-control" id="departureDate" th:field="*{departureDate}"
+                                <input type="date" class="form-control" id="departureDate"
+                                       th:field="*{departureDate}"
+                                       th:min="${#dates.format(#dates.createNow(),'YYYY-MM-dd')}"
                                        th:classappend="${#fields.hasErrors('departureDate')} ? 'is-invalid'">
                                 <small class="text-danger" th:errors="*{departureDate}"></small>
                             </div>

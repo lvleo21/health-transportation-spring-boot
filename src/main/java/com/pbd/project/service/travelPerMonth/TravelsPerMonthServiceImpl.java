@@ -10,15 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class TravelsPerMonthServiceImpl implements TravelsPerMonthService{
 
     @Autowired
     private TravelsPerMonthDao dao;
 
     @Override
-    @Transactional(readOnly = true)
     public List<TravelsPerMonthViews> findAll() {
         return dao.findAll();
     }
+
+    @Override
+    public List<TravelsPerMonthViews> findByHealthCenterId(Integer id) {
+        return dao.findAByHealthCenterId(id);
+    }
+
+
 }

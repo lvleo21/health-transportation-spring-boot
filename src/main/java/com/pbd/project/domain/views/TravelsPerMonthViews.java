@@ -8,10 +8,14 @@ import java.io.Serializable;
 
 @Entity
 @Immutable
-@Table(name="ExportLocationsView")
+@Table(name="TravelsPerMonthByCurrentYear")
 public class TravelsPerMonthViews implements Serializable {
 
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name="month")
     private Integer month;
 
@@ -20,6 +24,9 @@ public class TravelsPerMonthViews implements Serializable {
 
     @Column(name="current_year")
     private int currentYear;
+
+    @Column(name="health_center_id")
+    private int healthCenterId;
 
     @Override
     public String toString() {
@@ -50,5 +57,17 @@ public class TravelsPerMonthViews implements Serializable {
 
     public void setCurrentYear(int currentYear) {
         this.currentYear = currentYear;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public int getHealthCenterId() {
+        return healthCenterId;
+    }
+
+    public void setHealthCenterId(int healthCenterId) {
+        this.healthCenterId = healthCenterId;
     }
 }

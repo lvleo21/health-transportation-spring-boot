@@ -105,7 +105,6 @@
                             <th class='text-center text-dark' scope="col">Gênero</th>
                             <th class='text-center text-dark  text-truncate' scope="col">Dat. de Nascimento</th>
                             <th class='text-center text-dark' scope="col">Telefone</th>
-                            <th class='text-center text-dark' scope="col">Bloqueado</th>
                             <th class='text-center text-dark' scope="col">Endereço</th>
                             <th class='text-center text-dark text-truncate' scope="col"
                                 th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''GESTOR'')')}">
@@ -134,14 +133,6 @@
                                 th:text="*{#temporals.format(passenger.dateOfBirth, 'dd/MM/yyyy')}"></td>
 
                             <td class="text-center align-middle text-truncate" th:text="*{passenger.cellPhone}"></td>
-
-
-                            <td class="text-center align-middle text-truncate"
-                                th:switch="*{passenger.blocked}">
-
-                                <i class="fas fa-check text-success" th:case="true" title="Sim"></i>
-                                <i class="fas fa-times text-danger" th:case="false" title="Não"></i>
-                            </td>
 
                             <td class="text-center align-middle">
 

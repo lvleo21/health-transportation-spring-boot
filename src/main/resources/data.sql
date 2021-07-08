@@ -186,10 +186,8 @@ DROP VIEW IF EXISTS LocationsPerNeighborhood;
 -- END DROP VIEWS
 
 -- VIEWS
-
 -- GET A LIST OF LOCATIONS
 CREATE OR REPLACE VIEW ExportLocationsView as
-
 SELECT
     t.id AS travel_id, p.name, l.category, p.date_of_birth, p.rg, p.sus,
     CONCAT (a.public_place, ', ', a.number, ', ',a.neighborhood) as address, l.transition,
@@ -202,17 +200,18 @@ INNER JOIN travels t ON l.travel_id  = t.id;
 
 -- GET A QUANTITY OF TRAVELS PER MONTH IN CURRENT YEAR
 CREATE OR REPLACE VIEW TravelsPerMonthByCurrentYear AS
-
 SELECT
+    row_number() OVER () as id,
     COUNT(EXTRACT(MONTH FROM departure_date)),
     EXTRACT(MONTH FROM departure_date) as month,
-    (SELECT date_part('year', (SELECT current_timestamp)) as current_year)
+    (SELECT date_part('year', (SELECT current_timestamp)) as current_year),
+    hc.id as health_center_id
 FROM
-    travels t
+    travels t, health_centers hc
 WHERE
-    EXTRACT(YEAR FROM departure_date) = (SELECT date_part('year', (SELECT current_timestamp)))
+    EXTRACT(YEAR FROM departure_date) = (SELECT date_part('year', (SELECT current_timestamp))) and t.health_center_id = hc.id
 GROUP BY
-    EXTRACT(MONTH FROM departure_date);
+    EXTRACT(MONTH FROM departure_date), hc.id;
 
 -- GET LOCATIONS PER HEALTHCENTER AND NEIGHBORHOOD
 CREATE OR REPLACE VIEW LocationsPerNeighborhood AS
@@ -222,8 +221,9 @@ SELECT
 FROM
     locations l , travels t, passengers p, adresses a, health_centers hc
 WHERE
-    t.status = 'CONCLUIDO' AND l.travel_id  = t.id AND l.passenger_id = p.id AND p.address_id = a.id
-    AND t.health_center_id = hc.id
+    t.status = 'CONCLUIDO' AND l.travel_id  = t.id AND l.passenger_id = p.id AND p.address_id = a.id AND t.health_center_id = hc.id
 GROUP BY
-    a.neighborhood, hc.id;
+    a.neighborhood, hc.id
+ORDER BY
+    a.neighborhood;
 -- ENDVIEWS

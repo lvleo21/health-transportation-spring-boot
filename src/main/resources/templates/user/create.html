@@ -139,16 +139,6 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md col-sm-12 d-flex align-items-center">
-                            <div class="form-group mt-2">
-
-                                <input type="checkbox" id="active" th:field="*{active}">
-                                <label th:for="${#ids.next('active')}">Ativo</label> <br>
-                                <small>Indica que este usuário está ativo ou não no sistema.</small>
-
-                            </div>
-                        </div>
-
                         <div class="col-md col-sm-12 d-flex align-items-center"
                              th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                             <div class="form-group mt-2">

@@ -106,28 +106,41 @@
    - Lembrar que esta base já contem um usuário admin, logo ele não será criado no InitialAdmin utilizando as informações contidas em admin.properties
 
     ```
-        GESTOR DE SERRA TALHADA
-        usuário: gustavo
-        senha: Gustavo1
+        Usuário Admin
+   
+            Usuário: lvleo21
+            Senha: Leo10272109
+   
+        Centro de saúde de Afogados da Ingazeira
 
-        GESTOR DE AFOGADOS DA INGAZEIRA
-        usuário: mequeirosz
-        senha: Mequeirosz1
-
-
-        ADMIN DO SISTEMA
-        usuário: lvleo21
-        senha: Leo1027210916
-
-
-        GESTOR DE CAJAZEIRAS
-        usuário: bergO
-        senha: Berg123
-
-
-        OPERADOR DE SERRA TALHADA
-        usuário: mariaF
-        senha: Maria123
+            Usuário: paValentina
+            
+            Senha: paValentin1
+            
+            Papel: Gestor
+   
+            
+            Usuário: soniaGioava
+            
+            Senha: Gioava321
+            
+            Papel: Gestor
+   
+            
+        Centro de saúde de Cajazeiras
+            
+            Usuário: fmvCorte
+            
+            Senha: fmvCorte123
+            
+            Papel: Gestor
+   
+            
+            Usuário: anatuStella
+            
+            Senha: Anatu123
+            
+            Papel: Operador
     ```  
 
 2. Lembrar que os dados referentes a emails são fictícios, logo se houver a necessidade de enviar o email para resetar a senha, utilize um email válido (na hora de cadastrar os usuários).
