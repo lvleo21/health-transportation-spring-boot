@@ -13,8 +13,6 @@
 * 📊 [Diagrama](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/Diagrama.png)
 
 * 💾 [Backup da Base de Dados](https://github.com/lvleo21/PBD_20-1_Leonardo-Veras/blob/main/Documenta%C3%A7%C3%A3o%20e%20Artefatos/1%C2%AA%20V.A/backup/health-transportations-backup.sql)
-
-* 📹 [Vídeo de Apresentação](https://ufrpebr-my.sharepoint.com/:f:/g/personal/leonardo_mascena_ufrpe_br/EiK5PiTMicBClDRB5p_jCtsBYjsLDb6EtEzcmTgDSOLHDg?e=m5YvqG)
   
 * ⚠️ [Observações](#observações)
 
